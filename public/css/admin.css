@@ -1,0 +1,35 @@
+/*pagination*/
+.pagination{
+  /*display: block;*/
+  background-color: transparent;
+  margin: 0 auto;
+  padding: 5px;
+}
+.pagination li{
+  background-color: #97abfa;
+  padding: 5px 8px;
+  border-radius: 12px;
+  margin: 0 5px;
+  color: black;
+  font-weight: 700;
+}
+.pagination li span{
+  color: #fff;
+} 
+.pagination .active{
+  background-color: #1cde1c;
+}
+
+.pagination .disabled{
+  opacity: 0.5;
+}
+
+input[type="text"], option, textarea,input[type="password"], input[type="email"]{
+  background-color: #eeeaf2 !important;
+}
+
+select{
+  background-color: #eeeaf2  !important;
+  border-radius: 15px;
+  padding: 5px;
+}

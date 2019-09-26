@@ -1,0 +1,6 @@
+category_name,category_id,post/question,option A,option B,option C,option D,correct option
+Inventions,1,Who invented the BALLPOINT PEN?,Biro Brothers,Waterman Brothers,Bicc Brothers,Write Brothers,option_a
+Inventions,1," 
+What J. B. Dunlop invented?",Pneumatic rubber tire,Automobile wheel rim,Rubber boot,Model airplanes,option_b
+Inventions,1,Which scientist discovered the radioactive element radium?,Isaac Newton,Albert Einstein,Benjamin Franklin,Marie Curie,option_c
+Inventions,1,What Galileo invented?,Barometer,Pendulum clock,Microscope,Thermometer,option_d
