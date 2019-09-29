@@ -28,10 +28,16 @@ class HomeController extends Controller
     public function index()
     {   
         $main = MainCategory::get();
-        $category1 = MainCategory::with('category')->get();
         
-        // $category = Category::orderBy('created_at', 'desc')->paginate(10);
-        return view('index')->with('main', $main)->with('category1', $category1);
+        $category1 = MainCategory::with('category')->get();
+
+        $sets = DB::table('sets')->orderBy('order')->get();
+
+        session()->forget('dataIds');
+
+        return view('index')->with('main', $main)
+                            ->with('category1', $category1)
+                            ->with('sets', $sets);
     }
 
     public function dash()
@@ -74,23 +80,66 @@ class HomeController extends Controller
 
         }
 
-        $data1 = [];
-        foreach ($data as $dat) {
-            if ( !empty($dat) ) {
-                
-                foreach ($dat as $dkey) {
+        
+        
+        //Check if session has data ids
+        if ( session()->get('dataIds') == null ) {
+
+            $data1 = $dataIds = [];
+            foreach ($data as $dat) {
+                if ( !empty($dat) ) {
                     
-                    $data1[] = $dkey;
+                    foreach ($dat as $dkey) {
+                        
+                        $data1[] = $dkey;
+                        $dataIds[] = $dkey->id;
+
+                    }
 
                 }
-
             }
+
+            //Add data ids to session
+            session(['dataIds' => json_encode( $dataIds ) ]);
+
+        }else{
+
+            $ids = session()->get('dataIds');
+            $data1 = [];
+            foreach (json_decode($ids) as $k) {
+                $data1[] = DB::table('posts')->where('id', $k)->first();    
+            }
+            
         }
+
+        if ( $page == 1 ) {
+            $start = 1;
+            $stop = 5;
+        }elseif( $page > 1 ){
+            $start = $page + 4 * ( $page - 1 );
+            $stop = $page * 5;
+        }
+        
 
         return view('posts.showsets')->with('data', $data1)
                                      ->with('set', $ques)
                                      ->with('page', $page)
-                                     ->with('random', rand(0,10));
+                                     ->with('start', $start)
+                                     ->with('stop', $stop);
+                                     
 
+    }
+
+    public function extraFunc(){
+        //Store dataids using setid
+        //1. Check if column is not null
+        $col = DB::table('sets')->first();
+        if ( $col->temp_ids == '' || $col->temp_ids == NULL ) {
+            
+            //2. Update
+            DB::table('sets')->where('id', $ques->id)->update(['temp_ids' => json_encode( $dataIds ) ]);
+        }else{
+            $data1 = DB::table('posts')->wherein('id', json_decode($col->temp_ids) )->skip(0)->take(5)->get();
+        }
     }
 }

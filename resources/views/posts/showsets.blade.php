@@ -7,9 +7,7 @@
 
 @section('content')
 
-<div class="breadcrumb"><a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span>
-    <a href="{{ route('quiz.sets') }}">QUIZ Sets</a>
-    <span class="sp-angle">»</span>
+<div class="breadcrumb"><a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span>    
 </div>
 
 <h4 class="col-md-12 mt-3">{{ $set->setname }}</h4>
@@ -20,9 +18,12 @@
 		$pg = $page - 1;
 		$ng = $page + 1;
 	?>
-	<?php $k=1;$ii=1; $quesids=[];?>
+    
+	<?php $k=1;$ii=1;$counter = 1; $starter = 1;?>
 	@foreach($data as $pos)
-        <?php $quesids[] = $pos->id ?>
+        
+        @if( $counter >= $start AND $counter <= $stop  )
+
             <div class="col-md-12 post_div{{ $ii}} qstn_div">
             	<label class="qst_lbl"><?= $k . '. ' ?> {{ $pos->post_name }}</label>
             	<p><a data-id="a" data-value="{{ $pos->option_a }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">A. {{ $pos->option_a}}</a> <span class="span" style="display:none"><i class="fa fa-check-circle" style="color: #13f213;"></i></span></p>
@@ -82,19 +83,23 @@
 
                 <a class="ml-4 view_answer_color" data-toggle="collapse" href="#report_{{ $k }}" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-exclamation-circle"></i> Report</a>
             </div>
+
+            <?php $starter++; ?>
+
+            @endif
             
-<?php $k++;$ii++; ?>
+<?php $k++;$ii++;$counter++; ?>
     @endforeach
 
 	</div>
 	<ul class="pagination">
         <?php if ( $pg > 0 ): ?>
-        	<li><a href="?page=" rel="prev">« Previous</a></li>	
+        	<li><a href="{{ route('set.view', [$set->slug, $pg]) }}" rel="prev">« Previous</a></li>	
         <?php endif ?>
         
-
-        <li><a href="?page={{ json_encode($quesids) }}" rel="next">Next »</a></li>
-
+        <?php if( count($data) > $stop){?>
+            <li><a href="{{ route('set.view', [$set->slug, $ng]) }}" rel="next">Next »</a></li>
+        <?php } ?>
 	</ul>
 
 </div>

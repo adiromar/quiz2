@@ -19,11 +19,10 @@ Auth::routes();
 
 Route::get('/quiz-sets', 'HomeController@quiz_sets')->name('quiz.sets');
 Route::get('/view-set/{slug}/{page}', 'HomeController@set_view')->name('set.view');
-
+Route::get('/view-set/page/{setid}/{page}', 'HomeController@set_next_page')->name('set.next');
 Route::post('/change_order', 'CategoryController@change_order')->name('change.order');
 
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('/home', 'HomeController@index')->name('index');
+
 Route::get('/dashboard', 'HomeController@dash')->name('dash');
 Route::get('posts/index', 'PostsController@index')->name('postindex');
 Route::get('category/index', 'CategoryController@index');
@@ -92,5 +91,8 @@ Route::get('/google_callback', 'SocialAuthGoogleController@callback');
 // create set
 Route::get('/create_question_sets', 'CategoryController@create_set')->name('question');
 Route::post('/store_question_sets', 'CategoryController@store_questionsets');
+
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('index');
 
 

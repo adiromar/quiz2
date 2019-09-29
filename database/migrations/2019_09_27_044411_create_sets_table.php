@@ -18,6 +18,7 @@ class CreateSetsTable extends Migration
             $table->string('setname');
             $table->string('slug');
             $table->string('order')->default(1)->nullable();
+            $table->string('temp_ids')->nullable();
             $table->timestamps();
         });
     }

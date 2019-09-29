@@ -1,25 +1,16 @@
-<?php
-//dd($level);
-?>
 @extends('layouts.main')
 
 @yield('styles')
-<style media="screen" type="text/css">
-    /*.corr_ans{color: green;font-weight: 700;}
-    .wro_ans{color: red;font-weight: 700;}*/
 
+<style media="screen" type="text/css">
     .explain{
         color: blue;
-    }
-    p.highlight {
-        /*background: #aaf491;*/
     }
 </style>
 
 @section('content')
 
 @php
-    // dd($categoryy);
     $cmain = mb_convert_case($main, MB_CASE_TITLE);
     $cname = mb_convert_case($slug, MB_CASE_TITLE);
 @endphp

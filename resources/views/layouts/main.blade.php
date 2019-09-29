@@ -45,7 +45,6 @@
 		</div>
 
 		<div class="col-md-4">
-			<a href="{{ route('quiz.sets') }}" class="btn btn-info btn-sm mt-2">QUIZ Sets</a>
 			@guest
     			<a href="{{ route('login') }}" class="btn btn-secondary btn-sm float-right mt-2"><i class="fa fa-user" aria-hidden="true"></i> Login</a>
    		 	@else
