@@ -35,7 +35,7 @@
 
                                 {{-- <a href="new/online-quiz/{{ $cat->slug }}/{{ $cat->id }}">link</a> --}}
                                 {{-- <a href="test/online-quiz/{{ $cat->slug }}/{{ $cat->id }}">Normal</a><span>   </span> --}}
-                                <a href="test/online/{{ $cat->slug }}/{{ $cat->main_category_id }}"><i class="fa fa-clock"></i> Time Challenge</a><br>
+                                <a href="test/online/{{ $cat->slug }}/{{ $cat->id }}"><i class="fa fa-clock"></i> Time Challenge</a><br>
                             @endif
                             @endif
                         @endforeach

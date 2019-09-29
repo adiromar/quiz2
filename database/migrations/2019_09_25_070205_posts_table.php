@@ -23,8 +23,8 @@ class PostsTable extends Migration
             $table->string('option_c');
             $table->string('option_d');
             $table->string('correct_option');
-            $table->text('explanation');
-            $table->integer('level');
+            $table->text('explanation')->nullable();
+            $table->integer('level')->default(1)->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

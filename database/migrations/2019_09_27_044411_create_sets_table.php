@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UsersTbl extends Migration
+class CreateSetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class UsersTbl extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('sets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->string('remember_token')->nullable();
-            $table->integer('level')->nullable();
+            $table->string('setname');
+            $table->string('slug');
+            $table->string('order')->default(1)->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class UsersTbl extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sets');
     }
 }

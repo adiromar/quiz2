@@ -17,7 +17,10 @@
 
 Auth::routes();
 
+Route::get('/quiz-sets', 'HomeController@quiz_sets')->name('quiz.sets');
+Route::get('/view-set/{slug}/{page}', 'HomeController@set_view')->name('set.view');
 
+Route::post('/change_order', 'CategoryController@change_order')->name('change.order');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('index');
@@ -64,7 +67,7 @@ Route::get('/{slug}/{id}', 'MainCategoryController@index');
 
 Route::post('/posts/score', 'PostsController@score');
 
-// temp
+// tems
 Route::get('/list-all', 'HomeController@list_all');
 Route::get('new/online-quiz/{slug}/{id}', 'CategoryController@new_test');
 
@@ -89,3 +92,5 @@ Route::get('/google_callback', 'SocialAuthGoogleController@callback');
 // create set
 Route::get('/create_question_sets', 'CategoryController@create_set')->name('question');
 Route::post('/store_question_sets', 'CategoryController@store_questionsets');
+
+

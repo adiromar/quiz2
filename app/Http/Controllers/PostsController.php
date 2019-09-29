@@ -59,7 +59,7 @@ class PostsController extends Controller
     	$this->validate($request, [
             'question' => 'required',
             'category_name' => 'required' ]);
-
+        // dd($request->all());
         // create post
         $post = new Posts;
         $userId = Auth::id();

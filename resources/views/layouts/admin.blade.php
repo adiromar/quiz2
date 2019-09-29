@@ -1,18 +1,3 @@
-        {{-- backend menu --}}
-@if (auth()->check())
-   @if (auth()->user()->isAdmin() == 1)
-      
-   @elseif (auth()->user()->isAdmin() == 2)
-   @else
-      @php 
-      echo "Forbidden Access";
-      // return redirect()->back();
-      return redirect()->route('home');
-      @endphp
-   @endif
-@endif
-
-
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -35,6 +20,9 @@
     <link href="{{ asset('admin/assets/scss/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/css/lib/chosen/chosen.min.css') }}" rel="stylesheet">
+
+    @yield('styles')
+
 </head>
 <body>
        <!-- Left Panel -->

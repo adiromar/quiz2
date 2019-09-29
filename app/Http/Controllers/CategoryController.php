@@ -11,6 +11,7 @@ use App\Posts;
 use App\User;
 use DB;
 use App\QuestionSets;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {   
@@ -22,7 +23,7 @@ class CategoryController extends Controller
     public function index()
     {	
         $title = 'Category Page';
-    	// $category = Category::orderBy('created_at', 'desc')->get();
+    	
         $main = MainCategory::get();
     	$category = Category::orderBy('created_at', 'desc')->paginate(20);
         return view('category.index')->with('category', $category)->with('main', $main)->with('title', $title);
@@ -39,15 +40,21 @@ class CategoryController extends Controller
     public function cat($main, $slug, $id)
     {   
         $categoryy = Category::find($id);
-        $id = Auth::id();
-        $lev = DB::table('users')->where('id', $id)->pluck('level')->first();
-        // dd($lev);
-        // $postss = $categoryy->posts()->inRandomOrder()->simplePaginate(5);
 
-        $postss = DB::table('posts')->where([
-            ['level', '<=', $lev],
-            ['category_id', '=', $categoryy->id],
-        ])->inRandomOrder()->simplePaginate(5);
+        if ( Auth::id() ) {
+            $id = Auth::id();
+            $lev = DB::table('users')->where('id', $id)->pluck('level')->first();
+
+            $postss = DB::table('posts')->where([
+                ['level', '<=', $lev],
+                ['category_id', '=', $categoryy->id],
+            ])->inRandomOrder()->simplePaginate(5);
+        }else{
+            $postss = DB::table('posts')->where([
+                ['category_id', '=', $categoryy->id],
+            ])->inRandomOrder()->simplePaginate(5);
+        }
+        
         return view('category.show')->with('postss', $postss)->with('categoryy', $categoryy)->with('main', $main)->with('slug', $slug);
     }
 
@@ -87,7 +94,6 @@ class CategoryController extends Controller
             ];
         }
         
-        // $items = $postss->toJson();
         return view('category.online_quiz')->with('categoryy', $categoryy)->with(compact('items', 'items'));
     }
 
@@ -123,17 +129,9 @@ class CategoryController extends Controller
     }
 
     public function validate_test(Request $request){
-        // echo '<pre>';
-        // dd((array) $_POST);
-        // $cat_id = $request->input('cat_id');
-        // for ($i=1; $i < $count; $i++) { 
-        //     $opt = 'option' . $i;
-        //     $option = $request->input($opt);
-        //     print_r($option);
-        // }
+     
         DB::table('test_results')->insert([
         ['category_id' => '67'],
-        // ['email' => 'dayle@example.com', 'votes' => 0]
         ]);
         
         
@@ -164,45 +162,62 @@ class CategoryController extends Controller
     {   
         $title = 'Create Category Set';
         $category = Category::orderBy('created_at', 'desc')->get();
-        // $main = MainCategory::get();
-        // $category = Category::orderBy('created_at', 'desc')->paginate(20);
-        // return view('category.create_set')->with('category', $category)->with('main', $main)->with('title', $title);
-        return view('category.create_set')->with('category', $category);
+        $sets = DB::table('sets')->get();
+        return view('category.create_set')->with('category', $category)
+                                        ->with('sets', $sets);
     }
 
     public function store_questionsets(Request $request){
         $this->validate($request, [
-            'qst_set_name' => 'required']);
+            'qst_set_name' => 'required'
+        ]);
 
         $question_name = $request->input('qst_set_name');
+
+        //Insert question name to new table
+        DB::table('sets')->insert([
+                'setname' => $question_name,
+                'slug' => Str::slug( $question_name )
+        ]);
+        
         $category_id = $request->input('category_id');
         $no_of_question = $request->input('no_of_question');
         $cc = count($no_of_question);
-
-        foreach ($request as $key => $value) {
+        $count = 0;
+        foreach ($request->category_id as $value) {
             $data[] = [
-                'question_name' => $value['qst_set_name'],
-                'category_id' => $value['category_id'],
-                'no_of_question' => $value['no_of_question'],
+                'question_name' => $question_name,
+                'category_id' => $value,
+                'no_of_question' => $no_of_question[$count],
                 ];
+            $count++;
         }
         DB::table('question_sets')->insert($data);
-        // $data = [];
-        // for ($k=0; $k < $cc; $k++) { 
-        //     $data[] = array('question_name'=>$question_name, 'category_id'=>$category_id[$k,'no_of_question'=>$no_of_question[$k]
-        //     );
-            
-            
-        // }
-        // QuestionSets::Insert($data);
-        // create post
-        // $qst = new QuestionSets;
-        // $userId = Auth::id();
-        // $qst->question_name = $request->input('qst_set_name');
-        // $qst->category_id = $request->input('category_id');
-        // $qst->no_of_question = $request->input('no_of_question');
-        // $qst->save();
 
-        return redirect('/store_question_sets')->with('success', 'Question set Created');
+        return redirect()->back()->with('success', 'Question set Created');
     }
+
+
+    public function change_order(Request $request){
+
+        
+        $orders = $request->order; 
+        $i = 0;
+        foreach ($request->setids as $setid) {
+            
+            $o = $orders[$i];
+
+            //Update row using set id
+            DB::table('sets')->where('id', $setid)
+                            ->update([
+                                'order' => $o
+                            ]);
+
+        $i++;
+        }
+
+        return redirect()->back()->with('success', 'Order Changed');
+
+    }
+
 }

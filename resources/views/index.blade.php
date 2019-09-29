@@ -33,7 +33,9 @@
                         @foreach($cat1->category as $cat)
                             @if($cat->featured == true)
                             @if($cat1->id == $mainc->id)
-                                <a class="cat-link" href="{{ $mainc->slug }}/{{ $cat->slug }}/{{ $cat->id }}" ><i class="fas fa-chevron-right"></i> {{ $cat->category_name }}</a><br>
+                                <a class="cat-link" href="{{ $mainc->slug }}/{{ $cat->slug }}/{{ $cat->id }}" ><i class="fas fa-chevron-right"></i> {{ $cat->category_name }} 
+                                    <small>{{ '('. $cat->posts()->count() . ')' }}</small>
+                                </a><br>
                             @endif
                             @endif
                         @endforeach

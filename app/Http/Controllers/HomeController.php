@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index','list_all']]);
+        $this->middleware('auth', ['except' => ['index','list_all','quiz_sets','set_view']]);
     }
 
     /**
@@ -48,5 +48,49 @@ class HomeController extends Controller
         $main = MainCategory::get();
         $category1 = MainCategory::with('category')->get();
         return view('listall')->with('main', $main)->with('category1', $category1);
+    }
+
+    public function quiz_sets(){
+
+        $sets = DB::table('sets')->orderBy('order')->get();
+
+        return view('posts.sets')->with('sets', $sets);
+
+    }
+
+    public function set_view($set, $page){
+
+
+        $ques = DB::table('sets')->where('slug', $set)->first();
+
+
+        $all = DB::table('question_sets')->select('category_id','no_of_question')->where('question_name', $ques->setname)->get();
+
+        $data = [];
+        foreach ( $all as $val ) {
+            
+            $data[] = DB::table('posts')->where('category_id', $val->category_id)
+                        ->inRandomOrder()->get()->take( $val->no_of_question )->toArray();
+
+        }
+
+        $data1 = [];
+        foreach ($data as $dat) {
+            if ( !empty($dat) ) {
+                
+                foreach ($dat as $dkey) {
+                    
+                    $data1[] = $dkey;
+
+                }
+
+            }
+        }
+
+        return view('posts.showsets')->with('data', $data1)
+                                     ->with('set', $ques)
+                                     ->with('page', $page)
+                                     ->with('random', rand(0,10));
+
     }
 }
