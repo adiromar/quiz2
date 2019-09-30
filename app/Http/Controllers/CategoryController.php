@@ -37,7 +37,7 @@ class CategoryController extends Controller
 
 
     // view questions all category wise & level wise
-    public function cat($main, $slug, $id)
+    public function cat(Request $request, $main, $slug, $id, $page)
     {   
         $categoryy = Category::find($id);
 
@@ -48,14 +48,52 @@ class CategoryController extends Controller
             $postss = DB::table('posts')->where([
                 ['level', '<=', $lev],
                 ['category_id', '=', $categoryy->id],
-            ])->inRandomOrder()->simplePaginate(5);
+            ])->inRandomOrder()->get();
         }else{
             $postss = DB::table('posts')->where([
                 ['category_id', '=', $categoryy->id],
-            ])->inRandomOrder()->simplePaginate(5);
+            ])->inRandomOrder()->get();
         }
         
-        return view('category.show')->with('postss', $postss)->with('categoryy', $categoryy)->with('main', $main)->with('slug', $slug);
+        
+
+        if ( $request->session()->get('datalist') == null ) {
+            
+            $catDataIds = [];
+            foreach ($postss as $p) {
+                $catDataIds[] = $p->id; 
+            }
+
+            session(['datalist' => json_encode($catDataIds) ]);
+
+        }else{
+
+            $ids = session()->get('datalist');
+            $postss = [];
+            foreach (json_decode($ids) as $k) {
+            
+
+                $postss[] = DB::table('posts')->where('id', $k)->first();
+
+            }
+
+        }
+
+        if ( $page == 1 ) {
+            $start = 1;
+            $stop = 5;
+        }elseif( $page > 1 ){
+            $start = $page + 4 * ( $page - 1 );
+            $stop = $page * 5;
+        }
+        
+        return view('category.show')->with('postss', $postss)
+                                    ->with('categoryy', $categoryy)
+                                    ->with('main', $main)
+                                    ->with('slug', $slug)
+                                    ->with('page', $page)
+                                    ->with('start', $start)
+                                    ->with('stop', $stop);
     }
 
     public function online_test($slug, $id)

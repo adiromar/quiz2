@@ -34,6 +34,7 @@ class HomeController extends Controller
         $sets = DB::table('sets')->orderBy('order')->get();
 
         session()->forget('dataIds');
+        session()->forget('datalist');
 
         return view('index')->with('main', $main)
                             ->with('category1', $category1)

@@ -6,24 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{-- checking for admin rolw --}}
-@if (auth()->check())
-   @if (auth()->user()->isAdmin() == 1)
-		@php
-		$isadmin = true;
-		@endphp
-   @elseif (auth()->user()->isAdmin() == 2)
-      	@php
-		$isadmin = true;
-		@endphp
-   @else
-   	  	@php
-		$isadmin = false;
-		@endphp
-   @endif
-@endif
-{{-- end of checking roles --}}
-
 	@yield('styles')
 
     <!-- CSRF Token -->
@@ -48,12 +30,22 @@
 			@guest
     			<a href="{{ route('login') }}" class="btn btn-secondary btn-sm float-right mt-2"><i class="fa fa-user" aria-hidden="true"></i> Login</a>
    		 	@else
-   		 		@if ($isadmin == true)
    		 		
-   		 		<a href="{{ url('/dashboard') }}" class="btn btn-warning btn-sm mt-2" style="margin-left: 150px;"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
-   		 		@else
+   		 		<?php 
 
-   		 		@endif
+					$aid = Auth::id(); 
+
+					$rol = DB::table('role_user')->where('user_id', $aid)->first();
+
+					$role = DB::table('roles')->where('id', $rol->id)->first();
+					
+				?>
+
+				<?php if ( $role->role == 'SuperAdmin' || $role->role == 'Admin' ): ?>
+				
+				<a href="{{ url('/dashboard') }}" class="btn btn-warning btn-sm mt-2" style="margin-left: 150px;"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
+
+				<?php endif ?>
 
    		 		<a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();" class="btn btn-secondary btn-sm float-right mt-2"><i class="fa fa-key"></i> Log Out</a>
@@ -84,8 +76,10 @@
 
 			@endforeach
 			@endif
-			<a href="{{ url('/list-all') }}">Online Test</a>
-			
+
+			@auth
+				<a href="{{ url('/list-all') }}">Online Test</a>
+			@endauth
 		</nav>
 		<div class="collapse" id="collapseExample">
                     <div class="card card-body">

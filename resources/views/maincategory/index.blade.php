@@ -17,7 +17,7 @@
 
 				@if($smain->featured == true)
 				<div class="col-md-4">
-					<span style="color: #e5e544"><i class="fa fa-folder"></i></span><a href="{{ url(''.$main->slug.'/'.$smain->slug.'/'.$smain->id.' ')}}"> {{ $smain->category_name }}</a>
+					<span style="color: #e5e544"><i class="fa fa-folder"></i></span><a href="{{ route('cat', [ $main->slug, $smain->slug, $smain->id, 1 ]) }}"> {{ $smain->category_name }}{{ ' ('. $smain->posts->count() . ') ' }}</a>
 				</div>
 				@endif
 				

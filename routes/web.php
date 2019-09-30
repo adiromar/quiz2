@@ -39,7 +39,7 @@ Route::delete('/category/{id}/delete', 'CategoryController@destroy');
 
 // Route::get('/{slug}/main', 'MainCategoryController@show');
 
-Route::get('/{main}/{slug}/{id}', 'CategoryController@cat')->name('cat');
+Route::get('/{main}/{slug}/{id}/{page}', 'CategoryController@cat')->name('cat');
 Route::get('/posts/{id}/edit', 'PostsController@edit')->name('posts');
 Route::post('posts/update/', 'PostsController@update');
 

@@ -20,6 +20,10 @@ class MainCategoryController extends Controller
         // $did = Crypt::decrypt($id);
         $main = MainCategory::find($id);
         $submain = Category::where('main_category_id', $id)->get();
+
+        session()->forget('dataIds');
+        session()->forget('datalist');
+        
         return view('maincategory.index')->with('main', $main)->with('submain', $submain);
     }
 
