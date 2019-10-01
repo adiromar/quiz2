@@ -55,13 +55,6 @@ Route::put('/category/{id}/edit', 'CategoryController@featured_cat');
 Route::post('posts/report_post/{id}', 'PostsController@report_post');
 Route::get('posts/question_report', 'PostsController@show');
 
-// online test
-Route::get('/test/online/{slug}/{id}', 'CategoryController@test')->name('test'); 
-
-
-Route::get('test/online-quiz/{slug}/{id}', 'CategoryController@online_quiz')->name('online-quizz');
-
-
 Route::get('/{slug}/{id}', 'MainCategoryController@index');
 
 Route::post('/posts/score', 'PostsController@score');

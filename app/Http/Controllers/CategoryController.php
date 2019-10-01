@@ -87,19 +87,21 @@ class CategoryController extends Controller
             $stop = $page * 5;
         }
         
+        $pg = 0;
         return view('category.show')->with('postss', $postss)
                                     ->with('categoryy', $categoryy)
                                     ->with('main', $main)
                                     ->with('slug', $slug)
                                     ->with('page', $page)
                                     ->with('start', $start)
-                                    ->with('stop', $stop);
+                                    ->with('stop', $stop)
+                                    ->with('pg', $pg);
     }
 
     public function online_test($slug, $id)
     {   
         $categoryy = Category::find($id);
-        $postss = $categoryy->posts()->inRandomOrder()->get();
+        $postss = $categoryy->posts()->inRandomOrder()->take(20)->get();
        
         return view('category.online_test')->with('postss', $postss)->with('categoryy', $categoryy);
     }

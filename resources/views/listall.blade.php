@@ -33,9 +33,8 @@
                             @if($cat1->id == $mainc->id)
                                 <medium><i class="fas fa-chevron-right"></i> {{ $cat->category_name }}</medium>
 
-                                {{-- <a href="new/online-quiz/{{ $cat->slug }}/{{ $cat->id }}">link</a> --}}
-                                {{-- <a href="test/online-quiz/{{ $cat->slug }}/{{ $cat->id }}">Normal</a><span>   </span> --}}
-                                <a href="test/online/{{ $cat->slug }}/{{ $cat->id }}"><i class="fa fa-clock"></i> Time Challenge</a><br>
+                                <a href="{{ route('online_test', [$cat->slug, $cat->id]) }}"><i class="fa fa-clock"></i> Time Challenge</a><br>
+
                             @endif
                             @endif
                         @endforeach

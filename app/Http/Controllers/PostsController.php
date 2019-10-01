@@ -58,18 +58,78 @@ class PostsController extends Controller
     public function store(Request $request){
     	$this->validate($request, [
             'question' => 'required',
-            'category_name' => 'required' ]);
-        // dd($request->all());
+            'category_name' => 'required',
+            'questionimage' => 'image' 
+        ]);
+        
         // create post
         $post = new Posts;
         $userId = Auth::id();
-        $post->post_name = $request->input('question');  
+        $post->post_name = $request->input('question');
+        if ( $request->level ) {
+            $post->level = $request->level;
+        }else{
+            $post->level = 1;
+        }  
+        
+        
+        //1. Question image (featured)
+        if ( $request->hasFile('questionimage') ) {
+            $filename = "";
+            $file = $request->questionimage;
+            $filename = "featured_" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/images', $filename);
+            $post->featured = 'uploads/images/' . $filename;
+        }
+
         $post->category_name = $request->input('category_name'); 
         $post->category_id = $request->input('category_id');
-        $post->option_a = $request->input('option_a');   
-        $post->option_b = $request->input('option_b'); 
-        $post->option_c = $request->input('option_c'); 
-        $post->option_d = $request->input('option_d'); 
+
+        //Options
+        if ( $request->hasFile('option_a') ) {
+            $filename = "";
+            $file = $request->option_a;
+            $filename = "option_a" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $post->option_a = 'uploads/answers/' . $filename;
+
+        }else{
+            $post->option_a = $request->input('option_a');    
+        }
+
+        if ( $request->hasFile('option_b') ) {
+            $filename = "";
+            $file = $request->option_b;
+            $filename = "option_b" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $post->option_b = 'uploads/answers/' . $filename;
+
+        }else{  
+            $post->option_b = $request->input('option_b'); 
+        }
+
+        if ( $request->hasFile('option_c') ) {
+            $filename = "";
+            $file = $request->option_c;
+            $filename = "option_c" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $post->option_c = 'uploads/answers/' . $filename;
+
+        }else{  
+            $post->option_c = $request->input('option_c');
+        }
+
+        if ( $request->hasFile('option_d') ) {
+            $filename = "";
+            $file = $request->option_d;
+            $filename = "option_d" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $post->option_d = 'uploads/answers/' . $filename;
+
+        }else{
+            $post->option_d = $request->input('option_d'); 
+        }
+
         $post->correct_option = $request->input('correct_option'); 
         $post->explanation = $request->input('explanation'); 
         $post->user_id = $userId;

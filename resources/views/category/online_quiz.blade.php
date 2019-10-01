@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-
+@section('styles')
 	<style type="text/css">
 		body {
     font-family: Open Sans;
@@ -75,6 +75,7 @@ ul {
     width: 90px;
 }
 	</style>
+@endsection
 
 @section('content')
 

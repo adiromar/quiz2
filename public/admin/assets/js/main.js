@@ -35,4 +35,26 @@ jQuery(document).ready(function($) {
 	// });
 
 
+	//Image option selection
+	$('.radiobtn').change(function(){
+
+		let wrap = $(this).closest('.wrapper').find('.input_wrap');
+		let thisval = $(this).val();
+		let inpname = $(this).data('inp');
+
+		wrap.empty();
+		
+		if ( thisval == 0 ) {
+			wrap.append(`
+							<input type="text" name="`+inpname+`" class="form-control" placeholder="Enter Option">
+					`);
+		}else{
+			wrap.append(`
+							<input type="file" name="`+inpname+`" class="form-control">
+					`);
+		}
+		
+
+	});
+
 });
