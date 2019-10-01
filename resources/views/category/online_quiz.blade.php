@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('styles')
+
 	<style type="text/css">
 		body {
     font-family: Open Sans;
@@ -75,7 +75,6 @@ ul {
     width: 90px;
 }
 	</style>
-@endsection
 
 @section('content')
 
@@ -97,26 +96,21 @@ ul {
     		<div class='button' id='next'><a href='#'>Next</a></div>
     		<div class='button' id='prev'><a href='#'>Prev</a></div>
     		<div class='button' id='start'> <a href='#'>Start Test</a></div>
-        
-        {{-- <input type="button" id="btnSubmitTest" value="submit"> --}}
     		<!-- <button class='' id='next'>Next</a></button>
     		<button class='' id='prev'>Prev</a></button>
     		<button class='' id='start'> Start Over</a></button> -->
     	</div>
 </div>
+		
 
-<script src="http://code.jquery.com/jquery-3.3.1.min.js"
-               integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-               crossorigin="anonymous"></script>
-{{-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
-      
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 		{{-- <script type="text/javascript" src='questions.json'></script> --}}
 		{{-- <script type='text/javascript' src='jsquiz.js'></script> --}}
 
 <script type="text/javascript">
 (function() {
 	var cat = @json($categoryy);
-    var questions = @json($items);	
+	var questions = @json($items);
 
 	// console.log(cat);
 	// console.log(questions);
@@ -231,11 +225,10 @@ $('.length').append('Total Questions: ' + questions.length);
     var item;
     var input = '';
     for (var i = 0; i < questions[index].choices.length; i++) {
-      item = $('<li><label class="col-md-12">');
-      input = '<input type="radio" name="answer" value=' + i + ' /></label></li></ul>';
-
-      // input += '<li class="show" style="display: none;"><input type="text" value='+ questions[index].correctAnswer +'></li>';
-      // newinput = '<li class="this_show"></li>';
+      item = $('<label class="col-md-12"><li>');
+      input = '<input type="radio" name="answer" value=' + i + ' /></label>';
+      input += '<li class="show" style="display: none;"><input type="text" value='+ questions[index].correctAnswer +'></li>';
+      newinput = '<li class="this_show"></li>';
       input += questions[index].choices[i];
       item.append(input);
       radioList.append(item);
@@ -287,13 +280,13 @@ $('.length').append('Total Questions: ' + questions.length);
     var numCorrect = 0;
     for (var i = 0; i < selections.length; i++) {
 
-    	if (questions[i].correctAnswer == 'a'){
+    	if (questions[i].correctAnswer == 'option_a'){
     		d = 0;
-    	}else if (questions[i].correctAnswer == 'b'){
+    	}else if (questions[i].correctAnswer == 'option_b'){
     		d = 1;
-    	}else if (questions[i].correctAnswer == 'c'){
+    	}else if (questions[i].correctAnswer == 'option_c'){
     		d = 2;
-    	}else if (questions[i].correctAnswer == 'd'){
+    	}else if (questions[i].correctAnswer == 'option_d'){
     		d = 3;
     	}
     	console.log(selections[i]);
@@ -306,38 +299,10 @@ $('.length').append('Total Questions: ' + questions.length);
       }
     }
     
-    function SubmitTestButtonClickHandler(thisObj)
-{
-    var txtMsg = '';
-    var intUAC = $("input.jq-selected-answer[value='']").length;
-    if( intUAC > 0) txtMsg = "Total number of unanswered questions = " + intUAC + ".\n\n" ;
-    
-    if(confirm(txtMsg + 'Are you sure you want to submit the Test now?'))  /* Check for Time limit also. */
-    {
-        $(thisObj).attr('disabled', 'disabled');
-        PopulateResultStatics();
-    }
-}
-
-    savescore();
-    function savescore(){
-      var pers = (numCorrect / questions.length) * 100;
-      var ptg = pers.toPrecision(3);
-      // alert(ptg);
-    }
-    $('#btnSubmitTest').click(  function(){  display_results(this); });
-
-    function display_results(thisObj){
-
-      <?php
-      DB::insert('insert into score_rankings (correct_score, percentage) values (?, ?)', [2, '23.3']); ?>
-    }
-      
     score.append('You got ' + numCorrect + ' questions out of ' +
                  questions.length + ' right!!!');
     per = (numCorrect / questions.length) * 100;
-    score.append('<br><br> Test Percentage: ' + per.toPrecision(3) + ' %');
-      
+    score.append('<br> Test Percentage: ' + per.toPrecision(3) + ' %');
     return score;
   }
 })();

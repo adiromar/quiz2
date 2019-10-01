@@ -54,7 +54,11 @@ class HomeController extends Controller
     {   
         $main = MainCategory::get();
         $category1 = MainCategory::with('category')->get();
-        return view('listall')->with('main', $main)->with('category1', $category1);
+        $sets = DB::table('sets')->orderBy('order')->get();
+
+        return view('listall')->with('main', $main)
+                              ->with('category1', $category1)
+                              ->with('sets', $sets);
     }
 
     public function quiz_sets(){

@@ -28,11 +28,10 @@ padding: 5px;
 @section('content')
 @php
 
-$name = ucfirst($categoryy->category_name);
-$ch_slug = str_replace(' ', '-', $categoryy->category_name);
-$c_slug = strtolower($ch_slug);
+$name = $set->setname;
+
 @endphp
-<div class="breadcrumb"><a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span><a href="{{ url('cat/'.$ch_slug.'/'.$categoryy->id.'') }}">{{ $name }}</a><span class="sp-angle">»</span><a href="#">Online Test</a></div>
+<div class="breadcrumb"><a href="{{ url('/') }}">Home</a>{{ $name }}<span class="sp-angle">»</span><a href="#">Online Test</a></div>
 <div class="col-md-12" id="test_id">
   <h4>Online test</h4>
   <div class="card">
@@ -49,8 +48,7 @@ $c_slug = strtolower($ch_slug);
     </div>
   </div>
 </div>
-{{-- <form id="test_form" action="{{ action('CategoryController@validate_test', $categoryy->id) }}" method="post"> --}}
-  {{-- <input name="_token" type="hidden" value="{{ csrf_token() }}"/> --}}
+
   <div class="row tbl_results mt-4" style="display: none;">
     <table class="table table-striped">
       <thead>
@@ -213,33 +211,35 @@ integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
 crossorigin="anonymous"></script>
 <script type="text/javascript">
 $(document).ready( function(){
-// $('.options_clk').on('click', function (e){
-//   e.preventDefault();
-//   // var selectedOptions = $('select[data="id"] option:selected');
-//   // var selectedOptions = $(this).find(':selected');
-//   var id = $(this).attr('id')
-//   var options = $(this).data('id');
-//   var correct = $(this).data('correct');
-//   // alert(id);
-//   if (options == correct){
-//       $(this).addClass('tru_color');
-//       $('.show_correct'+id+'').show();
-//       // $('.wrong'+id+'').hide();
-//       $(this).removeClass('option_color');
-//   }else{
-//       // alert("incorrect");
-//       // document.getElementByClassName.style.backgroundColor = "transparent";
-//       // document.getElementsByClassName('wrong'+id+'').style.color = "red";
-//       // $(this).css('background-color', 'red');
-//        $(this).addClass('v-color');
-//        $(this).removeClass('option_color');
-//       $('.show_correct'+id+'').hide();
-//       // $('.wrong'+id+'').show();
-//   }
+
+  // $('.options_clk').on('click', function (e){
+  //   e.preventDefault();
+  //   // var selectedOptions = $('select[data="id"] option:selected');
+  //   // var selectedOptions = $(this).find(':selected');
+  //   var id = $(this).attr('id')
+  //   var options = $(this).data('id');
+  //   var correct = $(this).data('correct');
+  //   // alert(id);
+  //   if (options == correct){
+  //       $(this).addClass('tru_color');
+  //       $('.show_correct'+id+'').show();
+  //       // $('.wrong'+id+'').hide();
+  //       $(this).removeClass('option_color');
+  //   }else{
+  //       // alert("incorrect");
+  //       // document.getElementByClassName.style.backgroundColor = "transparent";
+  //       // document.getElementsByClassName('wrong'+id+'').style.color = "red";
+  //       // $(this).css('background-color', 'red');
+  //        $(this).addClass('v-color');
+  //        $(this).removeClass('option_color');
+  //       $('.show_correct'+id+'').hide();
+  //       // $('.wrong'+id+'').show();
+  //   }
 
 
-//   console.log(correct);
-// });
+  //   console.log(correct);
+  // });
+  
 $("input:checkbox").on('click', function() {
 var $box = $(this);
 var $val = $(this).val();

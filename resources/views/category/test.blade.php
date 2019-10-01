@@ -7,15 +7,9 @@
 @section('content')
 	
   
-  @php
-    // dd($categoryy);
-    $cmain = mb_convert_case($main, MB_CASE_TITLE);
-    $cname = mb_convert_case($slug, MB_CASE_TITLE);
-@endphp
 <div class="breadcrumb"><a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span>
-    <a href="{{ url(''.$main->slug.'/'.$categoryy->main_category_id.'') }}">{{ $main->slug }}</a><span class="sp-angle">»</span>
-    <a href="{{ url(''.$main->slug.'/'.$slug.'/'.$categoryy->id.'') }}">{{ $slug }}</a>
-    <span class="sp-angle">»</span><span id="idTimerLCD"></span></div>
+    
+    <span class="sp-angle"></span><span id="idTimerLCD"></span></div>
 
 	<div id="divResultStatistics" style="display: none;margin: 20px 0px;"> 
 		<table class="table table-bordered result-statss" cellpadding="4" cellspacing="0" width="100%">
@@ -47,16 +41,16 @@
 	</div>
 
 @if(count($postss) > 0)
-	<div class="div-test-initiator mt-4" id="divInitiator">
+	<div class="div-test-initiator mt-4" id="divInitiator" style="border:1px solid grey;padding: 20px 30px">
              {{-- <div id="divLoading" align="center">
                 <br /><img src="/_files/images/website/progress.gif" alt="Loading..." /><span class="mx-gray">&nbsp; Loading Test...</span>
              </div> --}}
              <div class="mx-none" id="divStartTestInstruction">
                 <div class="div-test-instruction">
-            <p class="mx-green mx-bold mx-uline">Note:</p>
+            <p class="mx-green mx-bold mx-uline"><strong>Note:</strong></p>
             <ul class="ul-test-instruction">
             <li>Total number of questions : <b>20</b>.</li>
-            <li>Time alloted : <b>10</b> minutes.</li>
+            <li>Time allotted : <b>10</b> minutes.</li>
             <li>Each question carry 1 mark, no negative marks.</li>
             <li>DO NOT refresh the page.</li>
             <li>All the best :-).</li>
@@ -73,6 +67,10 @@
     		
     			@foreach($postss as $pos)
 
+          <!-- Check count -->
+          <?php if ( $k <= 20 ): ?>
+            
+          
           <div class="qst-container mb-5">
     		
           <h5>{{ $k . '. ' . $pos->post_name }}</h5>
@@ -98,6 +96,8 @@
     		@php $k++; @endphp
         <hr class="line-hr">
       </div>
+
+        <?php endif ?>
     		@endforeach
     		
 
@@ -130,7 +130,6 @@
         <input type="hidden" id="hdnInitialTimer"  value="600" />
         <input type="hidden" id="hdnTimer"         value="600" />
 
-<button id="btnclick">click</button>
 
 {{-- <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
   integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
@@ -363,6 +362,29 @@ function PopulateResultStatics()
     tmpResStat = tmpResStat.replace('[XX/XX]' , intCorrectAnswerCount + '/' + intTotalQuestions);
     // percentage = (intCorrectAnswerCount / intTotalQuestions) * 100;
     percentage = Math.round((intCorrectAnswerCount / intTotalQuestions) * 100);
+
+    var level = {{ Auth::user()->level }};
+    
+    if ( percentage >= 85 ) {
+
+      //AJAX
+      $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+
+      var userid = {{ Auth::id() }};
+
+      $.get('http://localhost:8000/update/user/level', { percentage, userid }, 
+        function(response){
+
+          console.log(response);
+        
+        });
+
+    }
+
     tmpResStat = tmpResStat.replace('[PTG]'    , percentage);
     tmpResStat = tmpResStat.replace('[TQ]'    , intTotalQuestions);
     tmpResStat = tmpResStat.replace('[AQ]'    , intAnsweredCount);
@@ -374,37 +396,6 @@ function PopulateResultStatics()
     /* Initial Swap to Result Stat. Tab */
     $('#divResult').show();  $('#divResultStatistics').show();
     
-    // function save_data(){
-      $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: "http://localhost:8000/category/validate_test",
-            data: intAnsweredCount,
-            // dataType: 'json',
-            success: function(data) {
-                
-                console.log(data);
-            },
-            error: function(data) {
-                console.log(data);
-            }
-        });
-
-        // $.get( "url('category/validate_test')", {
-        //   intAnsweredCount
-        // }, function( data ) {
-        //   console.log(data);
-        //   $( ".result" ).html( data );
-        // });
-    // }
-        
-
-
-
     window.scroll(0,0); /* Scrolls up the window. */
     
     // AddGeneralTestViewCount(); /* Ajax call to server. */
@@ -420,36 +411,6 @@ function PopulateResultStatics()
                         ", WrongAns=" + intWrongAnswerCount    +
                         ", TotTime="     + totalTime   +
                         "min, TimeTaken="     + timeTaken +"sec]"  ;
-      
 }
-
-$(document).ready(function(){
-        $('#btnclick').on('click',function(e){
-          alert("click");
-            e.preventDefault();
-
-           // form.append('image', image);
-            $.ajax({
-                headers: {
-                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: 'localhost:8000/category/validate_test',
-                datatType : 'json',
-                type: 'POST',
-                data: {
-                    'id' : 12,
-                    'name': 'john'
-                },
-                cache: false,
-                contentType: false,
-                processData: false,
-
-                success:function(response) {
-                    // alert(response);
-                    console.log(response);
-                }
-});
-            });
-        });
 </script>
 @endsection

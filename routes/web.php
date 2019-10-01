@@ -48,6 +48,9 @@ Route::post('/uploadCategory', 'UploadPostController@uploadCategory');
 // online test
 Route::get('/online-test/{slug}/{id}', 'CategoryController@online_test')->name('online_test');
 // Route::post('/category/{id}/validate', 'CategoryController@validate_test');
+Route::get('/test-online/{set}/{id}', 'CategoryController@online_test_set')->name('test.set');
+
+Route::get('/update/user/level/', 'CategoryController@update_user_level')->name("update.user.level");
 
 Route::put('/maincategory/{id}/edit', 'MainCategoryController@featured_cat');
 Route::put('/category/{id}/edit', 'CategoryController@featured_cat');

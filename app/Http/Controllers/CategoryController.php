@@ -106,6 +106,50 @@ class CategoryController extends Controller
         return view('category.online_test')->with('postss', $postss)->with('categoryy', $categoryy);
     }
 
+    public function online_test_set($set, $id) 
+    {
+
+        $ques = DB::table('sets')->where('id', $id)->first();
+
+        $all = DB::table('question_sets')->select('category_id','no_of_question')->where('question_name', $ques->setname)->get();
+
+        $userlevel = Auth::user()->level;
+
+        $data = [];
+        foreach ( $all as $val ) {
+            
+            $data[] = DB::table('posts')->where('category_id', $val->category_id)
+                                        ->where('level', '<=', $userlevel)
+                                        ->inRandomOrder()
+                                        ->get()
+                                        ->take( $val->no_of_question )
+                                        ->toArray();
+
+        }
+
+        $data1 = $dataIds = [];
+
+        foreach ($data as $dat) {
+            
+                
+                if ( !empty($dat) ) {
+                
+                    foreach ($dat as $dkey) {
+                        
+                        $data1[] = $dkey;
+                        $dataIds[] = $dkey->id;
+
+                    }
+
+                }
+
+        }
+
+        return view('category.test')->with('postss', $data1)->with('set', $ques);
+
+
+    }
+
     public function test($slug, $id)
     {   
         $categoryy = Category::find($id);
@@ -258,6 +302,20 @@ class CategoryController extends Controller
 
         return redirect()->back()->with('success', 'Order Changed');
 
+    }
+
+    public function update_user_level(Request $request)
+    {
+
+        $user = User::find($request->userid);
+
+        $userlevel = $user->level;
+
+        $user->level = $userlevel + 0.1;
+
+        $user->save();
+
+        return response( "Level Increased." );
     }
 
 }
