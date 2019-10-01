@@ -311,7 +311,7 @@ class CategoryController extends Controller
 
         $userlevel = $user->level;
 
-        $user->level = $userlevel + 0.1;
+        $user->level = $userlevel + 1;
 
         $user->save();
 

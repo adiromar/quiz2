@@ -66,7 +66,7 @@
 									</td>
 									<td>{{ $cat->correct_option }}</td>
 									<td>{{ $cat->created_at }}</td>
-									<td><a href="/posts/{{ $cat->id }}/edit" class="btn btn-secondary btn-sm">Edit</a></td>
+									<td><a href="{{ url('/posts/' . $cat->id . '/edit') }}" class="btn btn-secondary btn-sm">Edit</a></td>
 									<td>
 										<form class="float-right" action="{{ action('PostsController@destroy', $cat->id) }}" method="POST">
 									{{ csrf_field() }}

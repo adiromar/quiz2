@@ -10,7 +10,7 @@
 <div class="breadcrumb"><a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span>
     
     <span class="sp-angle"></span><span id="idTimerLCD"></span></div>
-
+  <div id="divResultStatistics1"></div>
 	<div id="divResultStatistics" style="display: none;margin: 20px 0px;"> 
 		<table class="table table-bordered result-statss" cellpadding="4" cellspacing="0" width="100%">
 			<tbody>
@@ -382,6 +382,15 @@ function PopulateResultStatics()
           console.log(response);
         
         });
+
+        $('#divResultStatistics1').empty();
+        $('#divResultStatistics1').append(`
+          
+            <h5 style="color: maroon;font-weight:600;padding-top: 15px;">
+              Congratulations! You have completed Level 1.  
+            </h5>
+
+        `);
 
     }
 

@@ -23,7 +23,7 @@ class PostsController extends Controller
     {   
         $title = 'Posts/Questions';
         $userId = Auth::id();
-        $posts = Posts::where('user_id', $userId)->paginate(25);
+        $posts = Posts::where('user_id', $userId)->orderBy('id', 'desc')->paginate(25);
         return view('posts.index')->with('posts', $posts)->with('title', $title);
     }
 
@@ -154,6 +154,7 @@ class PostsController extends Controller
         $new_post->option_c = $request->input('option_c'); 
         $new_post->option_d = $request->input('option_d'); 
         $new_post->correct_option = $request->input('correct_option'); 
+        $new_post->level = $request->level;
         $new_post->explanation = $request->input('explanation'); 
         $new_post->save();
 

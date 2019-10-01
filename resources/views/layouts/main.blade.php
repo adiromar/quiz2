@@ -37,7 +37,7 @@
 
 					$rol = DB::table('role_user')->where('user_id', $aid)->first();
 
-					$role = DB::table('roles')->where('id', $rol->id)->first();
+					$role = DB::table('roles')->where('id', $rol->role_id)->first();
 					
 				?>
 

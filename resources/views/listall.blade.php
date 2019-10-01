@@ -37,7 +37,10 @@
 
 @section('content')
 
-	<div class="breadcrumb mb-4"><small>Here, you can take online test.</small></div>
+	<div class="breadcrumb mb-4"><small>Here, you can take online test.
+        <br>
+        Your Level: &nbsp; {{ Auth::user()->level }}</small>
+    </div>
 
     <div class="col-md-12">
         @if( $sets->count() > 0 )

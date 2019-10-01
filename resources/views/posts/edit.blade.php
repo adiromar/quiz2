@@ -30,6 +30,11 @@
 						</select>
 				</div>
 
+				<div class="col-md-3 col-lg-3 col-xs-4 mt-4">
+					<label for="Question Level"><b>Level</b></label>
+					<input type="text" name="level" class="form-control" title="Question Level ( Default is 1)" value="{{ $post->level }}" required>	
+				</div>
+
 				<select style="display: none;" name="category_id"><option id="append_id">{{ $post->category_id }}</option></select>
 				</div>
 
