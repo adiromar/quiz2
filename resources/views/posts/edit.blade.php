@@ -1,16 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
-<?php
-  //dd($post);die;
 
-?>
 <div class="container">
 	{{-- <div class="row mt-4"> --}}
 		<div class="col-md-12 mt-4 mb-5">
 
 		<div class="card crd_border">
-			<form action="{{ route('posts.update', $post->id) }}" method="post">
+			<form action="{{ route('posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
 				<input name="_token" type="hidden" value="{{ csrf_token() }}"/>
 				{{csrf_field()}}
                 {{ method_field('PUT') }}
@@ -44,28 +41,70 @@
 					{{-- <input type="text" name="post" class="form-control"> --}}
 					<textarea name="question" rows="4" cols="120" value="{{ $post->post_name }}">{{ $post->post_name }}</textarea>
 				</div>
+				
+				<div class="row pl-3">
+					@if( $post->featured )
+						<div class="col-md-2 mt-4">
+							<img src="{{ asset( $post->featured ) }}" alt="">
+						</div>
+					@endif
+
+					<div class="col-md-4">
+						<label for=""><b>Upload new Image</b></label>
+						<input type="file" name="featured" class="form-control">
+					</div>	
+				</div>
+				
 
 				<div class="row mt-4 pl-4 pr-4">
-				<div class="col-md-6">
-					<label><b>Option A: </b></label>
-					<input type="text" name="option_a" class="form-control" value="{{ $post->option_a }}">
-				</div>
+					<div class="col-md-6">
+						<label><b>Option A: </b></label>
+						<?php if( strpos($post->option_a, '/answers/') == false ) :?>
+							<input type="text" name="option_a" class="form-control" value="{{ $post->option_a }}">
+						<?php else: ?>
+							<img src="{{ asset( $post->option_a ) }}" alt="" width="100" height="100">
+							<br>
+							<label for="">Choose new image</label>
+							<input type="file" name="option_a" class="form-control">
+						<?php endif; ?>
+					</div>
 
-				<div class="col-md-6">
-					<label><b>Option B: </b></label>
-					<input type="text" name="option_b" class="form-control" value="{{ $post->option_b }}">
-				</div>
+					<div class="col-md-6">
+						<label><b>Option B: </b></label>
+						<?php if( strpos($post->option_b, '/answers/') == false ) :?>
+						<input type="text" name="option_b" class="form-control" value="{{ $post->option_b }}">
+						<?php else: ?>
+							<img src="{{ asset( $post->option_b ) }}" alt="" width="100" height="100">
+							<br>
+							<label for="">Choose new image</label>
+							<input type="file" name="option_b" class="form-control">
+						<?php endif; ?>
+					</div>
 				</div>
 
 				<div class="row mt-4 pl-4 pr-4">
 					<div class="col-md-6">
 					<label><b>Option C: </b></label>
+					<?php if( strpos($post->option_c, '/answers/') == false ) :?>
 					<input type="text" name="option_c" class="form-control" value="{{ $post->option_c }}">
+					<?php else: ?>
+						<img src="{{ asset( $post->option_c ) }}" alt="" width="100" height="100">
+						<br>
+						<label for="">Choose new image</label>
+						<input type="file" name="option_c" class="form-control">
+					<?php endif; ?>
 				</div>
 
 				<div class="col-md-6">
 					<label><b>Option D: </b></label>
+					<?php if( strpos($post->option_d, '/answers/') == false ) :?>
 					<input type="text" name="option_d" class="form-control" value="{{ $post->option_d }}">
+					<?php else: ?>
+						<img src="{{ asset( $post->option_d ) }}" alt="" width="100" height="100">
+						<br>
+						<label for="">Choose new image</label>
+						<input type="file" name="option_d" class="form-control">
+					<?php endif; ?>
 				</div>
 				</div>
 

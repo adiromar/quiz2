@@ -141,18 +141,76 @@ class PostsController extends Controller
     public function update(Request $request, $id){
         $this->validate($request, [
             'question' => 'required',
-            'category_name' => 'required' ]);
-        // echo $id;die;
-        // dd($_POST);die;
-        // update post
+            'category_name' => 'required' 
+        ]);
+        
         $new_post = Posts::find($id);
+
+        if ( $request->hasFile('featured') ) {
+            $filename = "";
+            $file = $request->featured;
+            $filename = "featured_" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/images', $filename);
+            $new_post->featured = 'uploads/images/' . $filename;
+        }
+
         $new_post->post_name = $request->input('question');  
         $new_post->category_name = $request->input('category_name'); 
         $new_post->category_id = $request->input('category_id');
-        $new_post->option_a = $request->input('option_a');   
-        $new_post->option_b = $request->input('option_b'); 
-        $new_post->option_c = $request->input('option_c'); 
-        $new_post->option_d = $request->input('option_d'); 
+
+        if ( $request->hasFile('option_a') ) {
+            $filename = "";
+            $file = $request->option_a;
+            $filename = "option_a" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $new_post->option_a = 'uploads/answers/' . $filename;
+
+        }else{
+            if ( $request->option_a ) {
+                $new_post->option_a = $request->input('option_a');
+            }
+            
+        }
+
+        if ( $request->hasFile('option_b') ) {
+            $filename = "";
+            $file = $request->option_b;
+            $filename = "option_b" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $post->option_b = 'uploads/answers/' . $filename;
+
+        }else{  
+            if ( $request->option_b ) {
+                $new_post->option_b = $request->input('option_b');
+            } 
+        }
+
+        if ( $request->hasFile('option_c') ) {
+            $filename = "";
+            $file = $request->option_c;
+            $filename = "option_c" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $new_post->option_c = 'uploads/answers/' . $filename;
+
+        }else{  
+            if ( $request->option_c ) {
+                $new_post->option_c = $request->input('option_c');
+            }
+        }
+
+        if ( $request->hasFile('option_d') ) {
+            $filename = "";
+            $file = $request->option_d;
+            $filename = "option_d" . time() . "." .$file->getClientOriginalExtension();
+            $file->move('uploads/answers', $filename);
+            $new_post->option_d = 'uploads/answers/' . $filename;
+
+        }else{
+            if ( $request->option_d ) {
+                $new_post->option_d = $request->input('option_d'); 
+            }
+        }
+
         $new_post->correct_option = $request->input('correct_option'); 
         $new_post->level = $request->level;
         $new_post->explanation = $request->input('explanation'); 

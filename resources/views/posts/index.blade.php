@@ -46,6 +46,7 @@
 								<th width="20%">Category Name</th>
 								<th width="20%">All Options</th>
 								<th width="5%">Correct Option</th>
+								<th width="5%">Level</th>
 								<th width="10%">Created Date</th>
 								<th width="10%">Edit</th>
 								<th width="15%">Delete</th>
@@ -65,6 +66,7 @@
 										D. {{ $cat->option_d }}
 									</td>
 									<td>{{ $cat->correct_option }}</td>
+									<td>{{ $cat->level }}</td>
 									<td>{{ $cat->created_at }}</td>
 									<td><a href="{{ url('/posts/' . $cat->id . '/edit') }}" class="btn btn-secondary btn-sm">Edit</a></td>
 									<td>
