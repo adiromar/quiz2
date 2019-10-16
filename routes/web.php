@@ -1,20 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Auth::routes();
 
 Route::get('/quiz-sets', 'HomeController@quiz_sets')->name('quiz.sets');
@@ -85,10 +70,12 @@ Route::get('/redirectgoogle', 'SocialAuthGoogleController@redirect')->name('goog
 Route::get('/google_callback', 'SocialAuthGoogleController@callback');
 
 // create set
+Route::get('question_sets', 'CategoryController@set_index')->name('sets');
 Route::get('/create_question_sets', 'CategoryController@create_set')->name('question');
 Route::post('/store_question_sets', 'CategoryController@store_questionsets');
+Route::get('/question_set/edit/{id}', 'CategoryController@edit_questionsets')->name("questionset.edit");
+Route::put('/question_set/update/{id}', 'CategoryController@update_questionsets')->name('questionset.update');
+Route::get('/question_set/remove/{id}', 'CategoryController@destroy_questionsets')->name('questionset.destroy');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('index');
-
-

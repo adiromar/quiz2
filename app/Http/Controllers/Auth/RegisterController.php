@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use DB;
 
 class RegisterController extends Controller
 {
@@ -62,15 +63,15 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {   
+    {
         if ($data['register_token'] == 'hWKEn24aOZ') {
 
             $user = User::create([
-            
+
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
-            
+
             ]);
 
             DB::table('role_user')->insert([
@@ -78,9 +79,9 @@ class RegisterController extends Controller
                 'role_id' => 2
             ]);
 
-            return true;
+            return $user;
 
         }
-        
+
     }
 }

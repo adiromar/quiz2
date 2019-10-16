@@ -14,16 +14,16 @@ use App\QuestionSets;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
-{   
+{
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['show', 'cat', 'online_test', 'validate_test','test','online_quiz']]);
     }
 
     public function index()
-    {	
+    {
         $title = 'Category Page';
-    	
+
         $main = MainCategory::get();
     	$category = Category::orderBy('created_at', 'desc')->paginate(20);
         return view('category.index')->with('category', $category)->with('main', $main)->with('title', $title);
@@ -38,7 +38,7 @@ class CategoryController extends Controller
 
     // view questions all category wise & level wise
     public function cat(Request $request, $main, $slug, $id, $page)
-    {   
+    {
         $categoryy = Category::find($id);
 
         if ( Auth::id() ) {
@@ -54,14 +54,14 @@ class CategoryController extends Controller
                 ['category_id', '=', $categoryy->id],
             ])->inRandomOrder()->get();
         }
-        
-        
+
+
 
         if ( $request->session()->get('datalist') == null ) {
-            
+
             $catDataIds = [];
             foreach ($postss as $p) {
-                $catDataIds[] = $p->id; 
+                $catDataIds[] = $p->id;
             }
 
             session(['datalist' => json_encode($catDataIds) ]);
@@ -71,7 +71,7 @@ class CategoryController extends Controller
             $ids = session()->get('datalist');
             $postss = [];
             foreach (json_decode($ids) as $k) {
-            
+
 
                 $postss[] = DB::table('posts')->where('id', $k)->first();
 
@@ -86,7 +86,7 @@ class CategoryController extends Controller
             $start = $page + 4 * ( $page - 1 );
             $stop = $page * 5;
         }
-        
+
         $pg = 0;
         return view('category.show')->with('postss', $postss)
                                     ->with('categoryy', $categoryy)
@@ -99,14 +99,14 @@ class CategoryController extends Controller
     }
 
     public function online_test($slug, $id)
-    {   
+    {
         $categoryy = Category::find($id);
         $postss = $categoryy->posts()->inRandomOrder()->take(20)->get();
-       
+
         return view('category.online_test')->with('postss', $postss)->with('categoryy', $categoryy);
     }
 
-    public function online_test_set($set, $id) 
+    public function online_test_set($set, $id)
     {
 
         $ques = DB::table('sets')->where('id', $id)->first();
@@ -117,7 +117,7 @@ class CategoryController extends Controller
 
         $data = [];
         foreach ( $all as $val ) {
-            
+
             $data[] = DB::table('posts')->where('category_id', $val->category_id)
                                         ->where('level', '<=', $userlevel)
                                         ->inRandomOrder()
@@ -130,12 +130,12 @@ class CategoryController extends Controller
         $data1 = $dataIds = [];
 
         foreach ($data as $dat) {
-            
-                
+
+
                 if ( !empty($dat) ) {
-                
+
                     foreach ($dat as $dkey) {
-                        
+
                         $data1[] = $dkey;
                         $dataIds[] = $dkey->id;
 
@@ -151,33 +151,33 @@ class CategoryController extends Controller
     }
 
     public function test($slug, $id)
-    {   
+    {
         $categoryy = Category::find($id);
         $main = MainCategory::find($categoryy->main_category_id);
         $postss = $categoryy->posts()->inRandomOrder()->get();
-       
+
         return view('category.test')->with('postss', $postss)->with('categoryy', $categoryy)->with('main', $main)->with('slug', $slug);
     }
 
     public function online_quiz($slug, $id)
-    {   
+    {
         $categoryy = Category::find($id);
         $postss = $categoryy->posts()->inRandomOrder()->take(20)->get();
-        
+
         // $items = $postss->toJson();
         foreach ($postss as $pst => $post) {
             $items[$pst] = [
                 'question' => $postss[$pst]->post_name,
                 'choices'  => [
-                    0 => $postss[$pst]->option_a, 
-                    1 => $postss[$pst]->option_b, 
-                    2 => $postss[$pst]->option_c, 
+                    0 => $postss[$pst]->option_a,
+                    1 => $postss[$pst]->option_b,
+                    2 => $postss[$pst]->option_c,
                     3 => $postss[$pst]->option_d
-                ], 
+                ],
                 'correctAnswer' => $postss[$pst]->correct_option,
             ];
         }
-        
+
         return view('category.online_quiz')->with('categoryy', $categoryy)->with(compact('items', 'items'));
     }
 
@@ -213,42 +213,65 @@ class CategoryController extends Controller
     }
 
     public function validate_test(Request $request){
-     
+
         DB::table('test_results')->insert([
         ['category_id' => '67'],
         ]);
-        
-        
+
+
         return response()->json($request);
     }
 
     public function destroy($id)
-    {   
+    {
         $caty = Category::find($id);
         $caty->delete();
         return redirect('category/index')->with('success', 'Category Removed.');
     }
 
     public function new_test($slug, $id)
-    {   
+    {
         $categoryy = Category::find($id);
         $postss = $categoryy->posts()->inRandomOrder()->get();
-       
+
         return view('category.newtest')->with('postss', $postss)->with('categoryy', $categoryy);
     }
 
     public function list_all()
-    {   
+    {
         return view('category.listall')->with('pos', $pos);
     }
 
+    public function set_index(){
+      $category = Category::orderBy('created_at', 'desc')->get();
+      $sets = DB::table('sets')->get();
+      return view('category.sets')->with('category', $category)
+                                      ->with('sets', $sets);
+    }
+
     public function create_set()
-    {   
+    {
         $title = 'Create Category Set';
         $category = Category::orderBy('created_at', 'desc')->get();
         $sets = DB::table('sets')->get();
         return view('category.create_set')->with('category', $category)
                                         ->with('sets', $sets);
+    }
+
+    public function edit_questionsets( $id ){
+
+      $set = DB::table('sets')->find($id);
+      $setquestions = DB::table('question_sets')
+                          ->where('question_name', $set->setname)
+                          ->get();
+
+      $category = Category::orderBy('created_at', 'desc')->get();
+      $sets = DB::table('sets')->get();
+
+      return view( 'category.edit_set' )->with('set', $set)
+                                        ->with('setquestions', $setquestions)
+                                        ->with('category', $category);
+
     }
 
     public function store_questionsets(Request $request){
@@ -263,7 +286,7 @@ class CategoryController extends Controller
                 'setname' => $question_name,
                 'slug' => Str::slug( $question_name )
         ]);
-        
+
         $category_id = $request->input('category_id');
         $no_of_question = $request->input('no_of_question');
         $cc = count($no_of_question);
@@ -281,14 +304,66 @@ class CategoryController extends Controller
         return redirect()->back()->with('success', 'Question set Created');
     }
 
+    public function update_questionsets(Request $request, $id){
+
+      //Check previous setname exists or not
+      if ( $request->mainsetname != $request->qst_set_name ) {
+
+        $prev = DB::table('sets')->where('setname', $request->qst_set_name)->first();
+
+        if ( $prev ) {
+          return redirect()->back()->with('error', 'Duplicate!! Question Set Name already exists');
+        }
+
+      }
+
+      $category_id = $request->input('category_id');
+      $no_of_question = $request->input('no_of_question');
+      $cc = count($no_of_question);
+
+      DB::table('sets')->where('id', $id)->update([
+          'setname' => $request->qst_set_name,
+          'slug' => Str::slug( $request->qst_set_name ),
+      ]);
+
+      $count = 0;
+
+      foreach ($category_id as $cid) {
+
+        $query = DB::table('question_sets')->where('question_name', $request->mainsetname)
+                                  ->where('category_id', $cid);
+        $check = $query->first();
+
+        if ( $check ) {
+
+          $update = $query->update([
+            'question_name' => $request->qst_set_name,
+            'no_of_question' => $no_of_question[$count]
+          ]);
+
+        }else{
+
+          DB::table('question_sets')->insert([
+            'question_name' => $request->qst_set_name,
+            'category_id' => $cid,
+            'no_of_question' => $no_of_question[$count],
+          ]);
+
+        }
+
+        $count++;
+      }
+
+      return redirect()->back()->with('success', 'Question set Updated');
+    }
 
     public function change_order(Request $request){
 
-        
-        $orders = $request->order; 
+
+        $orders = $request->order;
         $i = 0;
         foreach ($request->setids as $setid) {
-            
+
             $o = $orders[$i];
 
             //Update row using set id
@@ -301,6 +376,21 @@ class CategoryController extends Controller
         }
 
         return redirect()->back()->with('success', 'Order Changed');
+
+    }
+
+    public function destroy_questionsets($id){
+
+      $set = DB::table('sets')->find($id);
+
+      $setname = $set->setname;
+
+      DB::table('question_sets')->where('question_name', $setname)->delete();
+
+      DB::table('sets')->where('id', $id)->delete();
+
+      return redirect()->back()->with('success', 'Sucessfully removed set.');
+
 
     }
 

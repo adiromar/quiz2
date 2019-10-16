@@ -60,7 +60,9 @@
 
                     <li><a href="{{url('posts/question_report')}}"><i class="menu-icon fa fa-question-circle"></i>Question Feedback</a></li>
 
-                    <li><a href="{{route('question')}}"><i class="menu-icon fa fa-question-circle"></i>Question Set</a></li>
+                    <li><a href="{{ route('question') }}"><i class="menu-icon fa fa-question-circle"></i>Add Question Set</a></li>
+                    <li><a href="{{ route('sets') }}"><i class="menu-icon fa fa-eye"></i>View Sets</a></li>
+
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -89,7 +91,7 @@
 
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
-                        
+
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b>Welcome, {{ Auth::user()->name }}</b> <i class="ti-arrow-circle-down"></i>
                             {{-- <img class="user-avatar rounded-circle" src="{{ asset('admin/images/admin.jpg') }}" alt="User Avatar"> --}}
                         </a>
@@ -157,7 +159,7 @@
     <script src="{{ asset('admin/assets/js/plugins.js') }}"></script>
     <script src="{{ asset('admin/assets/js/main.js') }}"></script>
     <script src="{{ asset('admin/assets/js/lib/chosen/chosen.jquery.min.js') }}"></script>
-    
+
 
 
 </body>
