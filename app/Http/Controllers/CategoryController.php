@@ -9,6 +9,7 @@ use App\Category;
 use App\MainCategory;
 use App\Posts;
 use App\User;
+use App\Ranking;
 use DB;
 use App\QuestionSets;
 use Illuminate\Support\Str;
@@ -406,6 +407,24 @@ class CategoryController extends Controller
         $user->save();
 
         return response( "Level Increased." );
+    }
+
+    public function update_user_ranking(Request $request)
+    {
+
+      $timetaken = $request->timeTaken;
+
+      $rank = new Ranking;
+
+      $rank->user_id = Auth::id();
+      $rank->totalquestions = $request->intTotalQuestions;
+      $rank->correctanswers = $request->intCorrectAnswerCount;
+      $rank->timetaken = $timetaken;
+      
+      $rank->save();
+
+      return response('User stat updated');
+
     }
 
 }

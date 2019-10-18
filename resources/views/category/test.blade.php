@@ -62,7 +62,7 @@
                 <div class="div-test-instruction">
             <p class="mx-green mx-bold mx-uline"><strong>Note:</strong></p>
             <ul class="ul-test-instruction">
-            <li>Total number of questions : <b>20</b>.</li>
+            <li>Total number of questions : <b>{{ count($postss) }}</b>.</li>
             <li>Time allotted : <b>10</b> minutes.</li>
             <li>Each question carry 1 mark, no negative marks.</li>
             <li>DO NOT refresh the page.</li>
@@ -81,7 +81,7 @@
     			@foreach($postss as $pos)
 
           <!-- Check count -->
-          <?php if ( $k <= 20 ): ?>
+          <?php if ( $k > 0 ): ?>
 
 
           <div class="qst-container mb-5">
@@ -378,18 +378,18 @@ function PopulateResultStatics()
 
     var level = {{ Auth::user()->level }};
 
-    if ( percentage >= 85 ) {
+		//AJAX
+		$.ajaxSetup({
+					headers: {
+							'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+					}
+			});
 
-      //AJAX
-      $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        });
+    if ( percentage >= 85 ) {
 
       var userid = {{ Auth::id() }};
 
-      $.get('http://localhost:8000/update/user/level', { percentage, userid },
+      $.get("{{ url('/update/user/level') }}", { percentage, userid },
         function(response){
 
           console.log(response);
@@ -400,7 +400,7 @@ function PopulateResultStatics()
         $('#divResultStatistics1').append(`
 
             <h5 style="color: maroon;font-weight:600;padding-top: 15px;">
-              Congratulations! You have completed Level 1.
+              Congratulations! You have completed a Level. You can take another quiz for more level of questions.
             </h5>
 
         `);
@@ -423,9 +423,9 @@ function PopulateResultStatics()
     // AddGeneralTestViewCount(); /* Ajax call to server. */
 
     var totalTime = parseInt($('#hdnInitialTimer').val())/60;
-    console.log(totalTime);
+
     var timeTaken = (totalTime*60) - parseInt($('#hdnTimer').val());
-    console.log(timeTaken);
+
     _txtTestStats  =    " [ TotQ="   + intTotalQuestions      +
                         ", AnsQ="     + intAnsweredCount       +
                         ", UnAnsQ="   + intUnAnsweredCount     +
@@ -433,6 +433,11 @@ function PopulateResultStatics()
                         ", WrongAns=" + intWrongAnswerCount    +
                         ", TotTime="     + totalTime   +
                         "min, TimeTaken="     + timeTaken +"sec]"  ;
+
+		// Insert into ranking table using ajax
+		$.get( "{{ url('/update/userranking') }}" , { intTotalQuestions,intCorrectAnswerCount,timeTaken },
+			function(response){	}
+		);
 }
 </script>
 @endsection

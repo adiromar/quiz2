@@ -36,6 +36,7 @@ Route::get('/online-test/{slug}/{id}', 'CategoryController@online_test')->name('
 Route::get('/test-online/{set}/{id}', 'CategoryController@online_test_set')->name('test.set');
 
 Route::get('/update/user/level/', 'CategoryController@update_user_level')->name("update.user.level");
+Route::get('/update/userranking', 'CategoryController@update_user_ranking');
 
 Route::put('/maincategory/{id}/edit', 'MainCategoryController@featured_cat');
 Route::put('/category/{id}/edit', 'CategoryController@featured_cat');
