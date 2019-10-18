@@ -26,9 +26,9 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         $main = MainCategory::get();
-        
+
         $category1 = MainCategory::with('category')->get();
 
         $sets = DB::table('sets')->orderBy('order')->get();
@@ -42,7 +42,7 @@ class HomeController extends Controller
     }
 
     public function dash()
-    {   
+    {
         $title = 'Dashboard Page';
         $mcat_count = MainCategory::get()->count();
         $cat_count = Category::get()->count();
@@ -51,7 +51,7 @@ class HomeController extends Controller
     }
 
     public function list_all()
-    {   
+    {
         $main = MainCategory::get();
         $category1 = MainCategory::with('category')->get();
         $sets = DB::table('sets')->orderBy('order')->get();
@@ -79,23 +79,23 @@ class HomeController extends Controller
 
         $data = [];
         foreach ( $all as $val ) {
-            
+
             $data[] = DB::table('posts')->where('category_id', $val->category_id)
                         ->inRandomOrder()->get()->take( $val->no_of_question )->toArray();
 
         }
 
-        
-        
+
+
         //Check if session has data ids
         if ( session()->get('dataIds') == null ) {
 
             $data1 = $dataIds = [];
             foreach ($data as $dat) {
                 if ( !empty($dat) ) {
-                    
+
                     foreach ($dat as $dkey) {
-                        
+
                         $data1[] = $dkey;
                         $dataIds[] = $dkey->id;
 
@@ -112,9 +112,9 @@ class HomeController extends Controller
             $ids = session()->get('dataIds');
             $data1 = [];
             foreach (json_decode($ids) as $k) {
-                $data1[] = DB::table('posts')->where('id', $k)->first();    
+                $data1[] = DB::table('posts')->where('id', $k)->first();
             }
-            
+
         }
 
         if ( $page == 1 ) {
@@ -124,14 +124,14 @@ class HomeController extends Controller
             $start = $page + 4 * ( $page - 1 );
             $stop = $page * 5;
         }
-        
+
 
         return view('posts.showsets')->with('data', $data1)
                                      ->with('set', $ques)
                                      ->with('page', $page)
                                      ->with('start', $start)
                                      ->with('stop', $stop);
-                                     
+
 
     }
 
@@ -140,7 +140,7 @@ class HomeController extends Controller
         //1. Check if column is not null
         $col = DB::table('sets')->first();
         if ( $col->temp_ids == '' || $col->temp_ids == NULL ) {
-            
+
             //2. Update
             DB::table('sets')->where('id', $ques->id)->update(['temp_ids' => json_encode( $dataIds ) ]);
         }else{

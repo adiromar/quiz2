@@ -1,119 +1,186 @@
-										{{--  Front End Section  --}}
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    <title>Apptitude Questions & Answers for your interview and Entrance Exam Preparations.</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	@yield('styles')
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900&display=swap" rel="stylesheet">
 
-    <!-- CSRF Token -->
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
-    <meta name="_token" content="{{csrf_token()}}" />
-	<title>Apptitude Questions & Answers for your interview and Entrance Exam Preparations.</title>
+    <link rel="stylesheet" href="{{ asset('consolution/css/open-iconic-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('consolution/css/animate.css') }}">
 
-	<link href="{{ asset('css/home.css') }}" rel="stylesheet">
-    <link href="{{ asset('bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
-</head>
-<body class="front-body">
-	<div class="container">
-		
+    <link rel="stylesheet" href="{{ asset('consolution/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('consolution/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('consolution/css/magnific-popup.css') }}">
 
-		<div class="row">
-		<div class="col-md-8">
-		<a href="{{ url('/') }}"><img src="{{ asset('bix.gif') }}" class="img-responsive" width="150" height="70"></a>
+    <link rel="stylesheet" href="{{ asset('consolution/css/aos.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('consolution/css/ionicons.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('consolution/css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ asset('consolution/css/icomoon.css') }}">
+    <link rel="stylesheet" href="{{ asset('consolution/css/style.css') }}">
+		<link rel="stylesheet" href="{{ asset('consolution/css/custom.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+		<link href="{{ asset('css/home.css') }}" rel="stylesheet">
+
+		@yield('styles')
+
+  </head>
+  <body>
+	  <div class="bg-top navbar-light">
+    	<div class="container">
+    		<div class="row no-gutters d-flex align-items-center align-items-stretch">
+    			<div class="col-md-4 d-flex align-items-center py-4">
+    				<a class="navbar-brand" href="{{ url('/') }}">Quizzer Nepal</a>
+    			</div>
+	    		<div class="col-lg-8 d-block">
+		    		<div class="row d-flex">
+
+						@guest
+					    <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
+					    	<p class="mb-0 d-block">
+					    		<a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary">
+					    			<span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
+					    		</a>
+					    	</p>
+					    </div>
+						@else
+						<?php
+							$aid = Auth::id();
+							$rol = DB::table('role_user')->where('user_id', $aid)->first();
+							$role = DB::table('roles')->where('id', $rol->role_id)->first();
+						?>
+
+						<div class="col-md topper d-flex align-items-center justify-content-end pt-3">
+
+							<?php if ( $role->role == 'SuperAdmin' || $role->role == 'Admin' ): ?>
+
+				    		<a href="{{ url('/dashboard') }}" class="btn py-2 px-3 btn-primary">
+				    			<span><i class="fab fa-artstation"></i></i> Dashboard</span>
+				    		</a>
+
+							<?php endif; ?>
+
+							<a href="{{ route('logout') }}" class="btn py-2 px-3 btn-warning ml-2" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+								<span style="color:#8b4513"><i class="fas fa-sign-out-alt"></i> Sign Out</span>
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+									{{ csrf_field() }}
+            		</form>
+							</a>
+
+				    </div>
+
+						@endguest
+
+				    </div>
+			    </div>
+		    </div>
+		  </div>
+    </div>
+	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container d-flex align-items-center">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav mr-auto">
+					<?php $caty = App\MainCategory::where('featured', '1')->take(10)->get(); ?>
+					@if(count($caty) > 0)
+						@foreach( $caty as $cat )
+						<?php $cat_name = mb_convert_case($cat->main_category_name, MB_CASE_TITLE); ?>
+						<li class="nav-item"><a href="{{ url(''.$cat->slug.'/'.$cat->id.'') }}" class="nav-link pl-0">
+							{{ $cat_name }}
+						</a></li>
+						@endforeach
+					@endif
+					@auth
+	          <li class="nav-item"><a href="{{ url('/list-all') }}" class="nav-link onlinetest"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a></li>
+					@endauth
+					</ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+		<div class="container" style="padding-bottom: 50px;">
+
+			@yield('content')
+
 		</div>
 
-		<div class="col-md-4">
-			@guest
-    			<a href="{{ route('login') }}" class="btn btn-secondary btn-sm float-right mt-2"><i class="fa fa-user" aria-hidden="true"></i> Login</a>
-   		 	@else
-   		 		
-   		 		<?php 
+		<footer class="ftco-footer ftco-bg-dark ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md-4 col-lg-4">
+            <div class="ftco-footer-widget mb-5">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">Tinkuney, Koteswor, Nepal</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">encoderslab@gmail.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+					<div class="col-md-1 col-lg-1"></div>
+          <div class="col-md-4 col-lg-3">
+						<div class="ftco-footer-widget mb-5">
+            	<h2 class="ftco-heading-2 mb-0">Connect With Us</h2>
+            	<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+					<div class="col-md-1 col-lg-1"></div>
+          <div class="col-md-4 col-lg-3">
+            <div class="ftco-footer-widget mb-5 ml-md-4">
+              <h2 class="ftco-heading-2">Recent Categories</h2>
+              <ul class="list-unstyled">
+							@foreach(App\Category::orderBy('id', 'desc')->get()->take(5) as $cat)
+								<li><a href="#">
+									<span class="ion-ios-arrow-round-forward mr-2"></span>{{ $cat->category_name }}</a>
+								</li>
+							@endforeach
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
 
-					$aid = Auth::id(); 
-
-					$rol = DB::table('role_user')->where('user_id', $aid)->first();
-
-					$role = DB::table('roles')->where('id', $rol->role_id)->first();
-					
-				?>
-
-				<?php if ( $role->role == 'SuperAdmin' || $role->role == 'Admin' ): ?>
-				
-				<a href="{{ url('/dashboard') }}" class="btn btn-warning btn-sm mt-2" style="margin-left: 150px;"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
-
-				<?php endif ?>
-
-   		 		<a href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();" class="btn btn-secondary btn-sm float-right mt-2"><i class="fa fa-key"></i> Log Out</a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-				{{ csrf_field() }}
-            	</form>
-   		 	@endguest
-   		 </div>
-   		</div>
-	</div>
-	<div class="container header-menu">
-		<nav class="menu">
-			<a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-bars"></i></a>
-			@php
-			use Illuminate\Support\Facades\Auth;
-			use App\MainCategory;
-			$caty = MainCategory::where('featured', '1')->take(10)->get();
+            <p>
+  						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+  				  </p>
+          </div>
+        </div>
+      </div>
+    </footer>
 
 
-			@endphp
-			@if(count($caty) > 0)
-            @foreach($caty as $cat)
-            @php
-            	$cat_name = mb_convert_case($cat->main_category_name, MB_CASE_TITLE);
-            	// $cat_name = ucwords($cat->main_category_name);
-            @endphp
-			<a href="{{ url(''.$cat->slug.'/'.$cat->id.'') }}" class="link_a">{{ $cat_name }}</a>
 
-			@endforeach
-			@endif
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
-			@auth
-				<a href="{{ url('/list-all') }}">Online Test</a>
-			@endauth
-		</nav>
-		<div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                    	@if(count($caty) > 0)
-            				@foreach($caty as $cat)
-            				<h5 class="main-cat-list">{{ $cat->main_category_name }}</h5>
-                    		
-                    		@endforeach
-                    	@endif
-                    </div>
-       		</div>
 
-		<div class="pagehead"><h6 class="">Welcome to NepalQuiz.com !</h6></div>
-		@include('inc.message')
-		 @yield('content')
-	</div>
+  <script src="{{ asset('consolution/js/jquery.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/jquery-migrate-3.0.1.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/popper.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/jquery.easing.1.3.js') }}"></script>
+  <script src="{{ asset('consolution/js/jquery.waypoints.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/jquery.stellar.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/owl.carousel.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/jquery.magnific-popup.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/aos.js') }}"></script>
+  <script src="{{ asset('consolution/js/jquery.animateNumber.min.js') }}"></script>
+  <script src="{{ asset('consolution/js/scrollax.min.js') }}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="{{ asset('consolution/js/google-map.js') }}"></script>
+  <script src="{{ asset('consolution/js/main.js') }}"></script>
 
-<footer style="min-height: 75px">
-	{{-- <div class="inner-footer">
-		<div class="container-fluid footer-main">
-			<a href="">Contact Us:</a><br>
-			<a href="">Home</a>
-			<a href="">Category</a>
-			<h6>Developed By: company</h6>
-		</div>
-	</div> --}}
-	
-</footer>
-
-	{{-- scripts --}}
-	{{-- <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
-  crossorigin="anonymous"></script> --}}
-	<script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-	
-</body>
+  </body>
 </html>
