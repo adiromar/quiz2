@@ -20,7 +20,7 @@
     <span class="sp-angle">»</span></div>
 
 @if(count($postss) > 0)
-    
+
     <div class="col-md-12" >
         <div class="row mt-5">
             @php
@@ -28,12 +28,12 @@
                 $ch_slug = str_replace(' ', '-', $postss[0]->category_name);
                 $c_slug = strtolower($ch_slug);
             @endphp
-            
+
         {{-- <div class="col-md-12 mb-4" style="border: 1px solid lightgrey;">
             <h5 class="">Take Online Test</h5>
             <div class="col-md-6 mb-3">
                 <p>Questions: 20</p>
-                
+
                 <a href="{{ url('online-test/'.$c_slug.'/'.$postss[0]->category_id.' ') }}" class="btn btn-primary mb-1">Take Online Test</a>
                 <a href="{{ url('test/online-quiz/'.$c_slug.'/'.$postss[0]->category_id.' ') }}" class="btn btn-secondary mb-1">Online Quiz</a>
             </div>
@@ -44,9 +44,9 @@
 
         @endphp
             <h4 class="col-md-12">{{ $cat_name }}</h4>
-    
-    <?php 
-    
+
+    <?php
+
     if ( $page ) {
         $pg = $page - 1;
         $ng = $page + 1;
@@ -54,7 +54,7 @@
         $pg = 0;
         $ng = 0;
     }
-    
+
 
     $k=1;$ii=1;$counter = 1; $starter = 1;
 
@@ -71,62 +71,63 @@
                     <img src="{{ asset( $pos->featured ) }}" alt="No image" width="200" height="200">
                 @endif
 
-            	<p><a data-id="a" data-value="{{ $pos->option_a }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+            	<p><a data-id="a" data-value="{{ $pos->option_a }}" data-correct="{{ strtolower($pos->correct_option)  }}" id="{{ $k }}"
+                href="javascript:void()" class="option_color options_clk">
 
                     <?php if ( strpos( $pos->option_a , 'uploads/answers/') === false ): ?>
-                    A. {{ $pos->option_a}}    
+                    A. {{ $pos->option_a}}
                     <?php else: ?>
-                    
+
                     A. <img src="{{ asset( $pos->option_a ) }}" alt="" width="100" height="100">
 
                     <?php endif ?>
-                    
-                
+
+
                 </a> <span class="span" style="display:none"><i class="fa fa-check-circle" style="color: #13f213;"></i></span></p>
 
-            	<p><a data-id="b" data-value="{{ $pos->option_b }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
-                    
+            	<p><a data-id="b" data-value="{{ $pos->option_b }}" data-correct="{{ strtolower($pos->correct_option)  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+
                     <?php if ( strpos( $pos->option_b , 'uploads/answers/') === false ): ?>
-                    B. {{ $pos->option_b}}    
+                    B. {{ $pos->option_b}}
                     <?php else: ?>
-                    
+
                     B. <img src="{{ asset( $pos->option_b ) }}" alt="" width="100" height="100">
 
                     <?php endif ?>
 
                 </a></p>
 
-                <p><a data-id="c" data-value="{{ $pos->option_c }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
-                    
+                <p><a data-id="c" data-value="{{ $pos->option_c }}" data-correct="{{ strtolower($pos->correct_option)  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+
                     <?php if ( strpos( $pos->option_c , 'uploads/answers/') === false ): ?>
-                    C. {{ $pos->option_c}}    
+                    C. {{ $pos->option_c}}
                     <?php else: ?>
-                    
+
                     C. <img src="{{ asset( $pos->option_c ) }}" alt="" width="100" height="100">
 
                     <?php endif ?>
 
                 </a></p>
 
-                <p><a data-id="d" data-value="{{ $pos->option_d }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
-                    
+                <p><a data-id="d" data-value="{{ $pos->option_d }}" data-correct="{{ strtolower($pos->correct_option)  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+
                     <?php if ( strpos( $pos->option_d , 'uploads/answers/') === false ): ?>
-                    D. {{ $pos->option_d}}    
+                    D. {{ $pos->option_d}}
                     <?php else: ?>
-                    
+
                     D. <img src="{{ asset( $pos->option_d ) }}" alt="" width="100" height="100">
 
                     <?php endif ?>
 
                 </a></p>
 
-                {{-- <p class="correct_val" style="display: none;">{{ $pos->correct_option }}</p> --}}
+                <!-- <p class="correct_val" style="display: block;">{{ $pos->correct_option }}</p> -->
             	{{-- <p class="show_correct{{ $k }}" style="display: none;color: green;">Correct Answer: <i class="fa fa-check-circle" style="color: #13f213;"></i></p> --}}
                 {{-- <p class="wrong{{ $k }}" style="display: none;"><i class="fa fa-times-circle" style="color: red;"></i></p> --}}
-                
+
                 <div class="collapse" id="collapseExample{{ $k }}">
                     <div class="card card-body">
-                        <?php $cor_value = str_replace('_', ' ', $pos->correct_option); 
+                        <?php $cor_value = str_replace('_', ' ', $pos->correct_option);
                               $cor_value = ucwords($cor_value);
                         ?>
                         <p><span class="corr_ans explain">Answer: </span>Option {{ $cor_value }}</p>
@@ -169,7 +170,7 @@
 
                 <a class="ml-4 view_answer_color" data-toggle="collapse" href="#report_{{ $k }}" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-exclamation-circle"></i> Report</a>
             </div>
-            
+
             <?php $starter++; ?>
 
             @endif
@@ -185,9 +186,9 @@
 
         <ul class="pagination">
         <?php if ( $pg > 0 ): ?>
-            <li><a href="{{ route('cat', [$main, $slug, $categoryy->id, $pg]) }}" rel="prev">« Previous</a></li> 
+            <li><a href="{{ route('cat', [$main, $slug, $categoryy->id, $pg]) }}" rel="prev">« Previous</a></li>
         <?php endif ?>
-        
+
         <?php if( count($postss) > $stop){?>
             <li><a href="{{ route('cat', [$main, $slug, $categoryy->id, $ng]) }}" rel="next">Next »</a></li>
         <?php } ?>
@@ -203,12 +204,12 @@
     $(document).ready( function(){
 
   $('.options_clk').on('click', function (e){
-    e.preventDefault(); 
-    
+    e.preventDefault();
+
     var id = $(this).attr('id')
     var options = $(this).data('id');
     var correct = $(this).data('correct');
-    // alert(options);
+
     if (options == correct){
         // $('.add-sq').show();
         $(this).addClass('tru_color');
@@ -221,19 +222,17 @@
         // $('.wrong'+id+'').hide();
         $(this).removeClass('option_color');
     }else{
-        
+
          $(this).addClass('v-color');
          $(this).removeClass('option_color');
         $('.show_correct'+id+'').hide();
         // $('.wrong'+id+'').show();
     }
-    
-    
+
+
     console.log(correct);
   });
 
 });
 </script>
 @endsection
-
-

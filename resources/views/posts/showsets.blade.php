@@ -30,7 +30,7 @@
 							@if( $pos->featured )
 									<img src="{{ asset( $pos->featured ) }}" alt="No image" width="200" height="200">
 							@endif
-            	<p><a data-id="a" data-value="{{ $pos->option_a }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+            	<p><a data-id="a" data-value="{{ $pos->option_a }}" data-correct="{{ strtolower($pos->correct_option) }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
 
 								<?php if ( strpos( $pos->option_a , 'uploads/answers/') === false ): ?>
 								A. {{ $pos->option_a}}
@@ -42,7 +42,7 @@
 
 							</a> <span class="span" style="display:none"><i class="fa fa-check-circle" style="color: #13f213;"></i></span></p>
 
-            	<p><a data-id="b" data-value="{{ $pos->option_b }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+            	<p><a data-id="b" data-value="{{ $pos->option_b }}" data-correct="{{ strtolower($pos->correct_option)  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
 
 								<?php if ( strpos( $pos->option_b , 'uploads/answers/') === false ): ?>
 								B. {{ $pos->option_b}}
@@ -54,7 +54,7 @@
 
 							</a></p>
 
-                <p><a data-id="c" data-value="{{ $pos->option_c }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+                <p><a data-id="c" data-value="{{ $pos->option_c }}" data-correct="{{ strtolower($pos->correct_option)  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
 
 									<?php if ( strpos( $pos->option_c , 'uploads/answers/') === false ): ?>
 									C. {{ $pos->option_c}}
@@ -66,7 +66,7 @@
 
 								</a></p>
 
-                <p><a data-id="d" data-value="{{ $pos->option_d }}" data-correct="{{ $pos->correct_option  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+                <p><a data-id="d" data-value="{{ $pos->option_d }}" data-correct="{{ strtolower($pos->correct_option)  }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
 
 									<?php if ( strpos( $pos->option_d , 'uploads/answers/') === false ): ?>
 									D. {{ $pos->option_d}}

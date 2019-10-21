@@ -55,7 +55,7 @@ Route::get('new/online-quiz/{slug}/{id}', 'CategoryController@new_test');
 Route::post('/category/validate_test', 'CategoryController@validate_test');
 
 // upload excel
-Route::post('/uploadFile2', 'UploadPostController@uploadFile2');
+Route::post('/uploadFile2', 'UploadPostController@uploadFile');
 Route::post('/uploadFilee', 'UploadPostController@uploadFilee');
 
 // facebook login - it works
@@ -77,6 +77,8 @@ Route::post('/store_question_sets', 'CategoryController@store_questionsets');
 Route::get('/question_set/edit/{id}', 'CategoryController@edit_questionsets')->name("questionset.edit");
 Route::put('/question_set/update/{id}', 'CategoryController@update_questionsets')->name('questionset.update');
 Route::get('/question_set/remove/{id}', 'CategoryController@destroy_questionsets')->name('questionset.destroy');
+
+Route::get('rankings', 'CategoryController@rankings')->name('rankings');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('index');

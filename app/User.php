@@ -48,7 +48,7 @@ class User extends Authenticatable
     }
 
     public function isAdmin()
-    {   
+    {
         $id = Auth::id();
         $role = DB::table('role_user')->where('user_id', $id)->pluck('role_id');
         // return $this->roles->pluck( 'roles' )->contains( 'Admin' );

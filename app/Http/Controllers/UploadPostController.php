@@ -15,14 +15,14 @@ use DB;
 
 class UploadPostController extends Controller
 {
-  
+
     public function uploadFilee(Request $request){
 
-    if ($request->input('submit') != null ){
+    if ($request->input('submit') != null || $request->input('submit2') != null){
 
       $file = $request->file('file');
 
-      // File Details 
+      // File Details
       $filename = $file->getClientOriginalName();
       $extension = $file->getClientOriginalExtension();
       $tempPath = $file->getRealPath();
@@ -30,10 +30,10 @@ class UploadPostController extends Controller
       $mimeType = $file->getMimeType();
 
       // Valid File Extensions
-      $valid_extension = array("csv");
+      $valid_extension = array("csv","xlsx");
 
       // 2MB in Bytes
-      $maxFileSize = 2097152; 
+      $maxFileSize = 2097152;
 
       // Check file extension
       if(in_array(strtolower($extension),$valid_extension)){
@@ -58,11 +58,11 @@ class UploadPostController extends Controller
 
           while (($filedata = fgetcsv($files, 1000, ",")) !== FALSE) {
              $num = count($filedata );
-             
+
              // Skip first row (Remove below comment if you want to skip the first row)
              if($i == 0){
                 $i++;
-                continue; 
+                continue;
              }
              for ($c=0; $c < $num; $c++) {
                 $importData_arr[$i][] = $filedata [$c];
@@ -121,12 +121,12 @@ class UploadPostController extends Controller
             // print_r($insertData);die;
             UploadPost::insertData($insertData);
             }
-            
+
           }else{
             return redirect()->action('PostsController@index')->with('danger', 'category id does not exists in database');
             // echo "This category id does not exists in database";
           }
-          
+
           }
 
           return redirect()->action('PostsController@index')->with('success', 'Upload Successful.');
@@ -150,20 +150,20 @@ class UploadPostController extends Controller
   }
 
 //  New function for uploading excel file to database
-  
+
     public function uploadFile(Request $request){
         $ldate = date('Y-m-d H:i:s');
           $userId = Auth::id();
 
-      if ($request->input('submit') != null ){
+      if ($request->input('submit2') != null ){
         if($request->hasFile('file')){
             $path = $request->file('file')->getRealPath();
             $data = Excel::load($path)->get();
 
             if($data->count()){
-  
+
               $catname = '';
-            
+
                 foreach ($data as $key => $value) {
 
                   if (Category::where('id', '=', $value->category_id)->exists()){
@@ -176,7 +176,7 @@ class UploadPostController extends Controller
                   $catname = $catname[0]->category_name;
                   // dd($catname);die;
                     $arr[] = [
-                    'category_name' => $catname, 
+                    'category_name' => $catname,
                     'category_id' => $value->category_id,
                     'post_name' => $value->post_name,
                     'option_a' => $value->option_a,
@@ -197,8 +197,8 @@ class UploadPostController extends Controller
                 }
              }
         }
-        dd('Request data does not have any files to import.');      
-       
+        dd('Request data does not have any files to import.');
+
         }
       }
 

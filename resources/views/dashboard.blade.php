@@ -22,7 +22,7 @@
                                 <a href="{{ url('maincategory/create') }}" class="btn btn-info btn-sm mt-2 ml-4">+ Create/view</a>
                             </div>
                         </div>
-                        
+
                         <hr>
                          <h5 class="dsh_head">Category</h5>
                         <div class="row">
@@ -34,7 +34,7 @@
                                 <a href="{{ url('category/create') }}" class="btn btn-info btn-sm mt-2 ml-4">+ Create/view</a>
                             </div>
                         </div>
-                        
+
                         <hr>
                         <h5 class="dsh_head">Questions/posts</h5>
                         <div class="row mb-4">
@@ -46,7 +46,7 @@
                                 <a href="{{ url('posts/index') }}" class="btn btn-info btn-sm mt-2 ml-4">+ Create/view</a>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -64,6 +64,7 @@
                         <p>- Created Category Id should match with the category id in csv file.</p>
                         <p>- Insert Post name, four option, and one correct answer. If the correct option is 'Option A', add 'a' in the correct option column.</p>
                         <p>- First Line of excel (heading) must be fixed and cannot be changed.</p>
+                        <p>- Use sample csv for Nepali unicode.</p>
                         <p>- Upload Questions</p>
 
                         <div class="collapse mb-4" id="collapseExample">
@@ -79,6 +80,7 @@
                                         <th>option_c</th>
                                         <th>option_d</th>
                                         <th>correct_option</th>
+                                        <th>explanation</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,7 +91,8 @@
                                         <td>Salvador</td>
                                         <td>Sao Paulo</td>
                                         <td>Brasilia</td>
-                                        <td>d</td>
+                                        <td>D</td>
+                                        <td>This is explanation for the answer</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -97,9 +100,9 @@
                         </div>
 
                         <a href="#collapseExample" data-toggle="collapse" class="btn btn-warning" role="button" aria-expanded="false" aria-controls="collapseExample">Preview</a>
-                        <a href="{{ asset('uploads/sample.csv') }}" class="btn btn-secondary"><i class="fa fa-download"></i> Download csv</a>
+                        <a href="{{ asset('uploads/sample_edit_this.csv') }}" class="btn btn-secondary"><i class="fa fa-download"></i> Download csv</a>
                         <a href="{{ asset('uploads/quiz_question_format.xlsx') }}" class="btn btn-info"><i class="fa fa-download"></i> Download Excel</a>
-                        
+
 
                     </div>
                 </div>
@@ -109,7 +112,7 @@
             <div class="card crd_border">
                 <div class="card-header"><h4>Upload Questions</h4></div>
                     <div class="col-md-12 mt-4 mb-4">
-                        <form method='post' action='{{ action('UploadPostController@uploadFile') }}' enctype='multipart/form-data' >
+                        <form method='post' action='{{ action('UploadPostController@uploadFilee') }}' enctype='multipart/form-data' >
                         {{ csrf_field() }}
                         <label class="col-md-12">Upload Questions (CSV): </label>
                         <input type="file" name="file" class="btn btn-light" required>
@@ -124,7 +127,7 @@
             <div class="card crd_border">
                 <div class="card-header"><h4>Upload Questions</h4></div>
                     <div class="col-md-12 mt-4 mb-4">
-                        <form method='post' action='{{ action('UploadPostController@uploadFile2') }}' enctype='multipart/form-data' >
+                        <form method='post' action='{{ action('UploadPostController@uploadFile') }}' enctype='multipart/form-data' >
                         {{ csrf_field() }}
                         <label class="col-md-12">Upload Questions (excel): </label>
                         <input type="file" name="file" class="btn btn-light" required>

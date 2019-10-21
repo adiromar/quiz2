@@ -18,7 +18,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['show', 'cat', 'online_test', 'validate_test','test','online_quiz']]);
+        $this->middleware('auth', ['except' => ['show', 'cat', 'online_test', 'validate_test','test','online_quiz','rankings']]);
     }
 
     public function index()
@@ -420,10 +420,36 @@ class CategoryController extends Controller
       $rank->totalquestions = $request->intTotalQuestions;
       $rank->correctanswers = $request->intCorrectAnswerCount;
       $rank->timetaken = $timetaken;
-      
+
       $rank->save();
 
       return response('User stat updated');
+
+    }
+
+    public function rankings()
+    {
+
+      $points = DB::table("ranking")->get()->toArray();
+      $users = User::all();
+
+      $data = [];
+      foreach ($users as $key) {
+        $userid = $key->id;
+
+        $query = DB::table('ranking')->where('user_id', $userid);
+
+        $total = $query->avg('totalquestions');
+        $correct = $query->avg('correctanswers');
+        $time = $query->avg('timetaken');
+
+        $data[ $userid ]['name'] = $key->name;
+        $data[ $userid ]['total'] = $total;
+        $data[ $userid ]['correct'] = $correct;
+        $data[ $userid ]['timetaken'] = $time;
+      }
+
+      return view('user.rankings')->with('data', $data);
 
     }
 

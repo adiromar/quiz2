@@ -37,7 +37,13 @@
     			</div>
 	    		<div class="col-lg-8 d-block">
 		    		<div class="row d-flex">
-
+              <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
+                <p class="mb-0 d-block">
+                  <a href="{{ route('rankings') }}" class="btn py-2 px-3 btn-success">
+                    <span><i class="fa fa-" aria-hidden="true"></i>See Rankings</span>
+                  </a>
+                </p>
+              </div>
 						@guest
 					    <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
 					    	<p class="mb-0 d-block">
@@ -141,7 +147,11 @@
               <h2 class="ftco-heading-2">Recent Categories</h2>
               <ul class="list-unstyled">
 							@foreach(App\Category::orderBy('id', 'desc')->get()->take(5) as $cat)
-								<li><a href="#">
+                <?php
+                  $mainid = $cat->main_category_id;
+                  $main = App\MainCategory::find( $mainid );
+                ?>
+								<li><a href="{{ route('cat', [ $main->slug, $cat->slug, $cat->id, 1 ]) }}">
 									<span class="ion-ios-arrow-round-forward mr-2"></span>{{ $cat->category_name }}</a>
 								</li>
 							@endforeach
@@ -153,7 +163,9 @@
           <div class="col-md-12 text-center">
 
             <p>
-  						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+  						Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+              <a href="http://encoderslab.com" target="_blank">Encoderslab</a>,
+              All rights reserved
   				  </p>
           </div>
         </div>
