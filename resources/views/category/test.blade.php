@@ -87,16 +87,60 @@
           <div class="qst-container mb-5">
 
           <h5>{{ $k . '. ' . $pos->post_name }}</h5>
+					<br>
+					@if( $pos->featured )
+							<img src="{{ asset( $pos->featured ) }}" alt="No image" width="200" height="200">
+					@endif
 
-            <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="A" id="optionAns_A_{{ $pos->id}}"> A. {{ $pos->option_a }}</label></li>
+            <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="A" id="optionAns_A_{{ $pos->id}}">
 
-              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="B" id="optionAns_B_{{ $pos->id}}"> B. {{ $pos->option_b }}</label></li>
+							<?php if ( strpos( $pos->option_a , 'uploads/answers/') === false ): ?>
+							A. {{ $pos->option_a}}
+							<?php else: ?>
 
-              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="C" id="optionAns_C_{{ $pos->id}}"> C. {{ $pos->option_c }}</label></li>
+							A. <img src="{{ asset( $pos->option_a ) }}" alt="" width="100" height="100">
 
-              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="D" id="optionAns_D_{{ $pos->id}}"> D. {{ $pos->option_d }}</label></li>
+							<?php endif ?>
 
-    		<input type="hidden" class="jq-actual-answer" id="optionAnswer_{{ $pos->id }}" value="B">
+						 </label></li>
+
+              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="B" id="optionAns_B_{{ $pos->id}}">
+
+								<?php if ( strpos( $pos->option_b , 'uploads/answers/') === false ): ?>
+								 B. {{ $pos->option_b}}
+								 <?php else: ?>
+
+								 B. <img src="{{ asset( $pos->option_b ) }}" alt="" width="100" height="100">
+
+								 <?php endif ?>
+
+							 </label></li>
+
+              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="C" id="optionAns_C_{{ $pos->id}}">
+
+								<?php if ( strpos( $pos->option_c , 'uploads/answers/') === false ): ?>
+								C. {{ $pos->option_c}}
+								<?php else: ?>
+
+								C. <img src="{{ asset( $pos->option_c ) }}" alt="" width="100" height="100">
+
+								<?php endif ?>
+
+							 </label></li>
+
+              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="D" id="optionAns_D_{{ $pos->id}}">
+
+								<?php if ( strpos( $pos->option_d , 'uploads/answers/') === false ): ?>
+								D. {{ $pos->option_d}}
+								<?php else: ?>
+
+								D. <img src="{{ asset( $pos->option_d ) }}" alt="" width="100" height="100">
+
+								<?php endif ?>
+								
+							 </label></li>
+
+    		<input type="hidden" class="jq-actual-answer" id="optionAnswer_{{ $pos->id }}" value="{{ strtoupper( $pos->correct_option ) }}">
     		<input type="hidden" class="jq-selected-answer" id="optionSelAns_{{ $pos->id }}" value="">
 
         <div class="bix-div-answer mx-none" id="divAnswer_{{ $pos->id}}" style="display: none;">
@@ -340,12 +384,14 @@ function PopulateResultStatics()
     var objArrUserAnswer      = $('#divResult span.jq-user-answer');
 
     /* Iteration for All Ques Answers - Populates Result Info. */
+		var ctr = 1;
     jQuery.each(objArrActualAnswer, function(i, obj)
     {
 
         var optionActual   = $(obj).val();
         var optionSelected = $(objArrSelectedAnswer[i]).val();
         var quesID         = obj.id.split('_')[1];              // optionAnswer_45 (hidden)
+				// console.log(ctr + optionSelected + `/` + optionActual);
 
         if(optionSelected != '')
         {
@@ -363,9 +409,7 @@ function PopulateResultStatics()
             /* To display value for "Your answer:" */
             $(objArrUserAnswer[i]).html(optionSelected);
         }
-
-
-
+				ctr++;
     });
 
     intUnAnsweredCount = intTotalQuestions -  intAnsweredCount;
