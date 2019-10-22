@@ -55,7 +55,7 @@ Route::get('new/online-quiz/{slug}/{id}', 'CategoryController@new_test');
 Route::post('/category/validate_test', 'CategoryController@validate_test');
 
 // upload excel
-Route::post('/uploadFile2', 'UploadPostController@uploadFile');
+Route::post('/uploadFile2', 'UploadPostController@import')->name('upload.excel');
 Route::post('/uploadFilee', 'UploadPostController@uploadFilee');
 
 // facebook login - it works

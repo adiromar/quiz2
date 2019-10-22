@@ -18,7 +18,9 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['show', 'cat', 'online_test', 'validate_test','test','online_quiz','rankings']]);
+        $this->middleware('auth',
+          ['except' => ['show', 'cat', 'online_test', 'validate_test','test','online_quiz','rankings']
+        ]);
     }
 
     public function index()
@@ -110,43 +112,45 @@ class CategoryController extends Controller
     public function online_test_set($set, $id)
     {
 
-        $ques = DB::table('sets')->where('id', $id)->first();
+      $ques = DB::table('sets')->where('id', $id)->first();
 
-        $all = DB::table('question_sets')->select('category_id','no_of_question')->where('question_name', $ques->setname)->get();
+      $all = DB::table('question_sets')->select('category_id','no_of_question')->where('question_name', $ques->setname)->get();
 
-        $userlevel = Auth::user()->level;
+      $userlevel = Auth::user()->level;
+      // echo "<pre>";
+      $data = [];
+      foreach ( $all as $val ) {
 
-        $data = [];
-        foreach ( $all as $val ) {
-
+          if ( $val->no_of_question ) {
             $data[] = DB::table('posts')->where('category_id', $val->category_id)
                                         ->where('level', '<=', $userlevel)
                                         ->inRandomOrder()
                                         ->get()
                                         ->take( $val->no_of_question )
                                         ->toArray();
+          }
 
-        }
+      }
 
-        $data1 = $dataIds = [];
+      $data1 = $dataIds = [];
 
-        foreach ($data as $dat) {
+      foreach ($data as $dat) {
 
 
-                if ( !empty($dat) ) {
+              if ( !empty($dat) ) {
 
-                    foreach ($dat as $dkey) {
+                  foreach ($dat as $dkey) {
 
-                        $data1[] = $dkey;
-                        $dataIds[] = $dkey->id;
+                      $data1[] = $dkey;
+                      $dataIds[] = $dkey->id;
 
-                    }
+                  }
 
-                }
+              }
 
-        }
+      }
 
-        return view('category.test')->with('postss', $data1)->with('set', $ques);
+      return view('category.test')->with('postss', $data1)->with('set', $ques);
 
 
     }
@@ -285,7 +289,7 @@ class CategoryController extends Controller
         //Insert question name to new table
         DB::table('sets')->insert([
                 'setname' => $question_name,
-                'slug' => Str::slug( $question_name )
+                'slug' => $this->make_slug( $question_name )
         ]);
 
         $category_id = $request->input('category_id');
@@ -303,6 +307,10 @@ class CategoryController extends Controller
         DB::table('question_sets')->insert($data);
 
         return redirect()->back()->with('success', 'Question set Created');
+    }
+
+    function make_slug($string) {
+        return preg_replace('/\s+/u', '-', trim($string));
     }
 
     public function update_questionsets(Request $request, $id){
@@ -324,7 +332,7 @@ class CategoryController extends Controller
 
       DB::table('sets')->where('id', $id)->update([
           'setname' => $request->qst_set_name,
-          'slug' => Str::slug( $request->qst_set_name ),
+          'slug' => $this->make_slug( $request->qst_set_name ),
       ]);
 
       $count = 0;
@@ -436,20 +444,56 @@ class CategoryController extends Controller
       $data = [];
       foreach ($users as $key) {
         $userid = $key->id;
+        $rol = DB::table('role_user')->where('user_id', $userid)->first();
+        if ( $rol ) {
+          $role = DB::table('roles')->where('id', $rol->role_id)->first();
+          $role = $role->role;
+        }else{
+          $role = 'User';
+        }
 
-        $query = DB::table('ranking')->where('user_id', $userid);
+        if ( $role == 'User' ) {
+          $query = DB::table('ranking')->where('user_id', $userid);
 
-        $total = $query->avg('totalquestions');
-        $correct = $query->avg('correctanswers');
-        $time = $query->avg('timetaken');
+          $total = $query->sum('totalquestions');
+          $correct = $query->sum('correctanswers');
+          $time = $query->sum('timetaken');
 
-        $data[ $userid ]['name'] = $key->name;
-        $data[ $userid ]['total'] = $total;
-        $data[ $userid ]['correct'] = $correct;
-        $data[ $userid ]['timetaken'] = $time;
+          $data[ $userid ]['name'] = $key->name;
+          $data[ $userid ]['total'] = $total;
+          $data[ $userid ]['correct'] = $correct;
+          $data[ $userid ]['timetaken'] = $this->seconds2human($time);
+          $data[ $userid ]['role'] = $role;
+          $data[ $userid ]['ratio'] = $this->calc_ratio( $correct, $this->seconds2human($time) );
+        }
+
       }
 
       return view('user.rankings')->with('data', $data);
+
+    }
+
+    function seconds2human($ss) {
+
+      $s = $ss%60;
+      $m = floor(($ss%3600)/60);
+      // $h = floor(($ss%86400)/3600);
+      // $d = floor(($ss%2592000)/86400);
+      // $M = floor($ss/2592000);
+      return $m . "." . $s;
+
+    }
+
+    function calc_ratio($correct, $time){
+
+      if ( $time > 0 && $correct > 0 ) {
+        $calc = $time / $correct * 100;
+        return $calc;
+      }else{
+        return 0;
+      }
+
+
 
     }
 

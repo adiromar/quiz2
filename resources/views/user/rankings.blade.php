@@ -4,7 +4,7 @@
 
     <div class="breadcrumb mb-4">
       <small style="font-weight:bold;font-size:14px">
-        Check out Rankings of online tests.
+        Check out Point Rankings of online tests.
       </small>
     </div>
 
@@ -14,24 +14,30 @@
         <thead>
           <tr>
             <!-- <th width="100">Rank</th> -->
-            <th>User</th>
-            <th>Attempts</th>
-            <th>Average Points</th>
-            <th></th>
+            <th width="400">User</th>
+            <!-- <th>Attempts</th> -->
+            <th>Correct Answers</th>
+            <th>Time Taken</th>
+            <th>%</th>
+
           </tr>
         </thead>
         <tbody>
+          <?php
 
+ ?>
           @foreach($data as $uid => $dat)
           @if( $dat['total'] != 0 )
           <tr>
             <!-- <td></td> -->
             <td>{{ $dat['name'] }}</td>
-            <td>{{ $dat['total'] }}</td>
+            <!-- <td>{{ $dat['total'] }}</td> -->
             <td>{{ $dat['correct'] }}</td>
+            <td>{{ $dat['timetaken'] }}</td>
             <td>{{
-              round( $dat['correct'] / $dat['total'] * 100, 2 )
+              round( $dat['ratio'], 2 )
             }}</td>
+
           </tr>
           @endif
           @endforeach

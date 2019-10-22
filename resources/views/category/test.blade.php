@@ -2,7 +2,24 @@
 
 @yield('styles')
 <style media="screen" type="text/css">
-
+.levels_show span{
+	font-family: 'Stardos Stencil', cursive;
+  border-width: 1px;
+  border-radius: 100%;
+  padding: 2px 8px;
+  font-size: 18px;
+	font-weight: 700;
+  margin-left: 12px;
+}
+.level{
+	background: #000000db;
+  color: white;
+}
+.disabled{
+	background-color: green;
+	color: white;
+	cursor: pointer;
+}
 </style>
 @section('content')
 
@@ -10,13 +27,18 @@
 <div class="breadcrumb">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-7">
 				<a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span>
 			  <span class="sp-angle"></span><span id="idTimerLCD"></span>
 			</div>
-			<div class="col-md-6">
-				Your Level:
-				&nbsp; {{ Auth::user()->level }}
+			<div class="col-md-5 levels_show">
+				<i style="color:black;font-size:14px;">Level(s) Cleared</i>
+				<?php $level = Auth::user()->level; ?>
+				<span class="{{ $level >= 1 ? 'disabled' : 'level' }}">1</span>
+				<span class="{{ $level >= 2 ? 'disabled' : 'level' }}">2</span>
+				<span class="{{ $level >= 3 ? 'disabled' : 'level' }}">3</span>
+				<span class="{{ $level >= 4 ? 'disabled' : 'level' }}">4</span>
+				<span class="{{ $level >= 5 ? 'disabled' : 'level' }}">5</span>
 			</div>
 
 		</div>
@@ -63,7 +85,17 @@
             <p class="mx-green mx-bold mx-uline"><strong>Note:</strong></p>
             <ul class="ul-test-instruction">
             <li>Total number of questions : <b>{{ count($postss) }}</b>.</li>
-            <li>Time allotted : <b>10</b> minutes.</li>
+						<?php
+							$c = count($postss);
+							if ( $c <= 30 ) {
+								$t = $c - 5;
+							}elseif( $c > 30 && $c < 60 ){
+								$t = $c - 10;
+							}else{
+								$t = $c - 15;
+							}
+						?>
+            <li>Time allotted : <b id="timeallowed" data-time="{{ $t }}"> {{ $t }} </b> minutes.</li>
             <li>Each question carry 1 mark, no negative marks.</li>
             <li>DO NOT refresh the page.</li>
             <li>All the best :-).</li>
@@ -137,7 +169,7 @@
 								D. <img src="{{ asset( $pos->option_d ) }}" alt="" width="100" height="100">
 
 								<?php endif ?>
-								
+
 							 </label></li>
 
     		<input type="hidden" class="jq-actual-answer" id="optionAnswer_{{ $pos->id }}" value="{{ strtoupper( $pos->correct_option ) }}">
@@ -184,7 +216,24 @@
 
 	      <input type="hidden" id="hdnTestTitleID"   value="9" />
         <input type="hidden" id="hdnTestID"        value="1009" />
-        <input type="hidden" id="hdnInitialTimer"  value="600" />
+		@if(count($postss) > 0)
+		<?php
+			$c = count($postss);
+			if ( $c <= 30 ) {
+				$t = $c - 5;
+			}elseif( $c > 30 && $c < 60 ){
+				$t = $c - 10;
+			}else{
+				$t = $c - 15;
+			}
+		?>
+		<input type="hidden" id="hdnInitialTimer"  value="{{ $t * 60 }}" />
+		@else
+
+		<input type="hidden" id="hdnInitialTimer"  value="600" />
+
+		@endif
+
         <input type="hidden" id="hdnTimer"         value="600" />
 
 
@@ -429,7 +478,7 @@ function PopulateResultStatics()
 					}
 			});
 
-    if ( percentage >= 85 ) {
+    if ( percentage >= 80 ) {
 
       var userid = {{ Auth::id() }};
 

@@ -127,7 +127,7 @@
             <div class="card crd_border">
                 <div class="card-header"><h4>Upload Questions</h4></div>
                     <div class="col-md-12 mt-4 mb-4">
-                        <form method='post' action='{{ action('UploadPostController@uploadFile') }}' enctype='multipart/form-data' >
+                        <form method='post' action='{{ route('upload.excel') }}' enctype='multipart/form-data' >
                         {{ csrf_field() }}
                         <label class="col-md-12">Upload Questions (excel): </label>
                         <input type="file" name="file" class="btn btn-light" required>

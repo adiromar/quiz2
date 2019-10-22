@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index','list_all','quiz_sets','set_view']]);
+        $this->middleware('auth', ['except' => ['index','quiz_sets','set_view']]);
     }
 
     /**
@@ -80,11 +80,12 @@ class HomeController extends Controller
         $data = [];
         foreach ( $all as $val ) {
 
+          if ( $val->no_of_question ) {
             $data[] = DB::table('posts')->where('category_id', $val->category_id)
                         ->inRandomOrder()->get()->take( $val->no_of_question )->toArray();
+          }
 
         }
-
 
 
         //Check if session has data ids

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Stardos+Stencil:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('consolution/css/open-iconic-bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('consolution/css/animate.css') }}">
 
@@ -39,7 +39,7 @@
 		    		<div class="row d-flex">
               <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
                 <p class="mb-0 d-block">
-                  <a href="{{ route('rankings') }}" class="btn py-2 px-3 btn-success">
+                  <a href="{{ route('rankings') }}" class="btn py-2 px-3 btn-primary">
                     <span><i class="fa fa-" aria-hidden="true"></i>See Rankings</span>
                   </a>
                 </p>
@@ -101,9 +101,9 @@
 						</a></li>
 						@endforeach
 					@endif
-					@auth
-	          <li class="nav-item"><a href="{{ url('/list-all') }}" class="nav-link onlinetest"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a></li>
-					@endauth
+
+	        <li class="nav-item"><a href="{{ url('/list-all') }}" class="nav-link onlinetest"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a></li>
+
 					</ul>
 	      </div>
 	    </div>

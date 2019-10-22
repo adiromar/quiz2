@@ -10,11 +10,20 @@ use App\Category;
 use App\Posts;
 // use Session;
 use Illuminate\Support\Facades\Auth;
-use Excel;
+
 use DB;
+use App\Imports\PostsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UploadPostController extends Controller
 {
+    public function import()
+    {
+        
+        Excel::import(new PostsImport,request()->file('file'));
+
+        return back();
+    }
 
     public function uploadFilee(Request $request){
 
