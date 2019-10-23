@@ -20,7 +20,7 @@ class PostsController extends Controller
     }
 
     public function index()
-    {   
+    {
         $title = 'Posts/Questions';
         $userId = Auth::id();
         $posts = Posts::where('user_id', $userId)->orderBy('id', 'desc')->paginate(25);
@@ -28,21 +28,21 @@ class PostsController extends Controller
     }
 
     public function create()
-    {	
+    {
         $title = 'Create a Question';
     	$category = Category::orderBy('created_at', 'desc')->get();
         return view('posts.create')->with('category', $category)->with('title', $title);
     }
 
     public function show()
-    {      
+    {
         $title = 'Question Feedback';
         $report = Report::orderBy('created_at', 'desc')->paginate(25);
         return view('posts.view_report')->with('report', $report)->with('title', $title);
     }
 
     public function edit($id)
-    {   
+    {
         $title = 'Edit Question';
         $category = Category::orderBy('created_at', 'desc')->get();
         $post = Posts::find($id);
@@ -52,16 +52,16 @@ class PostsController extends Controller
         }else{
             return view('posts.edit')->with('post', $post)->with('category', $category)->with('title', $title);
         }
-        
+
     }
 
     public function store(Request $request){
     	$this->validate($request, [
             'question' => 'required',
             'category_name' => 'required',
-            'questionimage' => 'image' 
+            'questionimage' => 'image'
         ]);
-        
+
         // create post
         $post = new Posts;
         $userId = Auth::id();
@@ -70,9 +70,9 @@ class PostsController extends Controller
             $post->level = $request->level;
         }else{
             $post->level = 1;
-        }  
-        
-        
+        }
+
+
         //1. Question image (featured)
         if ( $request->hasFile('questionimage') ) {
             $filename = "";
@@ -82,7 +82,7 @@ class PostsController extends Controller
             $post->featured = 'uploads/images/' . $filename;
         }
 
-        $post->category_name = $request->input('category_name'); 
+        $post->category_name = $request->input('category_name');
         $post->category_id = $request->input('category_id');
 
         //Options
@@ -94,7 +94,7 @@ class PostsController extends Controller
             $post->option_a = 'uploads/answers/' . $filename;
 
         }else{
-            $post->option_a = $request->input('option_a');    
+            $post->option_a = $request->input('option_a');
         }
 
         if ( $request->hasFile('option_b') ) {
@@ -104,8 +104,8 @@ class PostsController extends Controller
             $file->move('uploads/answers', $filename);
             $post->option_b = 'uploads/answers/' . $filename;
 
-        }else{  
-            $post->option_b = $request->input('option_b'); 
+        }else{
+            $post->option_b = $request->input('option_b');
         }
 
         if ( $request->hasFile('option_c') ) {
@@ -115,7 +115,7 @@ class PostsController extends Controller
             $file->move('uploads/answers', $filename);
             $post->option_c = 'uploads/answers/' . $filename;
 
-        }else{  
+        }else{
             $post->option_c = $request->input('option_c');
         }
 
@@ -127,11 +127,11 @@ class PostsController extends Controller
             $post->option_d = 'uploads/answers/' . $filename;
 
         }else{
-            $post->option_d = $request->input('option_d'); 
+            $post->option_d = $request->input('option_d');
         }
 
-        $post->correct_option = $request->input('correct_option'); 
-        $post->explanation = $request->input('explanation'); 
+        $post->correct_option = $request->input('correct_option');
+        $post->explanation = $request->input('explanation');
         $post->user_id = $userId;
         $post->save();
 
@@ -141,9 +141,9 @@ class PostsController extends Controller
     public function update(Request $request, $id){
         $this->validate($request, [
             'question' => 'required',
-            'category_name' => 'required' 
+            'category_name' => 'required'
         ]);
-        
+
         $new_post = Posts::find($id);
 
         if ( $request->hasFile('featured') ) {
@@ -154,8 +154,8 @@ class PostsController extends Controller
             $new_post->featured = 'uploads/images/' . $filename;
         }
 
-        $new_post->post_name = $request->input('question');  
-        $new_post->category_name = $request->input('category_name'); 
+        $new_post->post_name = $request->input('question');
+        $new_post->category_name = $request->input('category_name');
         $new_post->category_id = $request->input('category_id');
 
         if ( $request->hasFile('option_a') ) {
@@ -169,7 +169,7 @@ class PostsController extends Controller
             if ( $request->option_a ) {
                 $new_post->option_a = $request->input('option_a');
             }
-            
+
         }
 
         if ( $request->hasFile('option_b') ) {
@@ -179,10 +179,10 @@ class PostsController extends Controller
             $file->move('uploads/answers', $filename);
             $post->option_b = 'uploads/answers/' . $filename;
 
-        }else{  
+        }else{
             if ( $request->option_b ) {
                 $new_post->option_b = $request->input('option_b');
-            } 
+            }
         }
 
         if ( $request->hasFile('option_c') ) {
@@ -192,7 +192,7 @@ class PostsController extends Controller
             $file->move('uploads/answers', $filename);
             $new_post->option_c = 'uploads/answers/' . $filename;
 
-        }else{  
+        }else{
             if ( $request->option_c ) {
                 $new_post->option_c = $request->input('option_c');
             }
@@ -207,20 +207,20 @@ class PostsController extends Controller
 
         }else{
             if ( $request->option_d ) {
-                $new_post->option_d = $request->input('option_d'); 
+                $new_post->option_d = $request->input('option_d');
             }
         }
 
-        $new_post->correct_option = $request->input('correct_option'); 
+        $new_post->correct_option = $request->input('correct_option');
         $new_post->level = $request->level;
-        $new_post->explanation = $request->input('explanation'); 
+        $new_post->explanation = $request->input('explanation');
         $new_post->save();
 
         return redirect('posts/index')->with('success', 'Post Updated Successfully');
     }
 
     public function report_post(Request $request, $id){
-       
+
         $report_username = $request->input('report_username');
         $report_email = $request->input('report_email');
         $message = $request->input('message');
@@ -238,7 +238,7 @@ class PostsController extends Controller
         $crep->save();
         return redirect()->back()->with('success', 'Changed Featured Category.');
     }
-    
+
     public function score(){
         print_r($name);
         echo "test";die;

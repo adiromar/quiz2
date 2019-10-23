@@ -38,47 +38,42 @@
 	    		<div class="col-lg-8 d-block">
 		    		<div class="row d-flex">
               <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
-                <p class="mb-0 d-block">
+
+                <p class="mb-0 d-block mr-2">
                   <a href="{{ route('rankings') }}" class="btn py-2 px-3 btn-primary">
                     <span><i class="fa fa-" aria-hidden="true"></i>See Rankings</span>
                   </a>
                 </p>
-              </div>
-						@guest
-					    <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
-					    	<p class="mb-0 d-block">
+                @guest
+                <p class="mb-0 d-block">
 					    		<a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary">
 					    			<span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
 					    		</a>
 					    	</p>
-					    </div>
-						@else
-						<?php
-							$aid = Auth::id();
-							$rol = DB::table('role_user')->where('user_id', $aid)->first();
-							$role = DB::table('roles')->where('id', $rol->role_id)->first();
-						?>
+                @endguest
+                @auth
+                <?php
+    							$aid = Auth::id();
+    							$rol = DB::table('role_user')->where('user_id', $aid)->first();
+    							$role = DB::table('roles')->where('id', $rol->role_id)->first();
+    						?>
 
-						<div class="col-md topper d-flex align-items-center justify-content-end pt-3">
+                <?php if ( $role->role == 'SuperAdmin' || $role->role == 'Admin' ): ?>
 
-							<?php if ( $role->role == 'SuperAdmin' || $role->role == 'Admin' ): ?>
+  				    		<a href="{{ url('/dashboard') }}" class="btn py-2 px-3 btn-primary">
+  				    			<span><i class="fab fa-artstation"></i></i> Dashboard</span>
+  				    		</a>
 
-				    		<a href="{{ url('/dashboard') }}" class="btn py-2 px-3 btn-primary">
-				    			<span><i class="fab fa-artstation"></i></i> Dashboard</span>
-				    		</a>
+  							<?php endif; ?>
 
-							<?php endif; ?>
-
-							<a href="{{ route('logout') }}" class="btn py-2 px-3 btn-warning ml-2" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-								<span style="color:#8b4513"><i class="fas fa-sign-out-alt"></i> Sign Out</span>
-								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-									{{ csrf_field() }}
-            		</form>
-							</a>
-
-				    </div>
-
-						@endguest
+  							<a href="{{ route('logout') }}" class="btn py-2 px-3 btn-warning ml-2" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+  								<span style="color:#8b4513"><i class="fas fa-sign-out-alt"></i> Sign Out</span>
+  								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+  									{{ csrf_field() }}
+              		</form>
+  							</a>
+                @endauth
+              </div>
 
 				    </div>
 			    </div>

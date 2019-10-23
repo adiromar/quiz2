@@ -469,6 +469,10 @@ class CategoryController extends Controller
 
       }
 
+      $sorted = array_column($data, 'ratio');
+
+      array_multisort($sorted, SORT_DESC, $data);
+
       return view('user.rankings')->with('data', $data);
 
     }

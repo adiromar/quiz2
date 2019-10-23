@@ -13,7 +13,7 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <!-- <th width="100">Rank</th> -->
+            <th width="80">Rank</th>
             <th width="400">User</th>
             <!-- <th>Attempts</th> -->
             <th>Correct Answers</th>
@@ -23,13 +23,12 @@
           </tr>
         </thead>
         <tbody>
-          <?php
-
- ?>
+          <?php $i = 1; ?>
           @foreach($data as $uid => $dat)
+
           @if( $dat['total'] != 0 )
           <tr>
-            <!-- <td></td> -->
+            <td>{{ $i }}</td>
             <td>{{ $dat['name'] }}</td>
             <!-- <td>{{ $dat['total'] }}</td> -->
             <td>{{ $dat['correct'] }}</td>
@@ -39,6 +38,7 @@
             }}</td>
 
           </tr>
+          <?php $i++; ?>
           @endif
           @endforeach
         </tbody>
