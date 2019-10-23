@@ -448,5 +448,11 @@ nav.menu a:hover{
 
 .ib-answeredd{
   color: red;
-  background-color: #f4f4f4;
+  /* background-color: #f4f4f4; */
+}
+.login100-form-title{
+  background-color: #cd853f;
+  padding: 10px;
+  color: white;
+  text-align: center;
 }

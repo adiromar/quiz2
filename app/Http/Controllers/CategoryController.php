@@ -421,17 +421,58 @@ class CategoryController extends Controller
     {
 
       $timetaken = $request->timeTaken;
+      $setid = $request->setid;
+      $uid = Auth::id();
 
-      $rank = new Ranking;
+      //Check max correctanswers
+      $query = DB::table('ranking')->where('set_id', $setid);
+      $chk = $query->where('user_id', $uid)->first();
 
-      $rank->user_id = Auth::id();
-      $rank->totalquestions = $request->intTotalQuestions;
-      $rank->correctanswers = $request->intCorrectAnswerCount;
-      $rank->timetaken = $timetaken;
+      if ( $chk ) {
+        if ( $chk->correctanswers < $request->intCorrectAnswerCount ) {
+          $query->where('user_id', $uid)->delete();
 
-      $rank->save();
+          $rank = new Ranking;
 
-      return response('User stat updated');
+          $rank->user_id = $uid;
+          $rank->set_id = $setid;
+          $rank->totalquestions = $request->intTotalQuestions;
+          $rank->correctanswers = $request->intCorrectAnswerCount;
+          $rank->timetaken = $timetaken;
+
+          $rank->save();
+
+        }
+      }else{
+
+        $rank = new Ranking;
+
+        $rank->user_id = $uid;
+        $rank->set_id = $setid;
+        $rank->totalquestions = $request->intTotalQuestions;
+        $rank->correctanswers = $request->intCorrectAnswerCount;
+        $rank->timetaken = $timetaken;
+
+        $rank->save();
+
+      }
+
+      //Get rank by cmparison
+      $correct = $request->intCorrectAnswerCount;
+      $ranks = DB::table('ranking')->where('set_id', $setid)
+                                   ->where('user_id', '!=', $uid)
+                                   ->orderBy('correctanswers', 'DESC')
+                                   ->get()->toArray();
+
+      $count = 1; $position = 1;
+      foreach ($ranks as $rank) {
+        if ( $correct < $rank->correctanswers ) {
+          $position = $count + 1;
+        }
+        $count++;
+      }
+
+      return response([$position, count($ranks) ]);
 
     }
 

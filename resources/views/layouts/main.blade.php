@@ -26,9 +26,120 @@
 		<link href="{{ asset('css/home.css') }}" rel="stylesheet">
 
 		@yield('styles')
+    <style media="screen">
 
+      .modal-form input{
+        display: block;
+        width: 100%;
+        padding-left: 10px;
+      }
+      .modal-form label{
+        margin-bottom: 0px;
+      }
+      .modal-form .checkbox input{
+        width: auto;
+        display: inline;
+      }
+    </style>
   </head>
   <body>
+    <!-- Login modal -->
+  	<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <span class="login100-form-title p-b-49"> LOGIN </span>
+
+            <div class="container" style="border:2px solid lightgrey">
+              <div class="row">
+                <div class="col-md-12 p-3 modal-form">
+                  <form class="" action="{{ route('login') }}" method="post">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                      <label for="user">Email Address:</label>
+                      <input type="text" name="email" value="{{ old('email') }}" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="pwd">Password:</label>
+                      <input type="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                      <div class="checkbox">
+                          <label>
+                              <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                          </label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">
+                          Login
+                      </button>
+
+                      <a href="" data-toggle="modal" data-target="#regModal" class="btn btn-link" id="register_here">Register Here</a>|
+                      <a class="btn btn-link" href="{{ route('password.request') }}">
+                          Forgot Your Password?
+                      </a>
+                    </div>
+                    <div class="form-group">
+                        <hr>
+                        <p style="text-align: center;color: grey;">Or</p>
+
+                        <a href="{{url('redirectfb')}}" class="btn btn-primary"><i class="fab fa-facebook-f"></i> &nbsp;Login with Facebook</a>
+
+                        <span></span>
+                        <a href="{{url('redirectgoogle')}}" class="btn btn-danger"><i class="fab fa-google"></i> Login with Google</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal fade" id="regModal" tabindex="1" role="dialog" aria-labelledby="regModalTitle" aria-hidden="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <span class="login100-form-title p-b-49"> REGISTER </span>
+
+          <div class="container" style="border:2px solid lightgrey">
+            <div class="row">
+              <div class="col-md-12 p-3 modal-form">
+                <form class="" action="{{ route('register') }}" method="post">
+                  {{ csrf_field() }}
+                <div class="form-group">
+                  <label for="">Name:</label>
+                  <input type="text" name="name" value="{{ old('name') }}" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                  <label for="">Email Address:</label>
+                  <input type="text" name="email" value="{{ old('email') }}" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                  <label for="">Phone No:</label>
+                  <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                  <label for="">Password:</label>
+                  <input type="text" name="name" value="{{ old('name') }}" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                  <label for="">Confirm Password:</label>
+                  <input id="password-confirm" type="password" name="password_confirmation" placeholder="Enter Password Again" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        Register
+                    </button>
+                    <a href="" id="login_here" class="btn btn-link">Login Here</a>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 	  <div class="bg-top navbar-light">
     	<div class="container">
     		<div class="row no-gutters d-flex align-items-center align-items-stretch">
@@ -39,14 +150,15 @@
 		    		<div class="row d-flex">
               <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
 
-                <p class="mb-0 d-block mr-2">
+                <!-- <p class="mb-0 d-block mr-2">
                   <a href="{{ route('rankings') }}" class="btn py-2 px-3 btn-primary">
                     <span><i class="fa fa-" aria-hidden="true"></i>See Rankings</span>
                   </a>
-                </p>
+                </p> -->
                 @guest
                 <p class="mb-0 d-block">
-					    		<a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary">
+					    		<a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary"
+                  role="button" data-toggle="modal" data-target="#exampleModalLong">
 					    			<span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
 					    		</a>
 					    	</p>
@@ -188,6 +300,17 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="{{ asset('consolution/js/google-map.js') }}"></script>
   <script src="{{ asset('consolution/js/main.js') }}"></script>
+
+  <script type="text/javascript">
+    $('#register_here').click(function(e){
+      $('#exampleModalLong').modal('toggle');
+    });
+    $('#login_here').click(function(e){
+      e.preventDefault();
+      $('#exampleModalLong').modal('toggle');
+      $('#regModal').modal('toggle');
+    });
+  </script>
 
   </body>
 </html>

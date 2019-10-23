@@ -20,6 +20,11 @@
 	color: white;
 	cursor: pointer;
 }
+.rankshow{
+	font-size: 17px;
+    color: dodgerblue;
+    font-weight: 800;
+}
 </style>
 @section('content')
 
@@ -29,6 +34,7 @@
 		<div class="row">
 			<div class="col-md-7">
 				<a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span>
+				<a href="#">{{ $set->setname }}</a><span class="sp-angle">»</span>
 			  <span class="sp-angle"></span><span id="idTimerLCD"></span>
 			</div>
 			<div class="col-md-5 levels_show">
@@ -50,7 +56,10 @@
 		<table class="table table-bordered result-statss" cellpadding="4" cellspacing="0" width="100%">
 			<tbody>
 				<tr>
-          <td align="center" bgcolor="#ddf8c2" colspan="3"><b>Marks Obtained: [XX/XX]</b></td>
+          <td align="center" bgcolor="#ddf8c2" colspan="3">
+						<b>Marks Obtained: [XX/XX]</b><br>
+						<span class="rankshow"></span>
+					</td>
         {{-- <td>Percentage: [PTG] %</td> --}}
         <tr>
           <td>Total number of Questions</td>
@@ -527,9 +536,14 @@ function PopulateResultStatics()
                         ", TotTime="     + totalTime   +
                         "min, TimeTaken="     + timeTaken +"sec]"  ;
 
+		var setid = {{ $set->id }};
 		// Insert into ranking table using ajax
-		$.get( "{{ url('/update/userranking') }}" , { intTotalQuestions,intCorrectAnswerCount,timeTaken },
-			function(response){	}
+		$.get( "{{ url('/update/userranking') }}" , { intTotalQuestions,intCorrectAnswerCount,timeTaken,setid },
+			function(response){
+
+				$('.rankshow').append( `Your Rank: ` + response[0] );
+
+			}
 		);
 }
 </script>

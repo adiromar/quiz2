@@ -63,7 +63,7 @@
 
                         <div class="form-group">
                             <label for="register-code" class="col-md-4 control-label">Enter Registration Token<b class="req">*</b></label>
-                            
+
                             <div class="col-md-6">
                                 <input id="register-code" type="text" class="form-control" name="register_token" required>
                                 <p data-toggle="tooltip" data-placement="right" title="Enter registration token to register"><i class="fa fa-question-circle"></i></p>
