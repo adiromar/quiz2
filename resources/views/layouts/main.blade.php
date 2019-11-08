@@ -24,6 +24,7 @@
 		<link rel="stylesheet" href="{{ asset('consolution/css/custom.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
 		<link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 		@yield('styles')
     <style media="screen">
@@ -66,7 +67,8 @@
                     <div class="form-group">
                       <div class="checkbox">
                           <label>
-                              <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                              <input type="checkbox" name="remember" 
+                              {{ old("remember") ? "checked" : "" }}> Remember Me
                           </label>
                       </div>
                     </div>
@@ -121,7 +123,7 @@
                 </div>
                 <div class="form-group">
                   <label for="">Password:</label>
-                  <input type="text" name="name" value="{{ old('name') }}" placeholder="Password" required>
+                  <input type="password" name="password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
                   <label for="">Confirm Password:</label>
@@ -208,9 +210,15 @@
 						</a></li>
 						@endforeach
 					@endif
-
-	        <li class="nav-item"><a href="{{ url('/list-all') }}" class="nav-link onlinetest"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a></li>
-
+          
+	        <li class="nav-item">
+          @guest  
+            <a href="{{ url('/list-all') }}" class="nav-link onlinetest" class="btn py-2 px-3 btn-primary" role="button" data-toggle="modal" data-target="#exampleModalLong"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a>
+          @else
+            <a href="{{ url('/list-all') }}" class="nav-link onlinetest" class="btn py-2 px-3 btn-primary"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a>
+          @endguest
+          </li>
+          
 					</ul>
 	      </div>
 	    </div>
@@ -300,6 +308,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="{{ asset('consolution/js/google-map.js') }}"></script>
   <script src="{{ asset('consolution/js/main.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
   <script type="text/javascript">
     $('#register_here').click(function(e){
@@ -310,6 +319,33 @@
       $('#exampleModalLong').modal('toggle');
       $('#regModal').modal('toggle');
     });
+  </script>
+
+  <script>
+    @if (Session::has('success'))
+
+        toastr.success('{{ Session::get("success") }}');
+
+    @endif
+    @if (Session::has('info'))
+
+        toastr.info('{{ Session::get("info") }}');
+
+    @endif
+    @if (Session::has('error'))
+
+        toastr.error('{{ Session::get("error") }}');
+
+    @endif
+
+    @if ($errors->has('email'))
+        toastr.error("{{ $errors->first('email') }}");
+    @endif
+
+    @if ($errors->has('password'))
+        toastr.error("{{ $errors->first('password') }}");
+    @endif
+
   </script>
 
   </body>

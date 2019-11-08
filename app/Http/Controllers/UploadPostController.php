@@ -27,6 +27,8 @@ class UploadPostController extends Controller
 
     public function uploadFilee(Request $request){
 
+    set_time_limit(240);
+    
     if ($request->input('submit') != null || $request->input('submit2') != null){
 
       $file = $request->file('file');
@@ -39,10 +41,10 @@ class UploadPostController extends Controller
       $mimeType = $file->getMimeType();
 
       // Valid File Extensions
-      $valid_extension = array("csv","xlsx");
+      $valid_extension = array("csv");
 
       // 2MB in Bytes
-      $maxFileSize = 2097152;
+      $maxFileSize = 5000000;
 
       // Check file extension
       if(in_array(strtolower($extension),$valid_extension)){
@@ -84,24 +86,15 @@ class UploadPostController extends Controller
           // Insert to category table
           $slug ='';
 
+          $file->move($location,$filename);
+          
           // dd($importData_arr);die;
          foreach($importData_arr as $importData){
           $slug = str_replace(' ', '-', $importData[0]);
           $slug = strtolower($slug);
 
-          // if (Category::where('category_name', '=', $importData[0])->exists()) {
-          //   // user found
-          //   echo "category already exists";
-          // }else{
-          //   $catData = array(
-          //      "category_name"=>$importData[0],
-          //      "slug"=>$slug,
-          //      "user_id"=>$userId,
-          //      "created_at"=>$ldate,
-          //      "updated_at"=>$ldate
-          //    );
-          //   UploadPost::insertcat($catData);
-          // }
+        //Check count
+        if ( count($importData) == 8 ) {
 
             // now upload posts , check for category id exists or not
           if (Category::where('id', '=', $importData[0])->exists()){
@@ -113,30 +106,37 @@ class UploadPostController extends Controller
               $catname = Category::where('id', '=', $importData[0])->get();
               // echo '<pre>';
               // print_r($catname);die;
-            $insertData = array(
-              "category_name"=>$catname[0]->category_name,
-               "category_id"=>$importData[0],
-               "post_name"=>$importData[1],
-               "option_a"=>$importData[2],
-               "option_b"=>$importData[3],
-               "option_c"=>$importData[4],
-               "option_d"=>$importData[5],
-               "correct_option"=> strtolower($importData[6]),
-               "explanation"=>$importData[7],
-               "user_id"=>$userId,
-               "created_at"=>$ldate,
-               "updated_at"=>$ldate
-             );
-            // print_r($insertData);die;
-            UploadPost::insertData($insertData);
+            
+              $insertData = array(
+                "category_name"=>$catname[0]->category_name,
+                 "category_id"=>$importData[0],
+                 "post_name"=>$importData[1],
+                 "option_a"=>$importData[2],
+                 "option_b"=>$importData[3],
+                 "option_c"=>$importData[4],
+                 "option_d"=>$importData[5],
+                 "correct_option"=> strtolower($importData[6]),
+                 "explanation"=>$importData[7],
+                 "user_id"=>$userId,
+                 "created_at"=>$ldate,
+                 "updated_at"=>$ldate
+              );
+              // print_r($insertData);die;
+              UploadPost::insertData($insertData);
+
             }
 
           }else{
-            return redirect()->action('PostsController@index')->with('danger', 'category id does not exists in database');
+            return redirect()->action('PostsController@index')->with('warning', 'Upload halted! One of the category ids do not exist in database');
             // echo "This category id does not exists in database";
           }
 
+          }else{
+
+              return redirect()->action('PostsController@index')->with('warning', 'Upload halted! One of the column headings is missing. Please try again or use CSV provided!');
+
           }
+        }//endforeach
 
           return redirect()->action('PostsController@index')->with('success', 'Upload Successful.');
           // Session::flash('message','Import Successful.');
