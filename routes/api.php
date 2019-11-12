@@ -23,3 +23,11 @@ Route::get('/questionSets', function(){
 });
 
 Route::post('userLogin', 'ApiAuth\LoginController@login');
+
+Route::get('/getQuestionSets', 'ApiController@getQuestionSets');
+
+Route::get('/getCategories', 'ApiController@getCategories');
+
+Route::get('/getSubCategoriesById/{id}', 'ApiController@getSubCategoriesById');
+
+Route::get('/getQuestionsBySet/{id}', 'ApiController@getQuestionsBySet');

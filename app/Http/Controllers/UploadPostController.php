@@ -99,7 +99,7 @@ class UploadPostController extends Controller
             // now upload posts , check for category id exists or not
           if (Category::where('id', '=', $importData[0])->exists()){
             $catname ='';
-            if (Posts::where('post_name', '=', $importData[2])->exists()) {
+            if (Posts::where('post_name', '=', $importData[1])->exists()) {
             // user found
             // return redirect()->action('PostsController@index')->with('warning', 'Question Already Exists.');
             }else{
@@ -126,9 +126,6 @@ class UploadPostController extends Controller
 
             }
 
-          }else{
-            return redirect()->action('PostsController@index')->with('warning', 'Upload halted! One of the category ids do not exist in database');
-            // echo "This category id does not exists in database";
           }
 
           }else{
