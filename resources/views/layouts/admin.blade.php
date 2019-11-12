@@ -62,6 +62,7 @@
 
                     <li><a href="{{ route('question') }}"><i class="menu-icon fa fa-question-circle"></i>Add Question Set</a></li>
                     <li><a href="{{ route('sets') }}"><i class="menu-icon fa fa-eye"></i>View Sets</a></li>
+                    <li><a href="{{ route('stats') }}"><i class="menu-icon fa fa-stack-exchange" aria-hidden="true"></i> Stats</a></li>
 
                 </ul>
             </div><!-- /.navbar-collapse -->

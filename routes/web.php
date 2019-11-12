@@ -14,7 +14,7 @@ Route::get('category/index', 'CategoryController@index');
 
 Route::resource('posts', 'PostsController');
 Route::resource('maincategory', 'MainCategoryController');
-
+Route::get('stats', 'PostsController@stats')->name('stats');
 // Route::get('posts/create', 'PostsController@create');
 Route::get('category/create', 'CategoryController@create');
 

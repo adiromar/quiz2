@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email',
     ];
 
     /**
@@ -56,8 +56,35 @@ class User extends Authenticatable
         return $role[0];
     }
 
+    public function checkRole($id){
+
+        $role = DB::table('role_user')->where('user_id', $id)->pluck('role_id')->first();
+        
+        switch ($role) {
+            case 1:
+                return "Admin";
+                break;
+            case 2:
+                return "Admin";
+                break;
+            default:
+                return "User";
+                break;
+        }
+
+    }
+
     public function roles(){
         // return $this->belongsToMany( Role::class, 'user_roles'  );
-        return $this->belongsToMany('App\Roles');
+        return $this->belongsToMany('App\Roles', 'role_user', 'role_id', 'user_id');
     }
+
+    public function generateToken()
+    {
+        $this->api_token = str_random(60);
+        $this->save();
+
+        return $this->api_token;
+    }
+    
 }

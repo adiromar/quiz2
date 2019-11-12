@@ -254,4 +254,13 @@ class PostsController extends Controller
         $post->delete();
         return redirect('posts/index')->with('success', 'Post Removed.');
     }
+
+    public function stats() {
+
+
+        $users = User::all();
+
+        return view('user.stats')->with('users', $users);
+
+    }
 }
