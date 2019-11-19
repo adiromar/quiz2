@@ -32,10 +32,17 @@ class ApiController extends Controller
 
 	}
 
-	public function getQuestionsBySet($id) {
+	public function getQuestionsBySet(Request $request, $id) {
 
 		$ques = DB::table('sets')->where('id', $id)->first();
 
+		$level = $request->level;
+
+		if ( $level && $level > 0 ) {
+			$chklevel = $level;
+		}else{
+			$chklevel = "1";
+		}
 
         $all = DB::table('question_sets')->select('category_id','no_of_question')->where('question_name', $ques->setname)->get();
         
@@ -47,7 +54,7 @@ class ApiController extends Controller
         	if ( $posts->count() > 0 ) {
         		if ( $val->no_of_question ) {
 		            $data[] = DB::table('posts')->where('category_id', $val->category_id)
-		            	->inRandomOrder()->get()->take( $val->no_of_question )->toArray();
+		            	->where('level', '<=', $chklevel)->inRandomOrder()->get()->take( $val->no_of_question )->toArray();
 		          }
         	}
 
@@ -84,7 +91,37 @@ class ApiController extends Controller
 
 		$cats = Category::where('main_category_id', $id)->get();
 
-		return response()->json(['data' => $cats]);
+		$data = [];
+		$i = 0;
+		foreach ($cats as $key) {
+			$data[$i]['id'] = $key->id;
+			$data[$i]['main_category_id'] = $key->main_category_id;
+			$data[$i]['category_name'] = $key->category_name;
+			$data[$i]['slug'] = $key->slug;
+			$data[$i]['link'] = url('/api/getQuestionsByCategory/' . $key->id);
+		
+			$i++;
+		}
+		return response()->json(['data' => $data]);
+
+	}
+
+	public function getQuestionsByCategory(Request $request, $id) {
+
+		$level = $request->level;
+
+		if ( $level && $level > 0 ) {
+			$chklevel = $level;
+		}else{
+			$chklevel = "1";
+		}
+
+		$data = DB::table('posts')->where('level', '<=', $chklevel)
+									->where('category_id', $id)
+									->orderBy('id', 'DESC')
+									->get();
+
+		return response()->json( ['data' => $data] );							
 
 	}
 

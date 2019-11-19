@@ -31,3 +31,5 @@ Route::get('/getCategories', 'ApiController@getCategories');
 Route::get('/getSubCategoriesById/{id}', 'ApiController@getSubCategoriesById');
 
 Route::get('/getQuestionsBySet/{id}', 'ApiController@getQuestionsBySet');
+
+Route::get('/getQuestionsByCategory/{id}', 'ApiController@getQuestionsByCategory');
