@@ -38,7 +38,7 @@
 					<label><b>Question: </b></label>
 					<br>
 					
-					<textarea name="question" rows="4" cols="100" placeholder="Enter Your Question"></textarea>
+					<textarea id="editor1" name="question" rows="4" cols="100" placeholder="Enter Your Question"></textarea>
 
 					<br>
 

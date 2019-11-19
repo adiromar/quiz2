@@ -39,7 +39,7 @@
 				<div class="col-md-12 mt-4">
 					<label><b>Question: </b></label><br>
 					{{-- <input type="text" name="post" class="form-control"> --}}
-					<textarea name="question" rows="4" cols="120" value="{{ $post->post_name }}">{{ $post->post_name }}</textarea>
+					<textarea id="editor1" name="question" rows="4" cols="120" value="{{ $post->post_name }}">{{ $post->post_name }}</textarea>
 				</div>
 				
 				<div class="row pl-3">

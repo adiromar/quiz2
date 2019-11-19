@@ -127,7 +127,7 @@
 
           <div class="qst-container mb-5">
 
-          <h5>{{ $k . '. ' . $pos->post_name }}</h5>
+          <h5><span class="ques_wrap">{!! $k . '. ' . $pos->post_name !!}</span></h5>
 					<br>
 					@if( $pos->featured )
 							<img src="{{ asset( $pos->featured ) }}" alt="No image" width="200" height="200">

@@ -41,6 +41,9 @@
         width: auto;
         display: inline;
       }
+      .ques_wrap p{
+        display: contents;
+      }
     </style>
   </head>
   <body>

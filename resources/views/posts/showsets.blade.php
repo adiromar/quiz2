@@ -25,7 +25,7 @@
         @if( $counter >= $start AND $counter <= $stop  )
 
             <div class="col-md-12 post_div{{ $ii}} qstn_div">
-            	<label class="qst_lbl"><?= $k . '. ' ?> {{ $pos->post_name }}</label>
+            	<label class="qst_lbl"><?= $k . '. ' ?> <span class="ques_wrap">{!! $pos->post_name !!}</span></label>
 							<br>
 							@if( $pos->featured )
 									<img src="{{ asset( $pos->featured ) }}" alt="No image" width="200" height="200">

@@ -161,7 +161,11 @@
     <script src="{{ asset('admin/assets/js/main.js') }}"></script>
     <script src="{{ asset('admin/assets/js/lib/chosen/chosen.jquery.min.js') }}"></script>
 
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
+    <script>
+         CKEDITOR.replace( 'editor1' );
+    </script>
 
 </body>
 </html>

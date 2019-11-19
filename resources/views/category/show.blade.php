@@ -15,8 +15,8 @@
     $cname = mb_convert_case($slug, MB_CASE_TITLE);
 @endphp
 <div class="breadcrumb"><a href="{{ url('/') }}">Home</a><span class="sp-angle">»</span>
-    <a href="{{ url(''.$main.'/'.$categoryy->main_category_id.'') }}">{{ $main }}</a><span class="sp-angle">»</span>
-    <a href="{{ url(''.$main.'/'.$slug.'/'.$categoryy->id.'') }}">{{ $slug }}</a>
+    <a href="{{ url(''.$main.'/'.$categoryy->main_category_id.'') }}">{{ $cmain }}</a><span class="sp-angle">»</span>
+    <a href="{{ url(''.$main.'/'.$slug.'/'.$categoryy->id.'') }}">{{ $cname }}</a>
     <span class="sp-angle">»</span></div>
 
 @if(count($postss) > 0)
@@ -28,16 +28,6 @@
                 $ch_slug = str_replace(' ', '-', $postss[0]->category_name);
                 $c_slug = strtolower($ch_slug);
             @endphp
-
-        {{-- <div class="col-md-12 mb-4" style="border: 1px solid lightgrey;">
-            <h5 class="">Take Online Test</h5>
-            <div class="col-md-6 mb-3">
-                <p>Questions: 20</p>
-
-                <a href="{{ url('online-test/'.$c_slug.'/'.$postss[0]->category_id.' ') }}" class="btn btn-primary mb-1">Take Online Test</a>
-                <a href="{{ url('test/online-quiz/'.$c_slug.'/'.$postss[0]->category_id.' ') }}" class="btn btn-secondary mb-1">Online Quiz</a>
-            </div>
-        </div> --}}
 
         @php
             $cat_name = mb_convert_case($postss[0]->category_name, MB_CASE_TITLE);
@@ -64,7 +54,7 @@
         @if( $counter >= $start AND $counter <= $stop  )
 
             <div class="col-md-12 post_div{{ $ii}} qstn_div">
-            	<label class="qst_lbl"><?= $k . '. ' ?> {{ $pos->post_name }}</label>
+            	<label class="qst_lbl"><?= $k . '. ' ?> <span class="ques_wrap">{!! $pos->post_name !!}</span></label>
                 <br>
 
                 @if( $pos->featured )
