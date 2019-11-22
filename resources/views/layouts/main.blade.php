@@ -155,26 +155,25 @@
 		    		<div class="row d-flex">
               <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
 
-                <!-- <p class="mb-0 d-block mr-2">
-                  <a href="{{ route('rankings') }}" class="btn py-2 px-3 btn-primary">
-                    <span><i class="fa fa-" aria-hidden="true"></i>See Rankings</span>
+                <p class="mb-0 d-block mr-2">
+                  <a href="{{ route('topics') }}" class="btn py-2 px-3 btn-dark">
+                    <span><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Courses</span>
                   </a>
-                </p> -->
+                </p>
                 @guest
                 <p class="mb-0 d-block">
-					    		<a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary"
-                  role="button" data-toggle="modal" data-target="#exampleModalLong">
-					    			<span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
-					    		</a>
-					    	</p>
+		    		<a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary" role="button" data-toggle="modal" data-target="#exampleModalLong">
+		    			<span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
+		    		</a>
+		    	</p>
                 @endguest
                 @auth
                 <?php
-    							$aid = Auth::id();
-    							$rol = DB::table('role_user')->where('user_id', $aid)->first();
-    							$role = DB::table('roles')->where('id', $rol->role_id)->first();
-    						?>
-
+					$aid = Auth::id();
+					$rol = DB::table('role_user')->where('user_id', $aid)->first();
+					$role = DB::table('roles')->where('id', $rol->role_id)->first();
+				?>
+	
                 <?php if ( $role->role == 'SuperAdmin' || $role->role == 'Admin' ): ?>
 
   				    		<a href="{{ url('/dashboard') }}" class="btn py-2 px-3 btn-primary">
@@ -192,10 +191,10 @@
                 @endauth
               </div>
 
-				    </div>
 			    </div>
 		    </div>
-		  </div>
+	    </div>
+	  </div>
     </div>
 	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container d-flex align-items-center">

@@ -22,6 +22,9 @@
     <link href="{{ asset('admin/assets/css/lib/chosen/chosen.min.css') }}" rel="stylesheet">
 
     @yield('styles')
+    <style>
+        .fileinp{background-color: #272c33e6;color: white;cursor: pointer;}
+    </style>
 
 </head>
 <body>
@@ -57,11 +60,19 @@
                     <li><a href="{{url('category/index')}}"><i class="menu-icon ti-view-grid"></i> Category</a></li>
 
                     <li><a href="{{route('posts.index')}}"><i class="menu-icon ti-file"></i> Posts</a></li>
+                    
+                    <li style="color: white"><strong>Books</strong></li>
+
+                    <li><a href="{{ route('topics.index') }}"><i class="menu-icon fa fa-book"></i>Topics</a></li>
+                    <li><a href="{{ route('courses.index') }}"><i class="menu-icon fa fa-university"></i>Courses</a></li>
+
+                    <li style="color: white"><strong>Sets</strong></li>
+                    
+                    <li><a href="{{ route('question') }}"><i class="menu-icon fa fa-question-circle"></i>Add Question Set</a></li>
+                    <li><a href="{{ route('sets') }}"><i class="menu-icon fa fa-eye"></i>View Sets</a></li>
 
                     <li><a href="{{url('posts/question_report')}}"><i class="menu-icon fa fa-question-circle"></i>Question Feedback</a></li>
 
-                    <li><a href="{{ route('question') }}"><i class="menu-icon fa fa-question-circle"></i>Add Question Set</a></li>
-                    <li><a href="{{ route('sets') }}"><i class="menu-icon fa fa-eye"></i>View Sets</a></li>
                     <li><a href="{{ route('stats') }}"><i class="menu-icon fa fa-stack-exchange" aria-hidden="true"></i> Stats</a></li>
 
                 </ul>

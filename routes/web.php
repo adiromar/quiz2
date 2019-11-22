@@ -2,6 +2,16 @@
 
 Auth::routes();
 
+Route::resource('courses', 'CourseController')->except(['destroy']);
+Route::get('courses/delete/{id}', 'CourseController@destroy')->name('courses.destroy');
+
+Route::get('topics', 'TopicController@index')->name('topics.index');
+Route::post('topics', 'TopicController@store')->name('topics.store');
+Route::get('topics/{id}', 'TopicController@destroy')->name('topics.destroy');
+
+Route::get('book/topics', 'PageController@topics')->name('topics');
+Route::get('book/courses/{slug}', 'PageController@topic_view')->name('topic.view');
+
 Route::get('/quiz-sets', 'HomeController@quiz_sets')->name('quiz.sets');
 Route::get('/view-set/{slug}/{page}', 'HomeController@set_view')->name('set.view');
 Route::get('/view-set/page/{setid}/{page}', 'HomeController@set_next_page')->name('set.next');
