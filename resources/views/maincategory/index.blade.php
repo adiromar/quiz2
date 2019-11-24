@@ -1,5 +1,12 @@
 @extends('layouts.main')
 
+@section('seo')
+
+	<meta name="description" content="Quizzer Nepal | Category: {{ $main->main_category_name }}">
+	<meta name="keywords=" content="quizzer,quizzer nepal,quiz nepal,nepal quiz,class,classroom, class room,video classes,category page,{{ $main->main_category_name }}">
+
+@endsection
+
 @section('content')
 	@php
 	$m_name = mb_convert_case($main->main_category_name, MB_CASE_TITLE);

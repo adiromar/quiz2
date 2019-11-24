@@ -1,5 +1,12 @@
 @extends( 'layouts.main' )
 
+@section('seo')
+
+	<meta name="description" content="Quizzer Nepal | Free Courses | Choose a topic">
+	<meta name="keywords=" content="quizzer,quizzer nepal,quiz nepal,nepal quiz,courses,topics, @if ( count($topics) > 0 )@foreach( $topics as $topic ){{ $topic->title . ','}}@endforeach		@endif ">
+
+@endsection
+
 @section('content')
 
 	@if ( count($topics) > 0 )

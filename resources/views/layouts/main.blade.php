@@ -326,6 +326,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
   <script type="text/javascript">
+
+    $('body').bind('copy',function(e) { e.preventDefault(); return false; }); 
+
+    $('body').bind('paste',function(e) { e.preventDefault(); return false; });
+
     $('#register_here').click(function(e){
       $('#exampleModalLong').modal('toggle');
     });

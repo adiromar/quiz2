@@ -1,5 +1,12 @@
 @extends( 'layouts.main' )
 
+@section('seo')
+
+	<meta name="description" content="Quizzer Nepal | List of {{ $topic }} Courses You can Choose from.">
+	<meta name="keywords=" content="quizzer,quizzer nepal,quiz nepal,nepal quiz,class,courses,topics,learning,teaching,@if ( count($courses) > 0 )@foreach( $courses as $c ){{ $c->slug . ','}}@endforeach @endif ">
+
+@endsection
+
 @section('content')
 	<div class="wrapper-title">
 		<div class="row">

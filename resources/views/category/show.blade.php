@@ -1,5 +1,12 @@
 @extends('layouts.main')
 
+@section('seo')
+
+    <meta name="description" content="Quizzer Nepal | Quiz Category: {{ mb_convert_case($slug, MB_CASE_TITLE) }}">
+    <meta name="keywords=" content="quizzer,quizzer nepal,quiz nepal,nepal quiz,class,classroom, class room,video classes,category page,{{ $main }},{{ $slug }}">
+
+@endsection
+
 @yield('styles')
 
 <style media="screen" type="text/css">

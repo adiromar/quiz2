@@ -1,5 +1,13 @@
 @extends( 'layouts.main' )
 
+
+@section('seo')
+
+	<meta name="description" content="Quizzer Nepal | Learn with the Video Courses">
+	<meta name="keywords=" content="quizzer,quizzer nepal,quiz nepal,nepal quiz,class,classroom, class room,video classes,{{ $video->slug }}">
+
+@endsection
+
 @section('content')
 
 	<div class="wrapper">

@@ -1,5 +1,12 @@
 @extends( 'layouts.main' )
 
+@section('seo')
+
+	<meta name="description" content="Quizzer Nepal | Classroom: Youtube Videos">
+	<meta name="keywords=" content="quizzer,quizzer nepal,quiz nepal,nepal quiz,class,classroom, class room,video classes,@if ( count($videos) > 0 )@foreach( $videos as $topic ){{ $topic->slug . ','}}@endforeach		@endif">
+
+@endsection
+
 @section('content')
 	
 	<div class="wrapper-title">
