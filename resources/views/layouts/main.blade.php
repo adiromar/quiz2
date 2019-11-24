@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta http-equiv="Content-Type" content="text/html">
     <title>Apptitude Questions & Answers for your interview and Entrance Exam Preparations.</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <meta name="copyright" content="Quizzer is copyrighted to Encoderslab Pvt. Ltd.">
+
+    @yield('seo')
+
+    <meta name="robots" content="index,follow">    
 
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Stardos+Stencil:400,700&display=swap" rel="stylesheet">
@@ -156,9 +163,15 @@
               <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
 
                 <p class="mb-0 d-block mr-2">
+                  
+                  <a href="{{ route('videos') }}" class="btn py-2 px-3 btn-danger">
+                    <span><i class="fa fa-book-reader" aria-hidden="true"></i>&nbsp;Class Room</span>
+                  </a>
+
                   <a href="{{ route('topics') }}" class="btn py-2 px-3 btn-dark">
                     <span><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Courses</span>
                   </a>
+                  
                 </p>
                 @guest
                 <p class="mb-0 d-block">

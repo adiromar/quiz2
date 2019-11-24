@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Topic;
 use App\Course;
+use App\Video;
 
 class PageController extends Controller
 {
@@ -38,6 +39,29 @@ class PageController extends Controller
 		
 		}
 		
+
+	}
+
+	public function course_view($slug)
+	{
+
+		$course = Course::where('slug', $slug)->first();
+
+		return view('books.viewcourse')->with('course', $course);
+
+	}
+
+	public function videos(){
+
+		$videos = Video::orderBy('id', 'DESC')->get();
+
+		return view('books.classroom')->with('videos', $videos);
+
+	}
+
+	public function video_show(Video $video){
+
+		return view('books.showvideo')->with('video', $video->first());		
 
 	}
 

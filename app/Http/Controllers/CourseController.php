@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Topic;
+use App\Video;
+
 use Illuminate\Http\Request;
 
 use Auth;
@@ -195,6 +197,45 @@ class CourseController extends Controller
         request()->session()->flash('success', 'Succesfully removed.');
 
         return redirect()->back();
+
+    }
+
+    /**
+     *  Video Url
+     */
+    public function video_create() 
+    {
+
+        $videos = Video::where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
+
+        return view('courses.video')->with('videos', $videos);
+
+    }
+
+    public function video_store(Request $request)
+    {
+
+
+        $this->validateWith([
+            'title' => 'required|min:10',
+            'videourl' => 'url|required',
+            'info' => 'required'
+        ]);
+        
+        $video = new Video;
+
+        $video->user_id = Auth::id();
+        $video->title = $request->title;
+        $video->slug = str_slug( $request->title, '-' );
+        $video->url = $request->videourl;
+        $video->description = $request->info;
+
+        $video->save();
+
+        request()->session()->flash('success', 'Video information added.');
+
+        return redirect()->route('video.create');
+
 
     }
 }

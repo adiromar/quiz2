@@ -11,6 +11,11 @@ Route::get('topics/{id}', 'TopicController@destroy')->name('topics.destroy');
 
 Route::get('book/topics', 'PageController@topics')->name('topics');
 Route::get('book/courses/{slug}', 'PageController@topic_view')->name('topic.view');
+Route::get('book/course/{slug}', 'PageController@course_view')->name('course.view');
+Route::get('video', 'CourseController@video_create')->name('video.create');
+Route::post('video', 'CourseController@video_store')->name('videos.store');
+Route::get('videos', 'PageController@videos')->name('videos');
+Route::get('classroom/video/{slug}', 'PageController@video_show')->name('video.show');
 
 Route::get('/quiz-sets', 'HomeController@quiz_sets')->name('quiz.sets');
 Route::get('/view-set/{slug}/{page}', 'HomeController@set_view')->name('set.view');

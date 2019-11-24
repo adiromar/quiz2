@@ -70,6 +70,8 @@
                     
                     <li><a href="{{ route('question') }}"><i class="menu-icon fa fa-question-circle"></i>Add Question Set</a></li>
                     <li><a href="{{ route('sets') }}"><i class="menu-icon fa fa-eye"></i>View Sets</a></li>
+                    
+                    <li><a href="{{ route('video.create') }}"><i class="menu-icon fa fa-youtube"></i>Add Video URL</a></li>
 
                     <li><a href="{{url('posts/question_report')}}"><i class="menu-icon fa fa-question-circle"></i>Question Feedback</a></li>
 

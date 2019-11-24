@@ -14,13 +14,13 @@
 	<div class="wrapper">
 		<div class="row">
 		
-			@foreach ( $courses as $topic )
+			@foreach ( $courses as $c )
 			<div class="col-md-6">
 				<div class="courses">
-					@if ( $topic->featured )
-						<img src="{{ asset( $topic->featured ) }}" alt="" width="50" height="50">
+					@if ( $c->featured )
+						<img src="{{ asset( $c->featured ) }}" alt="" width="50" height="50">
 					@endif
-					<a href="">{{ $topic->title }}</a>
+					<a href="{{ route('course.view', $c->slug) }}">{{ $c->title }}</a>
 				</div>
 			</div>
 			@endforeach
