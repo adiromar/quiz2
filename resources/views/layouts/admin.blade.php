@@ -24,6 +24,9 @@
     @yield('styles')
     <style>
         .fileinp{background-color: #272c33e6;color: white;cursor: pointer;}
+        #addQues{ background-color: #272c33; padding: 5px 20px; color: white; }
+        .append{ padding: 15px 15px;border: 1px solid lightgrey;margin-top: 10px;margin-bottom: 15px; }
+        label{ font-weight: 600 }
     </style>
 
 </head>
@@ -59,7 +62,9 @@
                     <li><a href="{{url('maincategory/create')}}"><i class="menu-icon fa fa-list"></i>Main Category</a></li>
                     <li><a href="{{url('category/index')}}"><i class="menu-icon ti-view-grid"></i> Category</a></li>
 
-                    <li><a href="{{route('posts.index')}}"><i class="menu-icon ti-file"></i> Posts</a></li>
+                    <li><a href="{{route('posts.index')}}"><i class="menu-icon ti-file"></i> Questions</a></li>
+
+                    <li><a href="{{route('posts.comprehensive')}}"><i class="menu-icon ti-files"></i> Comprehensive</a></li>
                     
                     <li style="color: white"><strong>Books</strong></li>
 
@@ -175,6 +180,66 @@
     <script src="{{ asset('admin/assets/js/lib/chosen/chosen.jquery.min.js') }}"></script>
 
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+    <script>
+        
+        $('#addQues').click(function(e){    
+            e.preventDefault();
+
+            var toappend = $(this).closest('.wrapper').find('.inner-wrapper');
+
+            $(toappend).append(`
+                    <div class="append">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <label for="">Question:</label>
+                            <input type="text" name="question[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-1"><a href="" class="btn btn-sm btn-danger closebtn"><i class="fa fa-minus"></i></a></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Option A</label>
+                            <input type="text" name="option_a[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Option B</label>
+                            <input type="text" name="option_b[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Option C</label>
+                            <input type="text" name="option_c[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Option D</label>
+                            <input type="text" name="option_d[]" class="form-control" required>
+                        </div>
+                    </div>
+                    <label for="" class="mt-2">Correct Answer</label>
+                    <select class="form-control col-md-6" name="correct_option[]" required>
+                        <option value="a">Option A</option>
+                        <option value="b">Option B</option>
+                        <option value="c">Option C</option>
+                        <option value="d">Option D</option>
+                    </select>
+                    <label for="" class="mt-2">Explanation</label>
+                    <textarea name="explanation[]" rows="4" class="col-md-8 form-control"></textarea>
+                </div>
+                `);
+
+            $('.closebtn').click(function(e){
+
+                e.preventDefault();
+
+                $(this).closest('.append').remove();
+
+            });
+
+        });
+
+        
+
+    </script>
 
     <script>
          CKEDITOR.replace( 'editor1' );

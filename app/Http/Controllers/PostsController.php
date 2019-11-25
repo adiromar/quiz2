@@ -8,6 +8,7 @@ use App\Posts;
 use App\Category;
 use App\User;
 use App\Report;
+use App\Paragraph;
 use DB;
 use Session;
 
@@ -52,6 +53,13 @@ class PostsController extends Controller
         }else{
             return view('posts.edit')->with('post', $post)->with('category', $category)->with('title', $title);
         }
+
+    }
+
+    public function comprehensive_question()
+    {
+
+        return view('posts.comprehensive');
 
     }
 
@@ -263,4 +271,73 @@ class PostsController extends Controller
         return view('user.stats')->with('users', $users);
 
     }
+
+    public function comprehensive_store(Request $request) {
+
+        $this->validateWith([
+
+                'title' => 'required',
+                'paragraph' => 'required',
+                'question' => 'required',
+
+        ]);
+
+
+        $questions = $request->question;
+        $options_a = $request->option_a;
+        $options_b = $request->option_b;
+        $options_c = $request->option_c;
+        $options_d = $request->option_d;
+        $correct_options = $request->correct_option;
+        $explanations = $request->explanation;
+
+        $title = $request->title;
+        
+        if ( $request->level ) {
+            $level = $request->level;
+        }else{
+            $level = 1;
+        }
+        
+        $paragraph = $request->paragraph;
+
+        $firstinsert = [
+            'title' => $title,
+            'paragraph' => $paragraph,
+            'user_id' => Auth::id()
+        ];
+
+        $insert1 = Paragraph::create( $firstinsert );
+
+        $i = 0;$data = [];
+        foreach ($questions as $ques) {
+          
+            $data[$i]['category_id'] = 1000;
+            $data[$i]['post_name'] = $ques;
+            $data[$i]['category_name'] = 'Comprehensive';
+            $data[$i]['option_a'] = $options_a[$i];
+            $data[$i]['option_b'] = $options_b[$i];
+            $data[$i]['option_c'] = $options_c[$i];
+            $data[$i]['option_d'] = $options_d[$i];
+            $data[$i]['correct_option'] = $correct_options[$i];
+            $data[$i]['explanation'] = $explanations[$i];
+            $data[$i]['level'] = $level;
+            $data[$i]['user_id'] = Auth::id();
+
+            $i++;
+        }
+
+        foreach ($data as $d) {
+            
+            $post = Posts::create( $d );
+
+            $insert1->posts()->attach($post->id);
+
+        }
+
+
+        return redirect()->route('postindex')->with('success', 'Added Comprehensive Question');
+
+    }
+
 }

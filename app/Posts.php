@@ -13,6 +13,10 @@ class Posts extends Model
     public $primaryKey = 'id';
     public $timestamps = true;
     
+    protected $fillable = [
+        'category_id', 'post_name', 'category_name', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option', 'explanation', 'level', 'user_id',
+    ];
+
     public function user(){
     	return $this->belongsTo('App\User');
     }
@@ -25,5 +29,10 @@ class Posts extends Model
     public function report()
     {
         return $this->hasMany('App\Report');
+    }
+
+    public function paragraphs()
+    {
+        return $this->belongsToMany('App\Paragraph');
     }
 }

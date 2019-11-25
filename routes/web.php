@@ -28,6 +28,8 @@ Route::get('posts/index', 'PostsController@index')->name('postindex');
 Route::get('category/index', 'CategoryController@index');
 
 Route::resource('posts', 'PostsController');
+Route::get('comprehensive', 'PostsController@comprehensive_question')->name('posts.comprehensive');
+Route::post('comprehensive/store', 'PostsController@comprehensive_store')->name('comprehensive.store');
 Route::resource('maincategory', 'MainCategoryController');
 Route::get('stats', 'PostsController@stats')->name('stats');
 // Route::get('posts/create', 'PostsController@create');

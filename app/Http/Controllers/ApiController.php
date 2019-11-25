@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\MainCategory;
 use App\Category;
+use App\User;
 
 class ApiController extends Controller
 {
@@ -122,6 +123,30 @@ class ApiController extends Controller
 									->get();
 
 		return response()->json( ['data' => $data] );							
+
+	}
+
+	public function updateUserLevel(Request $request) {
+
+		$userId = $request->userId;
+		$userLevel = $request->userLevel;
+
+		$user = User::find( $userId );
+
+		if ( $user ) {
+			$user->level = $userLevel;
+			$user->save();
+		
+			$msg = 'Congratulations! You have completed this level.';
+
+		}else{
+			$msg = 'User not found or some error.';
+		}
+
+		return response()->json( [
+			'message' => $msg
+		] );
+		
 
 	}
 
