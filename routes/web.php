@@ -1,7 +1,8 @@
 <?php
 
 Auth::routes();
-
+Route::get('payment/create', 'PageController@create_payment')->name('payment');
+Route::post('payment/store', 'PageController@store_payment')->name('payment.store');
 Route::resource('courses', 'CourseController')->except(['destroy']);
 Route::get('courses/delete/{id}', 'CourseController@destroy')->name('courses.destroy');
 
@@ -16,6 +17,7 @@ Route::get('video', 'CourseController@video_create')->name('video.create');
 Route::post('video', 'CourseController@video_store')->name('videos.store');
 Route::get('videos', 'PageController@videos')->name('videos');
 Route::get('classroom/video/{slug}', 'PageController@video_show')->name('video.show');
+Route::get('payments/report', 'HomeController@payments_report')->name('payment.receipts');
 
 Route::get('/quiz-sets', 'HomeController@quiz_sets')->name('quiz.sets');
 Route::get('/view-set/{slug}/{page}', 'HomeController@set_view')->name('set.view');

@@ -51,6 +51,10 @@
       .ques_wrap p{
         display: contents;
       }
+      .esewapay{
+            width: 100%;
+    object-fit: contain;
+      }
     </style>
   </head>
   <body>
@@ -164,6 +168,10 @@
 
                 <p class="mb-0 d-block mr-2">
                   
+                  <a href="{{ route('payment') }}" class="btn py-2 px-3 btn-success">
+                    <span><i class="fa fa-parking" aria-hidden="true"></i>&nbsp;Payment</span>
+                  </a>
+
                   <a href="{{ route('videos') }}" class="btn py-2 px-3 btn-danger">
                     <span><i class="fa fa-book-reader" aria-hidden="true"></i>&nbsp;Class Room</span>
                   </a>
@@ -263,7 +271,14 @@
 					<div class="col-md-1 col-lg-1"></div>
           <div class="col-md-4 col-lg-3">
 						<div class="ftco-footer-widget mb-5">
-            	<h2 class="ftco-heading-2 mb-0">Connect With Us</h2>
+            	<h2 class="ftco-heading-2 mb-0">Payment Partner</h2>
+
+              <a href="https://esewa.com.np" target="_blank">
+                <img class="esewapay" src="{{ asset('esewalogo.png') }}" alt="" width="200" height="150">
+              </a>
+            
+            <h2 class="ftco-heading-2 mb-0">Connect With Us</h2>
+            
             	<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>

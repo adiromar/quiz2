@@ -78,6 +78,8 @@
                     
                     <li><a href="{{ route('video.create') }}"><i class="menu-icon fa fa-youtube"></i>Add Video URL</a></li>
 
+                    <li><a href="{{ route('payment.receipts') }}"><i class="menu-icon fa fa-money"></i>User Payments</a></li>
+
                     <li><a href="{{url('posts/question_report')}}"><i class="menu-icon fa fa-question-circle"></i>Question Feedback</a></li>
 
                     <li><a href="{{ route('stats') }}"><i class="menu-icon fa fa-stack-exchange" aria-hidden="true"></i> Stats</a></li>

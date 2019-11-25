@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\MainCategory;
 use App\Category;
 use App\Posts;
+use App\Payment;
 use DB;
 
 class HomeController extends Controller
@@ -148,4 +149,13 @@ class HomeController extends Controller
             $data1 = DB::table('posts')->wherein('id', json_decode($col->temp_ids) )->skip(0)->take(5)->get();
         }
     }
+
+    public function payments_report(){
+
+        $payments = Payment::orderBy('id', 'DESC')->get();
+
+        return view('auth.payments')->with('payments', $payments);
+
+    }
+
 }

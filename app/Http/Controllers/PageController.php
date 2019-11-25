@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Topic;
 use App\Course;
 use App\Video;
+use App\Payment;
 
 class PageController extends Controller
 {
@@ -62,6 +63,45 @@ class PageController extends Controller
 	public function video_show(Video $video){
 
 		return view('books.showvideo')->with('video', $video->first());		
+
+	}
+
+	public function create_payment(){
+
+		return view('payment');
+
+	}
+
+	public function store_payment(Request $request)
+	{
+
+		$fileurl = '';
+		if ( $request->file( 'receipt' ) ) {
+			$file = $request->receipt;
+
+			$extension = $file->extension();
+
+			$filename = str_slug( $request->fullname, '-' ) . "-" . time() . "." . $extension;
+
+			$destination = "uploads/payments";
+
+			$fileurl = $destination . "/" . $filename;
+
+			$file->move( $destination, $filename );
+		}
+
+		$pay = new Payment;
+
+		$pay->fullname = $request->fullname;
+		$pay->email = $request->email;
+		$pay->mobile_no = $request->mobile_no;
+		$pay->receipt = $fileurl;
+
+		$pay->save();
+
+		$request->session()->flash('success', 'Succesfully submitted! We will verify soon. Thanks.');
+
+		return redirect('/');
 
 	}
 
