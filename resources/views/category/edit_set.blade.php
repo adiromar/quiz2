@@ -40,6 +40,21 @@
 							<th>Category</th>
 							<th>No. Of Questions</th>
 						</tr>
+						<?php $comprehensive = ''; ?>
+						@foreach ( $setquestions as $set )
+
+							@if ( $set->category_id == "1000" )
+			
+								<?php $comprehensive = $set->no_of_question ?>
+
+							@endif
+
+						@endforeach
+						<tr>
+							<th>Comprehensive Questions</th>
+							<td><input type="number" name="comprehensive" value="{{ $comprehensive }}"></td>
+						</tr>
+						
 						@foreach($category as $cat)
 						<tr>
 							<th>{{ $cat->category_name }}</th>

@@ -39,6 +39,10 @@
 							<th>Category</th>
 							<th>No. Of Questions</th>
 						</tr>
+						<tr>
+							<th>Comprehensive Questions</th>
+							<td><input type="number" name="comprehensive" class=""></td>
+						</tr>
 						@foreach($category as $cat)
 						<tr>
 							<th>{{ $cat->category_name }}</th>

@@ -7,6 +7,7 @@ use App\MainCategory;
 use App\Category;
 use App\Posts;
 use App\Payment;
+use App\Paragraph;
 use DB;
 
 class HomeController extends Controller
@@ -87,19 +88,21 @@ class HomeController extends Controller
           }
 
         }
-
-
+        // dd( $data );
+        
         //Check if session has data ids
         if ( session()->get('dataIds') == null ) {
 
             $data1 = $dataIds = [];
             foreach ($data as $dat) {
-                if ( !empty($dat) ) {
+                if ( !empty($dat) && is_array( $dat ) ) {
 
                     foreach ($dat as $dkey) {
 
-                        $data1[] = $dkey;
-                        $dataIds[] = $dkey->id;
+                        if ( $dkey->category_id != 1000 ) {
+                            $data1[] = $dkey;
+                            $dataIds[] = $dkey->id;
+                        }
 
                     }
 
@@ -114,7 +117,10 @@ class HomeController extends Controller
             $ids = session()->get('dataIds');
             $data1 = [];
             foreach (json_decode($ids) as $k) {
-                $data1[] = DB::table('posts')->where('id', $k)->first();
+                if ( $k != 1000 ) {
+                    $data1[] = DB::table('posts')->where('id', $k)->first();
+                }
+                
             }
 
         }
@@ -127,12 +133,28 @@ class HomeController extends Controller
             $stop = $page * 5;
         }
 
+        if ( $start == 1 ): 
+            
+            $comprehensive = DB::table('question_sets')->where('question_name', $ques->setname)->where('category_id', '1000')->first();
+
+            if ( $comprehensive ) {
+                
+                $paragraph = Paragraph::inRandomOrder()->get()->take( $comprehensive->no_of_question );
+
+            }else{
+                $paragraph = NULL;
+            }
+
+        else:
+            $paragraph = NULL;
+        endif;
 
         return view('posts.showsets')->with('data', $data1)
                                      ->with('set', $ques)
                                      ->with('page', $page)
                                      ->with('start', $start)
-                                     ->with('stop', $stop);
+                                     ->with('stop', $stop)
+                                     ->with('paragraph', $paragraph);
 
 
     }

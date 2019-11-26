@@ -2,6 +2,15 @@
 
 @section('styles')
 
+<style>
+.para p{
+    line-height: 25px;
+}    
+.innerpara .qst_lbl{
+    color: maroon;
+}
+</style>
+
 
 @endsection
 
@@ -18,8 +27,73 @@
 		$pg = $page - 1;
 		$ng = $page + 1;
 	?>
+    <?php $k=1; ?>
+    @if ( $paragraph )
+    
+        @foreach ($paragraph as $para) 
+        
+        <div class="col-md-12 para">
+            
+            <label class="qst_lbl"><span class="ques_wrap">{{ $k }}. {{ $para->title }}</span></label>
+            <p>
+                {!! $para->paragraph !!}
+            </p>
+            <!-- Questions -->
+        <?php 
+            $questions = $para->posts;
+            $temp = 0; 
 
-	<?php $k=1;$ii=1;$counter = 1; $starter = 1;?>
+            $alphabets = ['A','B','C','D','E'];
+        ?>
+            @foreach ( $questions as $ques )
+            
+            <div class="row innerpara">
+                
+                <div class="col-md-12 post_div{{ $temp}} qstn_div">
+                    <label class="qst_lbl">
+                        {{ $alphabets[$temp] . '. ' }}<span class="ques_wrap">{{ $ques->post_name }}</span>
+                    </label>
+
+                    <p>
+                        <a data-id="a" data-value="{{ $ques->option_a }}" data-correct="{{ strtolower($ques->correct_option) }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+                            A. {{ $ques->option_a }}
+                        </a><span class="span" style="display:none"><i class="fa fa-check-circle" style="color: #13f213;"></i></span>
+                    </p>
+
+                    <p>
+                        <a data-id="b" data-value="{{ $ques->option_b }}" data-correct="{{ strtolower($ques->correct_option) }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+                            B. {{ $ques->option_b }}
+                        </a><span class="span" style="display:none"><i class="fa fa-check-circle" style="color: #13f213;"></i></span>
+                    </p>
+
+                    <p>
+                        <a data-id="c" data-value="{{ $ques->option_c }}" data-correct="{{ strtolower($ques->correct_option) }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+                            C. {{ $ques->option_c }}
+                        </a><span class="span" style="display:none"><i class="fa fa-check-circle" style="color: #13f213;"></i></span>
+                    </p>
+
+                    <p>
+                        <a data-id="d" data-value="{{ $ques->option_d }}" data-correct="{{ strtolower($ques->correct_option) }}" id="{{ $k }}" href="javascript:void()" class="option_color options_clk">
+                            D. {{ $ques->option_d }}
+                        </a><span class="span" style="display:none"><i class="fa fa-check-circle" style="color: #13f213;"></i></span>
+                    </p>
+
+
+                </div>
+
+            </div>
+            <?php $temp++; ?>
+            @endforeach
+
+        </div>
+    
+        <?php $k++; ?>
+
+        @endforeach
+
+    @endif
+
+	<?php $ii=1;$counter = 1; $starter = 1;?>
 	@foreach($data as $pos)
 
         @if( $counter >= $start AND $counter <= $stop  )

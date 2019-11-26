@@ -287,10 +287,10 @@ class CategoryController extends Controller
         $question_name = $request->input('qst_set_name');
 
         //Insert question name to new table
-        DB::table('sets')->insert([
-                'setname' => $question_name,
-                'slug' => $this->make_slug( $question_name )
-        ]);
+        // DB::table('sets')->insert([
+                // 'setname' => $question_name,
+                // 'slug' => $this->make_slug( $question_name )
+        // ]);
 
         $category_id = $request->input('category_id');
         $no_of_question = $request->input('no_of_question');
@@ -304,6 +304,18 @@ class CategoryController extends Controller
                 ];
             $count++;
         }
+
+        if ( $request->comprehensive ) {
+          // dd( $request->comprehensive );
+          $comprehensive = $request->comprehensive;
+          $cid = "1000";
+          $data[] = [
+              'question_name'  =>  $question_name,
+              'category_id'    =>  $cid,
+              'no_of_question' =>  $comprehensive   
+          ];
+        }
+
         DB::table('question_sets')->insert($data);
 
         return redirect()->back()->with('success', 'Question set Created');
@@ -329,6 +341,11 @@ class CategoryController extends Controller
       $category_id = $request->input('category_id');
       $no_of_question = $request->input('no_of_question');
       $cc = count($no_of_question);
+
+      if ( $request->comprehensive ) {
+        array_push($category_id, "1000");
+        array_push($no_of_question, $request->comprehensive);
+      }
 
       DB::table('sets')->where('id', $id)->update([
           'setname' => $request->qst_set_name,
