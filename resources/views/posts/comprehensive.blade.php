@@ -9,42 +9,46 @@
 		<div class="col-md-12 mt-4 mb-5">
 			
 			<div class="card crd_border p-4">
+				<div class="row pb-3">
+					<div class="col-md-4">
+						<h5>Comprehensive Questions:</h5>
+					</div>
+					<div class="col-md-3">
+						<a href="{{ route('comprehensive.create') }}" class="btn btn-success">+ Add Question</a>
+					</div>
+				</div>
+			<table class="table table-condensed table-bordered">
 				
-			<form action="{{ route('comprehensive.store') }}" method="post">
-				{{ csrf_field() }}
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
 
-			<div class="row pb-3">
-			
-				<div class="col-md-9">
-					<label for="">Title</label>
-					<input type="text" name="title" value="{{ old('title') }}" class="form-control">	
-				</div>
-				<div class="col-md-3">
-					<label for="">Level</label>
-					<input type="number" name="level" class="form-control" placeholder="Default: 1" value="{{ old('level') }}">
-				</div>
-				
-			</div>
-			
-			<div class="form-group">
-				<label for="">Paragraph</label>
-				<textarea name="paragraph" id="editor1">{{ old('paragraph') }}</textarea>
-			</div>
-				
-			<div class="form-group wrapper">
-				
-				<div class="inner-wrapper">
+				<tbody>
+					@if ( count( $all ) > 0 )
+
+					@foreach ( $all as $a )
+
+						<tr>
+							<td>{{ $a->title }}</td>
+							<td></td>
+						</tr>
 					
-				</div>
+					@endforeach
 
-				<a href="#" id="addQues">+ Click Here to Add Questions For This Paragraph</a>
+					@else
 
-			</div>
+					<tr>
+						<td colspan="3">No questions at the moment</td>
+					</tr>
 
+					@endif
 
-			<input type="submit" name="submit" value="Submit Question" class="btn btn-info">
-
-			</form>
+				</tbody>
+				
+			</table>
 
 			</div>
 

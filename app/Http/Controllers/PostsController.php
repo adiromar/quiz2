@@ -9,6 +9,7 @@ use App\Category;
 use App\User;
 use App\Report;
 use App\Paragraph;
+use App\ComprehensiveCategories;
 use DB;
 use Session;
 
@@ -17,7 +18,7 @@ class PostsController extends Controller
     //
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['show']]);
+        $this->middleware('auth', [ 'except' => ['show', 'report_post'] ]);
     }
 
     public function index()
@@ -56,10 +57,26 @@ class PostsController extends Controller
 
     }
 
+    public function comprehensive_categories()
+    {
+
+        $categories = ComprehensiveCategories::where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
+        
+        return view('posts.comprehensive_categories')->with('categories', $categories);
+
+    }
+
+    public function create_comprehensive_questions()
+    {
+        return view('posts.create_comprehensive');
+    }
+
     public function comprehensive_question()
     {
 
-        return view('posts.comprehensive');
+        $all = Paragraph::where('user_id', Auth::id() )->orderBy('id', 'DESC')->get();
+        
+        return view('posts.comprehensive')->with('all', $all);
 
     }
 
@@ -244,7 +261,7 @@ class PostsController extends Controller
         $crep->post_name = $post_name;
         $crep->cat_name = $cat_name;
         $crep->save();
-        return redirect()->back()->with('success', 'Changed Featured Category.');
+        return redirect()->back()->with('success', 'Reported message succesfully.');
     }
 
     public function score(){
@@ -337,6 +354,21 @@ class PostsController extends Controller
 
 
         return redirect()->route('postindex')->with('success', 'Added Comprehensive Question');
+
+    }
+
+    public function comprehensive_category_store(Request $request)
+    {
+
+        $cat = new ComprehensiveCategories;
+
+        $cat->title = $request->main_category_name;
+        $cat->slug = str_slug($request->main_category_name, '-');
+        $cat->user_id = Auth::id();
+
+        $cat->save();
+
+        return redirect()->back()->with('success', 'Added Comprehensive Category');
 
     }
 

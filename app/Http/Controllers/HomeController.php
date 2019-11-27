@@ -88,19 +88,29 @@ class HomeController extends Controller
           }
 
         }
-        // dd( $data );
         
         //Check if session has data ids
         if ( session()->get('dataIds') == null ) {
 
             $data1 = $dataIds = [];
+            // For comprehensive questions first
+            $comprehensive = DB::table('question_sets')->where('question_name', $ques->setname)
+                                                    ->where('category_id', '1000')->first();
+            if ( $comprehensive ) {
+
+                $paragraph = Paragraph::inRandomOrder()->get()->take( $comprehensive->no_of_question );
+
+                foreach ($paragraph as $para) {
+                    $dataIds[] = 'para_' . $para->id;
+                }
+            }
+
             foreach ($data as $dat) {
                 if ( !empty($dat) && is_array( $dat ) ) {
 
                     foreach ($dat as $dkey) {
 
                         if ( $dkey->category_id != 1000 ) {
-                            $data1[] = $dkey;
                             $dataIds[] = $dkey->id;
                         }
 
@@ -109,52 +119,36 @@ class HomeController extends Controller
                 }
             }
 
+            $ids1 = json_encode( $dataIds );
+
             //Add data ids to session
             session(['dataIds' => json_encode( $dataIds ) ]);
 
         }else{
-
-            $ids = session()->get('dataIds');
-            $data1 = [];
-            foreach (json_decode($ids) as $k) {
-                if ( $k != 1000 ) {
-                    $data1[] = DB::table('posts')->where('id', $k)->first();
-                }
-                
-            }
-
+            $ids1 = session()->get('dataIds');
         }
-
+        
         if ( $page == 1 ) {
+
             $start = 1;
             $stop = 5;
+            
         }elseif( $page > 1 ){
+
             $start = $page + 4 * ( $page - 1 );
             $stop = $page * 5;
+
         }
 
-        if ( $start == 1 ): 
+        $check = (array) json_decode($ids1); 
             
-            $comprehensive = DB::table('question_sets')->where('question_name', $ques->setname)->where('category_id', '1000')->first();
+        $ids = array_chunk( $check, 5);
 
-            if ( $comprehensive ) {
-                
-                $paragraph = Paragraph::inRandomOrder()->get()->take( $comprehensive->no_of_question );
-
-            }else{
-                $paragraph = NULL;
-            }
-
-        else:
-            $paragraph = NULL;
-        endif;
-
-        return view('posts.showsets')->with('data', $data1)
+        return view('posts.showsets')->with('ids', $ids)
                                      ->with('set', $ques)
                                      ->with('page', $page)
                                      ->with('start', $start)
-                                     ->with('stop', $stop)
-                                     ->with('paragraph', $paragraph);
+                                     ->with('stop', $stop);
 
 
     }

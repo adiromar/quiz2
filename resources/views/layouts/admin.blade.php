@@ -64,7 +64,9 @@
 
                     <li><a href="{{route('posts.index')}}"><i class="menu-icon ti-file"></i> Questions</a></li>
 
-                    <li><a href="{{route('posts.comprehensive')}}"><i class="menu-icon ti-files"></i> Comprehensive</a></li>
+                    <li><a href="{{ route('comprehensive.categories') }}"><i class="menu-icon ti-files"></i> Comprehensive Categories</a></li>
+
+                    <li><a href="{{route('posts.comprehensive')}}"><i class="menu-icon ti-files"></i> Comprehensive Q's</a></li>
                     
                     <li style="color: white"><strong>Books</strong></li>
 
