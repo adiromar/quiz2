@@ -53,13 +53,16 @@
       }
       .esewapay{
             width: 100%;
-    object-fit: contain;
+      object-fit: contain;
       }
       .qst_lbl{
         display: block;margin-top: 15px;
       }
       .view_answer_color{
         padding: 15px;
+      }
+      .para p{
+        line-height: 26px;
       }
     </style>
   </head>

@@ -22,6 +22,7 @@
 				<thead>
 					<tr>
 						<th>Title</th>
+						<th>SubQuestion Ids</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -33,7 +34,17 @@
 
 						<tr>
 							<td>{{ $a->title }}</td>
-							<td></td>
+							<td>
+								@foreach ( $a->posts as $p )
+
+								{{ $p->id . ", " }}
+
+								@endforeach
+							</td>
+							<td>
+								<a href="" class="btn btn-sm btn-info">Edit</a>
+								<a href="" class="btn btn-sm btn-warning">Delete</a>
+							</td>
 						</tr>
 					
 					@endforeach

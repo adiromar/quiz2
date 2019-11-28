@@ -36,6 +36,7 @@
 
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Title</th>
                             <th>Created At</th>
                             <th>Actions</th>
@@ -48,6 +49,7 @@
                         @foreach( $categories as $cat )
                         
                         <tr>
+                            <td>{{ $cat->id }}</td>
                             <td>{{ $cat->title }}</td>
                             <td> {{ $cat->created_at }} </td>
                             <td>

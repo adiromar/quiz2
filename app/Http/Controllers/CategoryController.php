@@ -13,6 +13,7 @@ use App\Ranking;
 use DB;
 use App\QuestionSets;
 use App\ComprehensiveCategories;
+use App\Paragraph;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -122,7 +123,7 @@ class CategoryController extends Controller
       $data = [];
       foreach ( $all as $val ) {
 
-          if ( $val->no_of_question ) {
+          if ( $val->no_of_question && $val->category_id !== 1000 ) {
             $data[] = DB::table('posts')->where('category_id', $val->category_id)
                                         ->where('level', '<=', $userlevel)
                                         ->inRandomOrder()
@@ -132,8 +133,21 @@ class CategoryController extends Controller
           }
 
       }
-
+      
       $data1 = $dataIds = [];
+
+      $comprehensive = DB::table('question_sets')->where('question_name', $ques->setname)
+                                                    ->where('category_id', '1000')->first();
+
+      if ( $comprehensive ) {
+
+          $paragraph = Paragraph::inRandomOrder()->get()
+                                                 ->take( $comprehensive->no_of_question );
+
+          foreach ($paragraph as $para) {
+              $dataIds[] = 'para_' . $para->id;
+          }
+      }                                               
 
       foreach ($data as $dat) {
 
@@ -142,7 +156,6 @@ class CategoryController extends Controller
 
                   foreach ($dat as $dkey) {
 
-                      $data1[] = $dkey;
                       $dataIds[] = $dkey->id;
 
                   }
@@ -151,7 +164,7 @@ class CategoryController extends Controller
 
       }
 
-      return view('category.test')->with('postss', $data1)->with('set', $ques);
+      return view('category.test')->with('set', $ques)->with('ids', $dataIds);
 
 
     }

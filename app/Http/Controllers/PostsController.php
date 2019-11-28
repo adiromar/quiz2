@@ -377,7 +377,9 @@ class PostsController extends Controller
 
         $cat->save();
 
-        return redirect()->back()->with('success', 'Added Comprehensive Category');
+        $request->session()->flash('success', 'Successfully added category.');
+
+        return redirect()->back();
 
     }
 

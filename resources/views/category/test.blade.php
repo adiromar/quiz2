@@ -84,7 +84,7 @@
 		</table>
 	</div>
 
-@if(count($postss) > 0)
+@if(count($ids) > 0)
 	<div class="div-test-initiator mt-4" id="divInitiator" style="border:1px solid grey;padding: 20px 30px">
              {{-- <div id="divLoading" align="center">
                 <br /><img src="/_files/images/website/progress.gif" alt="Loading..." /><span class="mx-gray">&nbsp; Loading Test...</span>
@@ -93,9 +93,9 @@
                 <div class="div-test-instruction">
             <p class="mx-green mx-bold mx-uline"><strong>Note:</strong></p>
             <ul class="ul-test-instruction">
-            <li>Total number of questions : <b>{{ count($postss) }}</b>.</li>
+            <li>Total number of questions : <b>{{ count($ids) }}</b>.</li>
 						<?php
-							$c = count($postss);
+							$c = count($ids);
 							if ( $c <= 30 ) {
 								$t = $c - 5;
 							}elseif( $c > 30 && $c < 60 ){
@@ -118,17 +118,18 @@
     <div id="divTabContent" style="display: none;margin-top: 20px;margin-bottom: 25px;">
     	<div class="container">
     		@php $k=1; @endphp
+        
+    			@foreach($ids as $id)
 
-    			@foreach($postss as $pos)
-
+          @php $pos = App\Posts::find( $id ); @endphp
           <!-- Check count -->
-          <?php if ( $k > 0 ): ?>
+          <?php if ( $k > 0 && $pos ) { ?>
 
 
           <div class="qst-container mb-5">
 
           <h5><span class="ques_wrap">{!! $k . '. ' . $pos->post_name !!}</span></h5>
-					<br>
+					
 					@if( $pos->featured )
 							<img src="{{ asset( $pos->featured ) }}" alt="No image" width="200" height="200">
 					@endif
@@ -191,14 +192,105 @@
            </div>  <br />
         </div>
 
-    		@php $k++; @endphp
+    		
         <hr class="line-hr">
       </div>
 
-        <?php endif ?>
+        <?php }else{ ?>
+
+        @php $tempp = explode( '_', $id ); @endphp
+        @if ( count( $tempp ) > 1 )
+
+        @php  $para = App\Paragraph::find($tempp[1]); @endphp
+
+        
+          <div class="qst-container mb-5">
+            
+            <h5><span class="ques_wrap">{!! $k . '. ' . $para->title !!}</span></h5>
+
+            <div class="para">
+              {!! $para->paragraph !!}  
+            </div>
+
+            @php $questions = $para->posts; @endphp
+            @php 
+              $letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']; 
+              $pid = 0;
+            @endphp
+            @foreach ( $questions as $pos )
+
+            <h5><span class="ques_wrap">{!! $letters[$pid] . ". " . $pos->post_name !!}</span></h5>
+
+              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="A" id="optionAns_A_{{ $pos->id}}">
+
+              <?php if ( strpos( $pos->option_a , 'uploads/answers/') === false ): ?>
+              A. {{ $pos->option_a}}
+              <?php else: ?>
+
+              A. <img src="{{ asset( $pos->option_a ) }}" alt="" width="100" height="100">
+
+              <?php endif ?>
+
+             </label></li>
+
+             <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="B" id="optionAns_B_{{ $pos->id}}">
+
+                <?php if ( strpos( $pos->option_b , 'uploads/answers/') === false ): ?>
+                 B. {{ $pos->option_b}}
+                 <?php else: ?>
+
+                 B. <img src="{{ asset( $pos->option_b ) }}" alt="" width="100" height="100">
+
+                 <?php endif ?>
+
+               </label></li>
+
+              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="C" id="optionAns_C_{{ $pos->id}}">
+
+                <?php if ( strpos( $pos->option_c , 'uploads/answers/') === false ): ?>
+                C. {{ $pos->option_c}}
+                <?php else: ?>
+
+                C. <img src="{{ asset( $pos->option_c ) }}" alt="" width="100" height="100">
+
+                <?php endif ?>
+
+               </label></li>
+
+              <li><label class="jq-qno-{{ $pos->id }}"><input class="result-option" type="radio" data-qst="{{ $k }}" name="opt_{{ $pos->id }}" value="D" id="optionAns_D_{{ $pos->id}}">
+
+                <?php if ( strpos( $pos->option_d , 'uploads/answers/') === false ): ?>
+                D. {{ $pos->option_d}}
+                <?php else: ?>
+
+                D. <img src="{{ asset( $pos->option_d ) }}" alt="" width="100" height="100">
+
+                <?php endif ?>
+
+              </label></li>
+
+              <input type="hidden" class="jq-actual-answer" id="optionAnswer_{{ $pos->id }}" value="{{ strtoupper( $pos->correct_option ) }}">
+              <input type="hidden" class="jq-selected-answer" id="optionSelAns_{{ $pos->id }}" value="">
+
+              <div class="bix-div-answer mx-none" id="divAnswer_{{ $pos->id}}" style="display: none;">
+               <div class="div-ans-des-wrapper">
+                  <p><span class="ib-green">Your Answer:</span> Option <span class="jq-user-answer ib-gray ib-bold"> <b>(Not Answered)</b></span></p>
+                  <p><span class="ib-green">Correct Answer:</span> Option <span class="ib-dgray ib-bold">{{ ucwords($pos->correct_option) }}</span></p>
+                 </div>  <br />
+              </div>
+              
+              @php $pid++; @endphp
+            @endforeach
+            
+            <hr class="line-hr">
+            
+          </div>
+
+        @endif
+
+        <?php } ?>
+        @php $k++; @endphp
     		@endforeach
-
-
 
     	</div>
 
@@ -225,9 +317,9 @@
 
 	      <input type="hidden" id="hdnTestTitleID"   value="9" />
         <input type="hidden" id="hdnTestID"        value="1009" />
-		@if(count($postss) > 0)
+		@if(count($ids) > 0)
 		<?php
-			$c = count($postss);
+			$c = count($ids);
 			if ( $c <= 30 ) {
 				$t = $c - 5;
 			}elseif( $c > 30 && $c < 60 ){
@@ -236,14 +328,14 @@
 				$t = $c - 15;
 			}
 		?>
-		<input type="hidden" id="hdnInitialTimer"  value="{{ $t * 60 }}" />
+		<input type="hidden" id="hdnInitialTimer" value="{{ $t * 60 }}" />
 		@else
 
-		<input type="hidden" id="hdnInitialTimer"  value="600" />
+		<input type="hidden" id="hdnInitialTimer" value="600" />
 
 		@endif
 
-        <input type="hidden" id="hdnTimer"         value="600" />
+    <input type="hidden" id="hdnTimer" value="600" />
 
 
 {{-- <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
