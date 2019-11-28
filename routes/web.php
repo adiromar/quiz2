@@ -3,6 +3,8 @@
 Auth::routes();
 Route::get('comprehensive/{slug}/{page}', 'CategoryController@comprehensive_view')->name('comprehensive.view');
 Route::delete('comprehensive/delete/{id}', 'CategoryController@comprehensive_delete')->name('comprehensive.category.delete');
+Route::get('edit/comprehensive/{id}/', 'CategoryController@comprehensive_edit')->name('comprehensive.edit');
+Route::put('update/comprehensive/{id}', 'CategoryController@comprehensive_update')->name('comprehensive.update');
 Route::get('payment/create', 'PageController@create_payment')->name('payment');
 Route::post('payment/store', 'PageController@store_payment')->name('payment.store');
 Route::resource('courses', 'CourseController')->except(['destroy']);
@@ -37,6 +39,7 @@ Route::get('comprehensive/create', 'PostsController@create_comprehensive_questio
 Route::post('comprehensive/store', 'PostsController@comprehensive_store')->name('comprehensive.store');
 Route::get('comprehensive/categories', 'PostsController@comprehensive_categories')->name('comprehensive.categories');
 Route::post('comprehensive/category/store','PostsController@comprehensive_category_store')->name('comprehensive.category.store');
+Route::delete('comprehensive/paragraph/delete/{id}', 'PostsController@paragraph_delete')->name('paragraph.delete');
 Route::resource('maincategory', 'MainCategoryController');
 
 Route::get('stats', 'PostsController@stats')->name('stats');

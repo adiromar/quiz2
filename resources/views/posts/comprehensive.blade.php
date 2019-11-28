@@ -43,9 +43,15 @@
 								@endforeach
 							</td>
 							<td>{{ $a->level }}</td>
-							<td>
-								<a href="" class="btn btn-sm btn-info">Edit</a>
-								<a href="" class="btn btn-sm btn-warning">Delete</a>
+							<td style="display: inline-flex;">
+								<a href="{{ route('comprehensive.edit', $a->id) }}" class="btn btn-sm btn-info">Edit</a>
+
+								<form action="{{ route('paragraph.delete', $a->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field("DELETE") }}
+                                <input style="margin-left: 3px;" type="submit" name="submit" onclick="return check_del();" value="Delete" class="btn btn-sm btn-danger">
+
+                            </form>
 							</td>
 						</tr>
 					
@@ -54,7 +60,7 @@
 					@else
 
 					<tr>
-						<td colspan="3">No questions at the moment</td>
+						<td colspan="4">No questions at the moment</td>
 					</tr>
 
 					@endif
@@ -70,5 +76,13 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+    function check_del(){
+    var r=confirm("Confirm Delete this Data?")
+        if (r==false)
+        return false;
+  }
+</script>
 
 @endsection

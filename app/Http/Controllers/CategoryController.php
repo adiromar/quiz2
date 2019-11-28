@@ -618,4 +618,53 @@ class CategoryController extends Controller
 
     }
 
+    public function comprehensive_edit($id)
+    {
+
+      $para = Paragraph::find($id);
+
+      $cats = ComprehensiveCategories::orderBy('id', 'DESC')->get();
+
+      return view('posts.comprehensive_edit')->with('para', $para)
+                                              ->with('cats', $cats);
+
+    }
+
+    public function comprehensive_update(Request $request, $id)
+    {
+
+      $this->validateWith([
+
+                'title' => 'required',
+                'paragraph' => 'required',
+                'category' => 'required',
+
+        ]);
+
+      $title = $request->title;
+      $paragraph = $request->paragraph;
+
+      if ( $request->level ) {
+            $level = $request->level;
+      }else{
+          $level = 1;
+      }
+
+       
+      $firstupdate = [
+            'title' => $title,
+            'paragraph' => $paragraph,
+            'level' => $level
+      ];
+
+      $para = Paragraph::find( $id );
+
+      Paragraph::where('id', $id)->update( $firstupdate );
+
+      $request->session()->flash('success', 'Succesfully updated the post.');
+
+      return redirect()->route('posts.comprehensive');
+
+    }
+
 }

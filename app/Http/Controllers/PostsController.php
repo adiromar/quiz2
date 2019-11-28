@@ -384,4 +384,19 @@ class PostsController extends Controller
 
     }
 
+    public function paragraph_delete($id){
+
+
+        $paragraph = Paragraph::find( $id );
+
+        $paragraph->posts()->detach();
+
+        $paragraph->delete();
+
+        request()->session()->flash('success', 'Successfully deleted paragraph.');
+
+        return redirect()->back();
+
+    }
+
 }
