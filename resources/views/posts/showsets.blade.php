@@ -268,12 +268,15 @@
 
 	</div>
 	<ul class="pagination">
+        
         <?php if ( $start > 5 ): ?>
         	<li><a href="{{ route('set.view', [$set->slug, $pg]) }}" rel="prev">« Previous</a></li>
         <?php endif ?>
 
-        
+        <?php if ( $start > ($page * 5) ): ?>
             <li><a href="{{ route('set.view', [$set->slug, $ng]) }}" rel="next">Next »</a></li>
+        <?php endif ?>
+            
         
 	</ul>
 

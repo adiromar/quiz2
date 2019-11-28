@@ -1,6 +1,8 @@
 <?php
 
 Auth::routes();
+Route::get('comprehensive/{slug}/{page}', 'CategoryController@comprehensive_view')->name('comprehensive.view');
+Route::delete('comprehensive/delete/{id}', 'CategoryController@comprehensive_delete')->name('comprehensive.category.delete');
 Route::get('payment/create', 'PageController@create_payment')->name('payment');
 Route::post('payment/store', 'PageController@store_payment')->name('payment.store');
 Route::resource('courses', 'CourseController')->except(['destroy']);
@@ -24,7 +26,7 @@ Route::get('/view-set/{slug}/{page}', 'HomeController@set_view')->name('set.view
 Route::get('/view-set/page/{setid}/{page}', 'HomeController@set_next_page')->name('set.next');
 Route::post('/change_order', 'CategoryController@change_order')->name('change.order');
 
-
+Route::get('category/comprehensive', 'CategoryController@comprehensive')->name('category.comprehensive');
 Route::get('/dashboard', 'HomeController@dash')->name('dash');
 Route::get('posts/index', 'PostsController@index')->name('postindex');
 Route::get('category/index', 'CategoryController@index');
@@ -36,6 +38,7 @@ Route::post('comprehensive/store', 'PostsController@comprehensive_store')->name(
 Route::get('comprehensive/categories', 'PostsController@comprehensive_categories')->name('comprehensive.categories');
 Route::post('comprehensive/category/store','PostsController@comprehensive_category_store')->name('comprehensive.category.store');
 Route::resource('maincategory', 'MainCategoryController');
+
 Route::get('stats', 'PostsController@stats')->name('stats');
 // Route::get('posts/create', 'PostsController@create');
 Route::get('category/create', 'CategoryController@create');

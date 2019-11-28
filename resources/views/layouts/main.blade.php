@@ -55,6 +55,12 @@
             width: 100%;
     object-fit: contain;
       }
+      .qst_lbl{
+        display: block;margin-top: 15px;
+      }
+      .view_answer_color{
+        padding: 15px;
+      }
     </style>
   </head>
   <body>
@@ -224,7 +230,10 @@
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav mr-auto">
-					<?php $caty = App\MainCategory::where('featured', '1')->take(10)->get(); ?>
+            <li class="nav-item">
+              <a href="{{ route('category.comprehensive') }}" class="nav-link pl-0">Comprehensive</a>
+            </li>
+					<?php $caty = App\MainCategory::where('featured', '1')->take(9)->get(); ?>
 					@if(count($caty) > 0)
 						@foreach( $caty as $cat )
 						<?php $cat_name = mb_convert_case($cat->main_category_name, MB_CASE_TITLE); ?>

@@ -50,7 +50,15 @@
                         <tr>
                             <td>{{ $cat->title }}</td>
                             <td> {{ $cat->created_at }} </td>
-                            <td>Edit</td>
+                            <td>
+
+                            <form action="{{ route('comprehensive.category.delete', $cat->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field("DELETE") }}
+                                <input type="submit" name="submit" onclick="return check_del();" value="Delete" class="btn btn-sm btn-danger">
+                            </form>
+
+                            </td>
                         </tr>
 
                         @endforeach
@@ -73,5 +81,13 @@
         
     </div>
 </div>
+
+<script type="text/javascript">
+    function check_del(){
+    var r=confirm("Confirm Delete this Data?")
+        if (r==false)
+        return false;
+  }
+</script>
 
 @endsection

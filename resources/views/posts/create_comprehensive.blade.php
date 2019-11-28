@@ -26,6 +26,20 @@
 				
 			</div>
 			
+			<div class="row pb-3">
+				<div class="col-md-5">
+					<label for="">Choose Category</label>
+					<select name="category" class="form-control">
+						<option value="">-- Select One--</option>
+						@foreach ( $cats as $cat )
+
+						<option value="{{ $cat->id }}">{{ $cat->title }}</option>
+
+						@endforeach
+					</select>
+				</div>	
+			</div>
+			
 			<div class="form-group">
 				<label for="">Paragraph</label>
 				<textarea name="paragraph" id="editor1">{{ old('paragraph') }}</textarea>

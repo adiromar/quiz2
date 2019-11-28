@@ -68,7 +68,14 @@ class PostsController extends Controller
 
     public function create_comprehensive_questions()
     {
-        return view('posts.create_comprehensive');
+        
+        $cats = ComprehensiveCategories::orderBy('title')->get();
+
+        if ( count($cats) == 0 ) {
+            return redirect()->back();
+        }
+
+        return view('posts.create_comprehensive')->with('cats', $cats);
     }
 
     public function comprehensive_question()
@@ -296,6 +303,7 @@ class PostsController extends Controller
                 'title' => 'required',
                 'paragraph' => 'required',
                 'question' => 'required',
+                'category' => 'required',
 
         ]);
 
@@ -319,6 +327,7 @@ class PostsController extends Controller
         $paragraph = $request->paragraph;
 
         $firstinsert = [
+            'comprehensive_categories_id' => $request->category,
             'title' => $title,
             'paragraph' => $paragraph,
             'user_id' => Auth::id()

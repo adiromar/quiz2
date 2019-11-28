@@ -12,6 +12,7 @@ use App\User;
 use App\Ranking;
 use DB;
 use App\QuestionSets;
+use App\ComprehensiveCategories;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -19,7 +20,7 @@ class CategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth',
-          ['except' => ['show', 'cat', 'online_test', 'validate_test','test','online_quiz','rankings']
+          ['except' => ['show', 'cat', 'online_test', 'validate_test','test','online_quiz','rankings','comprehensive','comprehensive_view']
         ]);
     }
 
@@ -555,7 +556,52 @@ class CategoryController extends Controller
         return 0;
       }
 
+    }
 
+    public function comprehensive(){
+
+      $cats = ComprehensiveCategories::orderBy('id', 'DESC')->get();
+
+      return view('category.comprehensive')->with('cats', $cats);
+
+    }
+
+    public function comprehensive_view($slug, $page){
+
+      $ques = ComprehensiveCategories::where('slug', $slug)->first();
+
+      $posts = $ques->paragraphs->chunk(5);
+
+      if ( $page == 1 ) {
+
+            $start = 1;
+            $stop = 5;
+            
+        }elseif( $page > 1 ){
+
+            $start = $page + 4 * ( $page - 1 );
+            $stop = $page * 5;
+
+        }
+
+      return view('posts.viewparagraphs')->with('posts', $posts)
+                                        ->with('title', $ques->title)
+                                        ->with('counter', $page - 1)
+                                        ->with('start', $start)
+                                        ->with('slug', $slug)
+                                        ->with('page', $page)
+                                        ->with('stop', $stop)
+                                        ->with('quescount', count( $ques->paragraphs ));
+
+    }
+
+    public function comprehensive_delete($id)
+    {
+
+
+      ComprehensiveCategories::find($id)->delete();
+
+      return redirect()->back();
 
     }
 
