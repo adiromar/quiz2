@@ -12,6 +12,7 @@ class Posts extends Model
    	protected $table = 'posts';
     public $primaryKey = 'id';
     public $timestamps = true;
+    protected $hidden = array('pivot');
     
     protected $fillable = [
         'category_id', 'post_name', 'category_name', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option', 'explanation', 'level', 'user_id',

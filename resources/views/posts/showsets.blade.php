@@ -39,7 +39,7 @@
             <div class="col-md-12 post_div{{ $ii}} qstn_div">
             
                 <label class="qst_lbl"><?= $start . '. ' ?> <span class="ques_wrap">{!! $pos->post_name !!}</span></label>
-					<br>
+					
                     @if( $pos->featured )
                             <img src="{{ asset( $pos->featured ) }}" alt="No image" width="200" height="200">
                     @endif
@@ -161,7 +161,7 @@
         <div class="col-md-12 qstn_div">
         
             <label class="qst_lbl"><?= $start . '. ' ?> <span class="ques_wrap">{{ $paragraph->title }}</span></label>
-            <br>
+            
             <div class="para">
                 {!! $paragraph->paragraph !!}
             </div>
@@ -179,7 +179,7 @@
             @foreach( $subposts as $sub )
             
             <label class="qst_lbl"><?= $letters[$pid] . '. ' ?> <span class="ques_wrap">{!! $sub->post_name !!}</span></label>
-            <br>
+            
             <p>
                 <a data-id="a" data-value="{{ $sub->option_a }}" data-correct="{{ strtolower($sub->correct_option) }}" 
                     href="javascript:void()" class="option_color options_clk">

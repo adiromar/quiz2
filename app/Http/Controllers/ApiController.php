@@ -7,6 +7,8 @@ use DB;
 use App\MainCategory;
 use App\Category;
 use App\User;
+use App\ComprehensiveCategories;
+use App\Paragraph;
 
 class ApiController extends Controller
 {
@@ -85,6 +87,77 @@ class ApiController extends Controller
 		}
 
 		return response()->json(['data' => $data]);
+
+	}
+
+	public function getComprehensiveCategories(){
+
+		$cats = ComprehensiveCategories::orderBy('id', 'DESC')->get();
+
+		$data = [];
+		$i = 0;
+		foreach ($cats as $key) {
+			
+			$data[$i]['id'] = $key->id;
+			$data[$i]['main_category_id'] = 1000;
+			$data[$i]['category_name'] = $key->title;
+			$data[$i]['slug'] = $key->slug;
+			$data[$i]['link'] = url('/api/getParagraphsByCategory/' . $key->id);
+
+			$i++;
+		}
+
+		return response()->json(['data' => $data]);
+
+	}
+
+	public function getParagraphsByCategory(Request $request, $id){
+
+		$level = $request->level;
+
+		if ( $level && $level > 0 ) {
+			$chklevel = $level;
+		}else{
+			$chklevel = "1";
+		}
+		
+		$paragraphs = Paragraph::where('comprehensive_categories_id', $id)
+								->orderBy('id', 'DESC')
+								->where('level', '<=', $chklevel)
+								->get();
+
+		$data = [];
+		$i = 0;
+		if ( count($paragraphs) > 0 ) {
+			
+			foreach ($paragraphs as $key) {
+				
+				$data[$i]['id'] = $key->id;
+				$data[$i]['title'] = $key->title;
+				$data[$i]['paragraph'] = $key->paragraph;
+
+				$select = [
+							'posts.id', 'post_name', 'category_name', 'option_a', 'option_b',
+							'option_c', 'option_d', 'correct_option', 'explanation', 'level',
+							'posts.created_at'
+						];
+
+				$allposts = $key->posts()->select( $select )
+										->where('level', '<=', $chklevel)
+										->get();
+
+				$data[$i]['questions'] = $allposts;
+
+				$i++;
+			}
+
+			return response()->json(['data' => $data]);
+
+		}else{
+
+			return response()->json(['message' => "There are no questions at the moment."]);
+
+		}
 
 	}
 

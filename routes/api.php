@@ -35,3 +35,7 @@ Route::get('/getQuestionsBySet/{id}', 'ApiController@getQuestionsBySet');
 Route::get('/getQuestionsByCategory/{id}', 'ApiController@getQuestionsByCategory');
 
 Route::post('/updateUserLevel', 'ApiController@updateUserLevel');
+
+Route::get('/getComprehensiveCategories', 'ApiController@getComprehensiveCategories');
+
+Route::get('/getParagraphsByCategory/{id}', 'ApiController@getParagraphsByCategory');

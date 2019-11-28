@@ -330,7 +330,8 @@ class PostsController extends Controller
             'comprehensive_categories_id' => $request->category,
             'title' => $title,
             'paragraph' => $paragraph,
-            'user_id' => Auth::id()
+            'user_id' => Auth::id(),
+            'level' => $level
         ];
 
         $insert1 = Paragraph::create( $firstinsert );

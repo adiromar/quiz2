@@ -23,6 +23,7 @@
 					<tr>
 						<th>Title</th>
 						<th>SubQuestion Ids</th>
+						<th>Level</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -41,6 +42,7 @@
 
 								@endforeach
 							</td>
+							<td>{{ $a->level }}</td>
 							<td>
 								<a href="" class="btn btn-sm btn-info">Edit</a>
 								<a href="" class="btn btn-sm btn-warning">Delete</a>
