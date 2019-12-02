@@ -64,6 +64,13 @@
       .para p{
         line-height: 26px;
       }
+      @media only screen and (max-width: 550px) {
+        .d-block a{ font-size: 14px;margin-top: 2px; }
+        .logo { font-size: 20px; width: 100%; padding-bottom: 0px;  margin-bottom: -15px; } 
+        .esewapay {    height: 50%;    width: 50%;
+                       margin-top: 25px;    margin-bottom: 25px;  }
+      }
+      
     </style>
   </head>
   <body>
@@ -168,14 +175,14 @@
 	  <div class="bg-top navbar-light">
     	<div class="container">
     		<div class="row no-gutters d-flex align-items-center align-items-stretch">
-    			<div class="col-md-4 d-flex align-items-center py-4">
-    				<a class="navbar-brand" href="{{ url('/') }}">Quizzer Nepal</a>
+    			<div class="col-md-4 d-flex align-items-center py-4 text-center">
+    				<a class="navbar-brand logo" href="{{ url('/') }}">Quizzer Nepal</a>
     			</div>
-	    		<div class="col-lg-8 d-block">
+	    		<div class="col-lg-8 col-sm-12 d-block">
 		    		<div class="row d-flex">
               <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
 
-                <p class="mb-0 d-block mr-2">
+                <p class="mb-0 d-block mr-2 text-center">
                   
                   <a href="{{ route('payment') }}" class="btn py-2 px-3 btn-success">
                     <span><i class="fa fa-parking" aria-hidden="true"></i>&nbsp;Payment</span>
@@ -189,20 +196,20 @@
                     <span><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Courses</span>
                   </a>
                   
-                </p>
                 @guest
-                <p class="mb-0 d-block">
-		    		<a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary" role="button" data-toggle="modal" data-target="#exampleModalLong">
-		    			<span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
-		    		</a>
-		    	</p>
+                
+		    		      <a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary" role="button" data-toggle="modal" data-target="#exampleModalLong">
+		    			    <span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
+		    		      </a>
+		    	      
                 @endguest
+                
                 @auth
                 <?php
-					$aid = Auth::id();
-					$rol = DB::table('role_user')->where('user_id', $aid)->first();
-					$role = DB::table('roles')->where('id', $rol->role_id)->first();
-				?>
+        					$aid = Auth::id();
+        					$rol = DB::table('role_user')->where('user_id', $aid)->first();
+        					$role = DB::table('roles')->where('id', $rol->role_id)->first();
+        				?>
 	
                 <?php if ( $role->role == 'SuperAdmin' || $role->role == 'Admin' ): ?>
 
@@ -219,8 +226,10 @@
               		</form>
   							</a>
                 @endauth
-              </div>
 
+                </p>
+              </div>
+            </div>
 			    </div>
 		    </div>
 	    </div>
@@ -229,7 +238,7 @@
 	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container d-flex align-items-center">
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
+	        <span class="oi oi-menu"></span> Categories
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav mr-auto">

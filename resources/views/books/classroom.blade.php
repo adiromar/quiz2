@@ -59,17 +59,20 @@
     	font-weight: 700
 	}
 	.wrapper a{
-		border-left: 3px solid #0d1128;
-	    padding: 10px 15px;
-	    background-color: #1b9ce3;
+	    padding: 15px 15px;
 	    color: white;
 	    font-weight: 700;
 	}
-	.wrapper a:hover{
-		background-color: #dc3545;
-	}
 	.titles{
 	    margin-bottom: 25px;
+    	background-color: #1b9ce3;
+    	border-left: 3px solid #0d1128;
+	}
+	.titles:hover{
+		background-color: #dc3545;
+	}
+	@media only screen and (max-width: 550px) {
+		.titles{ text-align: center; }
 	}
 </style>
 
