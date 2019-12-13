@@ -40,6 +40,30 @@ class CategoryController extends Controller
         return view('category.create')->with('main', $main);
     }
 
+    public function edit($id)
+    {
+        $title = 'Category Page';
+
+        $main = MainCategory::get();
+
+        $category = Category::find($id);
+
+        return view('category.edit')->with('title', $title)
+                                    ->with('main', $main)
+                                    ->with('category', $category);
+    }
+
+    public function update(Request $request, $id){
+      
+      $category = Category::find($id);
+
+      $category->main_category_id = $request->main_category_id;
+
+      $category->save();
+
+      return redirect()->route('category.index');
+
+    }
 
     // view questions all category wise & level wise
     public function cat(Request $request, $main, $slug, $id, $page)

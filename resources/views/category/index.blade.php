@@ -47,9 +47,6 @@
 		<input type="submit" name="go" value="Submit" class="btn btn-primary btn-sm">
 		</div>
 		</form>
-
-
-				{{-- </div> --}}
 			</div>
 		</div>
 
@@ -89,6 +86,7 @@
 											  <input type="hidden" name="cat_id" value="{{ $cat->id }}" id="cat_id">
 										</form></td>
 									<td>
+										<a href="{{ route('category.edit', $cat->id) }}" class="btn btn-warning btn-sm">Edit</a>
 										<form method="POST" class="float-right" action="{{ action('CategoryController@destroy', $cat->id) }}">
 											{{ csrf_field() }}
 											{{ method_field('delete') }}

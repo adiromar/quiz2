@@ -62,8 +62,6 @@ class ApiController extends Controller
 	        	foreach ($comprehensive as $key => $value) {
 	        		
 	        		$filter2[$key] = $value;
-	        		
-
 
 	        		$select = [
 							'posts.id', 'post_name', 'category_name', 'option_a', 'option_b',
@@ -86,8 +84,6 @@ class ApiController extends Controller
 	        		$filter2[$key]['option_d'] = '';
 	        		$filter2[$key]['correct_option'] = '';
 	        		$filter2[$key]['explanation'] = '';
-	        		$filter2[$key]['option_d'] = '';
-	        		$filter2[$key]['option_d'] = '';
 
 	        		$filter2[$key]->type = "1"; 
 
@@ -112,14 +108,35 @@ class ApiController extends Controller
         }
 
 		$filter1 = collect( $data )->flatten();
-
+		
+		$filter = [];$cc = 0;
         foreach ($filter1 as $key => $value) {
-        	$filter[$key] = $value;
-        	$filter[$key]->type = 0;
-        	$filter[$key]->comprehensive_categories_id = '';
-        	$filter[$key]->title = '';
-        	$filter[$key]->paragraph = '';
-        	$filter[$key]->questions = [];
+        	$filter[$cc]['id'] = $value->id;
+        	$filter[$cc]['comprehensive_categories_id'] = '';
+        	$filter[$cc]['title'] = '';
+        	$filter[$cc]['paragraph'] = '';
+        	
+        	$filter[$cc]['user_id'] = $value->user_id;
+        	$filter[$cc]['level'] = $value->level;
+        	$filter[$cc]['created_at'] = $value->created_at;
+        	$filter[$cc]['updated_at'] = $value->updated_at;
+
+        	$filter[$cc]['questions'] = [];
+
+        	$filter[$cc]['category_id'] = $value->category_id;
+        	$filter[$cc]['post_name'] = $value->post_name;
+        	$filter[$cc]['featured'] = $value->featured;
+        	$filter[$cc]['category_name'] = $value->category_name;
+        	$filter[$cc]['option_a'] = $value->option_a;
+        	$filter[$cc]['option_b'] = $value->option_b;
+        	$filter[$cc]['option_c'] = $value->option_c;
+        	$filter[$cc]['option_d'] = $value->option_d;
+        	$filter[$cc]['correct_option'] = $value->correct_option;
+        	$filter[$cc]['explanation'] = $value->explanation;
+
+        	$filter[$cc]['type'] = 0;
+
+        	$cc++;
         }
 
         if ( $filter2 ) {

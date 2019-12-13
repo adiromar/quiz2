@@ -31,7 +31,7 @@ Route::post('/change_order', 'CategoryController@change_order')->name('change.or
 Route::get('category/comprehensive', 'CategoryController@comprehensive')->name('category.comprehensive');
 Route::get('/dashboard', 'HomeController@dash')->name('dash');
 Route::get('posts/index', 'PostsController@index')->name('postindex');
-Route::get('category/index', 'CategoryController@index');
+Route::get('category/index', 'CategoryController@index')->name("category.index");
 
 Route::resource('posts', 'PostsController');
 Route::get('comprehensive', 'PostsController@comprehensive_question')->name('posts.comprehensive');
@@ -48,6 +48,8 @@ Route::get('category/create', 'CategoryController@create');
 
 Route::post('category/store', 'CategoryController@store');
 
+Route::get('category/edit/{id}', 'CategoryController@edit')->name('category.edit');
+Route::put('category/{id}/update', 'CategoryController@update')->name('category.update');
 Route::delete('/category/{id}/delete', 'CategoryController@destroy');
 
 // Route::get('/{slug}/main', 'MainCategoryController@show');
