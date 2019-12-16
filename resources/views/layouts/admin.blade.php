@@ -49,15 +49,14 @@
                     <li>
                         <a href="{{ route('dash') }}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
-
-                    {{-- <h3 class="menu-title">Main Category</h3><!-- /.menu-title --> --}}
-                    {{-- <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-plus"></i>Create / View</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-sign-in"></i><a href="{{url('maincategory/create')}}">Main Category</a></li>
-                            <li><i class="menu-icon fa fa-sign-in"></i><a href="{{url('category/index')}}">Category</a></li>
-                        </ul>
-                    </li> --}}
+                @if( Auth::user()->isAdmin() == "SuperAdmin" )
+                    <li>
+                        <a href="{{ route('users.index') }}"><i class="menu-icon fa fa-users"></i>Manage User Roles</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('manage.menu') }}"><i class="menu-icon fa fa-menu">|=></i>Manage Menu</a>
+                    </li>
+                @endif
 
                     <li><a href="{{url('maincategory/create')}}"><i class="menu-icon fa fa-list"></i>Main Category</a></li>
                     <li><a href="{{url('category/index')}}"><i class="menu-icon ti-view-grid"></i> Category</a></li>

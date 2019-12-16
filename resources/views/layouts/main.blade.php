@@ -35,7 +35,10 @@
 
 		@yield('styles')
     <style media="screen">
-
+      .pay{
+        background-color: tomato;
+        border-color: tomato;
+      }
       .modal-form input{
         display: block;
         width: 100%;
@@ -175,18 +178,24 @@
 	  <div class="bg-top navbar-light">
     	<div class="container">
     		<div class="row no-gutters d-flex align-items-center align-items-stretch">
-    			<div class="col-md-4 d-flex align-items-center py-4 text-center">
+    			<div class="col-md-3 d-flex align-items-center py-4 text-center">
     				<a class="navbar-brand logo" href="{{ url('/') }}">Quizzer Nepal</a>
     			</div>
-	    		<div class="col-lg-8 col-sm-12 d-block">
+	    		<div class="col-lg-9 col-sm-12 d-block">
 		    		<div class="row d-flex">
               <div class="col-md topper d-flex align-items-center justify-content-end pt-3">
 
                 <p class="mb-0 d-block mr-2 text-center">
                   
-                  <a href="{{ route('payment') }}" class="btn py-2 px-3 btn-success">
-                    <span><i class="fa fa-parking" aria-hidden="true"></i>&nbsp;Payment</span>
+                  @guest
+                  <a href="{{ url('/list-all') }}" class="btn py-2 px-3 btn-success" role="button" data-toggle="modal" data-target="#exampleModalLong">
+                    <span><i class="fas fa-tachometer-alt" aria-hidden="true"></i>&nbsp;Onine Test</span>
                   </a>
+                  @else
+                  <a href="{{ url('/list-all') }}" class="btn py-2 px-3 btn-success">
+                    <span><i class="fas fa-tachometer-alt" aria-hidden="true"></i>&nbsp;Onine Test</span>
+                  </a>
+                  @endguest
 
                   <a href="{{ route('videos') }}" class="btn py-2 px-3 btn-danger">
                     <span><i class="fa fa-book-reader" aria-hidden="true"></i>&nbsp;Class Room</span>
@@ -196,13 +205,17 @@
                     <span><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Courses</span>
                   </a>
                   
-                @guest
+                  <a href="{{ route('payment') }}" class="btn py-2 px-3 btn-success pay">
+                    <span><i class="fa fa-parking" aria-hidden="true"></i>&nbsp;Payment</span>
+                  </a>
+
+                  @guest
                 
 		    		      <a href="{{ route('login') }}" class="btn py-2 px-3 btn-primary" role="button" data-toggle="modal" data-target="#exampleModalLong">
 		    			    <span><i class="fa fa-user" aria-hidden="true"></i> Login</span>
 		    		      </a>
 		    	      
-                @endguest
+                  @endguest
                 
                 @auth
                 <?php
@@ -236,17 +249,59 @@
 	  </div>
     </div>
 	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container d-flex align-items-center">
+	    <div class="container-fluid d-flex align-items-center pl-5">
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Categories
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav mr-auto">
+            <!-- Check tbl_menu -->
+            <?php 
+            $menutype_comp = DB::table('tbl_menu')->where('category_type', 'comp')->first();
+            $menutype_main = DB::table('tbl_menu')->where('category_type', 'main')->pluck('slugs')->toArray();
+            $menutype_sub = DB::table('tbl_menu')->where('category_type', 'sub')->pluck('slugs')->toArray();
+            ?>
+            @if ( $menutype_comp )
+              <li class="nav-item">
+                <a href="{{ route('category.comprehensive') }}" class="nav-link pl-0">Comprehensive</a>
+              </li>
+            @endif
+            @if( $menutype_main || $menutype_sub )
+              
+              @foreach($menutype_main as $slug)
+              
+                <?php $cat = App\MainCategory::where('slug', $slug)->first(); ?>
+                @if ( $cat )
+                <li class="nav-item">
+                  <a href="{{ url(''.$cat->slug.'/'.$cat->id.'') }}" class="nav-link pl-0">{{ ucfirst( $cat->main_category_name ) }}</a>
+                </li>
+                @endif
+
+              @endforeach
+
+              @foreach($menutype_sub as $slug)
+                
+                <?php $cat = App\Category::where('slug', $slug)->first(); ?>
+                <?php 
+                  $mainid = $cat->main_category_id;
+                  $main = App\MainCategory::find( $mainid );
+                ?>
+                @if ( $cat && $main)
+                
+                <li class="nav-item">
+                  <a href="{{ route('cat', [ $main->slug, $cat->slug, $cat->id, 1 ]) }}" class="nav-link pl-0">{{ mb_convert_case($cat->category_name, MB_CASE_TITLE) }}</a>
+                </li>
+                @endif
+
+              @endforeach
+
+            @else
             <li class="nav-item">
               <a href="{{ route('category.comprehensive') }}" class="nav-link pl-0">Comprehensive</a>
             </li>
-					<?php $caty = App\MainCategory::where('featured', '1')->take(9)->get(); ?>
-					@if(count($caty) > 0)
+					 <?php $caty = App\MainCategory::where('featured', '1')->take(12)->get(); ?>
+
+          @if(count($caty) > 0)
 						@foreach( $caty as $cat )
 						<?php $cat_name = mb_convert_case($cat->main_category_name, MB_CASE_TITLE); ?>
 						<li class="nav-item"><a href="{{ url(''.$cat->slug.'/'.$cat->id.'') }}" class="nav-link pl-0">
@@ -254,14 +309,8 @@
 						</a></li>
 						@endforeach
 					@endif
-          
-	        <li class="nav-item">
-          @guest  
-            <a href="{{ url('/list-all') }}" class="nav-link onlinetest" class="btn py-2 px-3 btn-primary" role="button" data-toggle="modal" data-target="#exampleModalLong"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a>
-          @else
-            <a href="{{ url('/list-all') }}" class="nav-link onlinetest" class="btn py-2 px-3 btn-primary"><i class="fas fa-tachometer-alt"></i>&nbsp;Online Test</a>
-          @endguest
-          </li>
+
+          @endif
           
 					</ul>
 	      </div>

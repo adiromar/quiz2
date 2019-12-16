@@ -65,6 +65,11 @@ Route::get('/online-test/{slug}/{id}', 'CategoryController@online_test')->name('
 // Route::post('/category/{id}/validate', 'CategoryController@validate_test');
 Route::get('/test-online/{set}/{id}', 'CategoryController@online_test_set')->name('test.set');
 
+//Manage Users
+Route::resource('admin/users', 'UsersController');
+Route::get('userchangerole/{id}/{action}', 'UsersController@update_role')->name("update.userrole");
+Route::get('admin/menu/manage', 'UsersController@manage_menu')->name('manage.menu');
+Route::post('admin/menu/store', 'UsersController@store_menu')->name('menu.store');
 Route::get('/update/user/level/', 'CategoryController@update_user_level')->name("update.user.level");
 Route::get('/update/userranking', 'CategoryController@update_user_ranking');
 

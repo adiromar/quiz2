@@ -49,11 +49,9 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        $id = Auth::id();
-        $role = DB::table('role_user')->where('user_id', $id)->pluck('role_id');
-        // return $this->roles->pluck( 'roles' )->contains( 'Admin' );
-        // return $this->roles()->where('role_id', '1')->exists();
-        return $role[0];
+        $user = Auth::user();
+        $role = $user->checkRole( Auth::id() );
+        return $role; 
     }
 
     public function checkRole($id){
@@ -62,7 +60,7 @@ class User extends Authenticatable
         
         switch ($role) {
             case 1:
-                return "Admin";
+                return "SuperAdmin";
                 break;
             case 2:
                 return "Admin";
