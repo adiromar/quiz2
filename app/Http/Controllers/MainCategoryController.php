@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\MainCategory;
 use App\Category;
 use Illuminate\Support\Facades\Crypt;
+use DB;
 
 class MainCategoryController extends Controller
 {
@@ -15,18 +16,79 @@ class MainCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($slug, $id)
+    public function index($slug, $id, $page, Request $request)
     {   
-        // $did = Crypt::decrypt($id);
+        $main = MainCategory::find($id);
+        $submain = Category::where('main_category_id', $id)->get();
+
+        $cate_ids = [];
+        foreach ($submain as $sm) {
+            $cate_ids[] = $sm->id;
+        }
+        // dd($cate_ids);
+        session()->forget('dataIds');
+        session()->forget('datalist');
+        
+        if ( Auth::id() ) {
+            $id = Auth::id();
+            $lev = DB::table('users')->where('id', $id)->pluck('level')->first();
+
+            $postss = DB::table('posts')->where('level', $lev)->orwhereIn('category_id', $cate_ids)->inRandomOrder()->get();
+
+        }else{
+            $postss = DB::table('posts')->whereIn('category_id' , $cate_ids)->inRandomOrder()->get();
+        }
+        // dd($postss);
+
+        if ( $request->session()->get('datalist') == null ) {
+
+            $catDataIds = [];
+            foreach ($postss as $p) {
+                $catDataIds[] = $p->id;
+            }
+
+            session(['datalist' => json_encode($catDataIds) ]);
+
+        }else{
+
+            $ids = session()->get('datalist');
+            $postss = [];
+            foreach (json_decode($ids) as $k) {
+
+                $postss[] = DB::table('posts')->where('id', $k)->first();
+            }
+        }
+
+        if ( $page == 1 ) {
+            $start = 1;
+            $stop = 5;
+        }elseif( $page > 1 ){
+            $start = $page + 4 * ( $page - 1 );
+            $stop = $page * 5;
+        }
+
+        $pg = 0;
+        return view('maincategory.index')->with('main', $main)
+                                         ->with('submain', $submain)
+                                         ->with('postss', $postss)
+                                         ->with('page', $page)
+                                         ->with('slug', $slug)
+                                         ->with('start', $start)
+                                         ->with('stop', $stop)
+                                         ->with('pg', $pg);
+    }
+
+    public function subcat($slug, $id)
+    {   
         $main = MainCategory::find($id);
         $submain = Category::where('main_category_id', $id)->get();
 
         session()->forget('dataIds');
         session()->forget('datalist');
         
-        return view('maincategory.index')->with('main', $main)->with('submain', $submain);
+        return view('maincategory.indexBackup')->with('main', $main)->with('submain', $submain);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *

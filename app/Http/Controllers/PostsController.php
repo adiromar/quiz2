@@ -10,6 +10,7 @@ use App\User;
 use App\Report;
 use App\Paragraph;
 use App\ComprehensiveCategories;
+use App\MainCategory;
 use DB;
 use Session;
 
@@ -292,7 +293,13 @@ class PostsController extends Controller
 
         $users = User::all();
 
-        return view('user.stats')->with('users', $users);
+        $main = MainCategory::all();
+
+        $cats = Category::all();
+
+        return view('user.stats')->with('users', $users)
+                                ->with('main', $main)
+                                ->with('cats', $cats);
 
     }
 

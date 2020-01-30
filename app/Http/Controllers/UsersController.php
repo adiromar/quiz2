@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\MainCategory;
 use App\Category;
+use App\Posts;
 use DB;
 
 class UsersController extends Controller
@@ -111,6 +112,18 @@ class UsersController extends Controller
 		}
 
 		return redirect()->back();
+
+	}
+
+	public function view_user_posts($uid, $cid) {
+
+		$posts = Posts::where('user_id', $uid)
+							->where('category_id', $cid)
+							->paginate(25);
+
+		return view('user.single')->with('posts',$posts)
+								  ->with('cat', Category::find($cid))
+								  ->with('user', User::find($uid));
 
 	}
 

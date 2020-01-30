@@ -27,6 +27,7 @@
         #addQues{ background-color: #272c33; padding: 5px 20px; color: white; }
         .append{ padding: 15px 15px;border: 1px solid lightgrey;margin-top: 10px;margin-bottom: 15px; }
         label{ font-weight: 600 }
+        .isadmin i{ color: orange !important }
     </style>
 
 </head>
@@ -50,13 +51,14 @@
                         <a href="{{ route('dash') }}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
                 @if( Auth::user()->isAdmin() == "SuperAdmin" )
-                    <li>
+                    <li class="isadmin">
                         <a href="{{ route('users.index') }}"><i class="menu-icon fa fa-users"></i>Manage User Roles</a>
                     </li>
-                    <li>
+                    <li class="isadmin">
                         <a href="{{ route('manage.menu') }}"><i class="menu-icon fa fa-menu">|=></i>Manage Menu</a>
                     </li>
                 @endif
+                    <li class="isadmin"><a href="{{ route('stats') }}"><i class="menu-icon fa fa-stack-exchange" aria-hidden="true"></i> User Stats</a></li>
 
                     <li><a href="{{url('maincategory/create')}}"><i class="menu-icon fa fa-list"></i>Main Category</a></li>
                     <li><a href="{{url('category/index')}}"><i class="menu-icon ti-view-grid"></i> Category</a></li>
@@ -82,8 +84,6 @@
                     <li><a href="{{ route('payment.receipts') }}"><i class="menu-icon fa fa-money"></i>User Payments</a></li>
 
                     <li><a href="{{url('posts/question_report')}}"><i class="menu-icon fa fa-question-circle"></i>Question Feedback</a></li>
-
-                    <li><a href="{{ route('stats') }}"><i class="menu-icon fa fa-stack-exchange" aria-hidden="true"></i> Stats</a></li>
 
                 </ul>
             </div><!-- /.navbar-collapse -->

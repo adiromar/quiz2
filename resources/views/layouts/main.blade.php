@@ -273,7 +273,7 @@
                 <?php $cat = App\MainCategory::where('slug', $slug)->first(); ?>
                 @if ( $cat )
                 <li class="nav-item">
-                  <a href="{{ url(''.$cat->slug.'/'.$cat->id.'') }}" class="nav-link pl-0">{{ ucfirst( $cat->main_category_name ) }}</a>
+                  <a href="{{ url(''.$cat->slug.'/'.$cat->id.'/1') }}" class="nav-link pl-0">{{ ucfirst( $cat->main_category_name ) }}</a>
                 </li>
                 @endif
 

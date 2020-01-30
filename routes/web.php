@@ -9,7 +9,7 @@ Route::get('payment/create', 'PageController@create_payment')->name('payment');
 Route::post('payment/store', 'PageController@store_payment')->name('payment.store');
 Route::resource('courses', 'CourseController')->except(['destroy']);
 Route::get('courses/delete/{id}', 'CourseController@destroy')->name('courses.destroy');
-
+Route::get('viewUser/user/{id}/category/{cid}', 'UsersController@view_user_posts')->name('view.user.posts');
 Route::get('topics', 'TopicController@index')->name('topics.index');
 Route::post('topics', 'TopicController@store')->name('topics.store');
 Route::get('topics/{id}', 'TopicController@destroy')->name('topics.destroy');
@@ -79,7 +79,8 @@ Route::put('/category/{id}/edit', 'CategoryController@featured_cat');
 Route::post('posts/report_post/{id}', 'PostsController@report_post');
 Route::get('posts/question_report', 'PostsController@show');
 
-Route::get('/{slug}/{id}', 'MainCategoryController@index');
+// Route::get('/{slug}/{id}', 'MainCategoryController@subcat');
+Route::get('/{slug}/{id}/{page}', 'MainCategoryController@index')->name('m_cat');
 
 Route::post('/posts/score', 'PostsController@score');
 

@@ -149,31 +149,68 @@ class ApiController extends Controller
 
 	public function getCategories(){
 
+		// Check tbl_menu
+		$menu = DB::table('tbl_menu')->get()->count();
 
-
-		$cats = MainCategory::all();
-
-		$data = [];
-
-		$data[0]['id'] = 1000;
-		$data[0]['main_category_name'] = 'Comprehensive;';
-		$data[0]['slug'] = 'comprehensive';
-		$data[0]['featured'] = 1;
-		$data[0]['subcategories'] = url('/api/getComprehensiveCategories');
-
-		$i = 1;
-		foreach ($cats as $key) {
+		if ( $menu > 0 ) {
 			
-			$data[$i]['id'] = $key->id;
-			$data[$i]['main_category_name'] = $key->main_category_name;
-			$data[$i]['slug'] = $key->slug;
-			$data[$i]['featured'] = $key->featured;
-			$data[$i]['subcategories'] = url('/api/getSubCategoriesById/' . $key->id );
+			$menu = DB::table('tbl_menu')->get();
+			$data = [];$i=0;
+			foreach ($menu as $cat) {
 
-			$i++;
+				
+				if ( $cat->slugs == 'comprehensive' ) {
+					$data[$i]['id'] = 1000;
+					$data[$i]['main_category_name'] = 'Comprehensive;';
+					$data[$i]['slug'] = 'comprehensive';
+					$data[$i]['featured'] = 1;
+					$data[$i]['subcategories'] = url('/api/getComprehensiveCategories');
+				}
+				if ( $cat->slugs !== 'comprehensive' ) {
+					// Get category by slug
+					$temp = MainCategory::where('slug', $cat->slugs)->first();
+					$data[$i]['id'] = $temp->id;
+					$data[$i]['main_category_name'] = $temp->main_category_name;
+					$data[$i]['slug'] = $temp->slug;
+					$data[$i]['featured'] = $temp->featured;
+					$data[$i]['subcategories'] = url('/api/getSubCategoriesById/' . $temp->id );
+				}
+
+				$i++;
+
+				}
+				
+			return response()->json(['data' => $data]);
+				
+		}else{
+
+			$cats = MainCategory::all();
+
+			$data = [];
+
+			$data[0]['id'] = 1000;
+			$data[0]['main_category_name'] = 'Comprehensive;';
+			$data[0]['slug'] = 'comprehensive';
+			$data[0]['featured'] = 1;
+			$data[0]['subcategories'] = url('/api/getComprehensiveCategories');
+
+			$i = 1;
+			foreach ($cats as $key) {
+				
+				$data[$i]['id'] = $key->id;
+				$data[$i]['main_category_name'] = $key->main_category_name;
+				$data[$i]['slug'] = $key->slug;
+				$data[$i]['featured'] = $key->featured;
+				$data[$i]['subcategories'] = url('/api/getSubCategoriesById/' . $key->id );
+
+				$i++;
+			}
+
+			return response()->json(['data' => $data]);
+
 		}
 
-		return response()->json(['data' => $data]);
+		
 
 	}
 
